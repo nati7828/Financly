@@ -1,0 +1,101 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:minWidth="220dp"
+    android:minHeight="340dp"
+    android:orientation="vertical"
+    android:layout_gravity="center"
+    android:background="@color/colorDarkGray">
+
+    <ImageView
+        android:src="@drawable/exit_color_selector"
+        android:id="@+id/popupDismiss"
+        android:layout_width="40dp"
+        android:layout_height="40dp"
+        android:layout_gravity="end"
+        android:layout_margin="15dp"
+        android:contentDescription="@string/exit"
+        />
+
+    <LinearLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:orientation="vertical">
+
+        <EditText
+            android:maxLength="13"
+            android:id="@+id/popup_money"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:drawablePadding="8dp"
+            android:drawableStart="@drawable/coins"
+            android:hint="@string/enter_amount"
+            android:inputType="numberSigned|numberDecimal"
+            android:textAlignment="viewStart"
+            android:textDirection="ltr"
+            android:paddingEnd="8dp"
+            android:paddingStart="8dp"
+            android:textColor="@color/colorWhite"
+            android:textColorHint="@color/colorHint"
+            android:textSize="20sp" />
+
+        <TextView
+            android:id="@+id/popup_date"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="10dp"
+            android:drawablePadding="8dp"
+            android:drawableStart="@drawable/cal"
+            android:paddingEnd="8dp"
+            android:paddingStart="8dp"
+            android:textColor="@drawable/category_comment_text_color_selector"
+            android:background="@drawable/category_comment_text_color_selector"
+            android:textColorHint="@color/colorHint"
+            android:textSize="20sp" />
+
+        <TextView
+            android:id="@+id/popup_category_name"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="10dp"
+            android:drawablePadding="8dp"
+            android:drawableStart="@drawable/category"
+            android:hint="@string/choose_category"
+            android:paddingEnd="8dp"
+            android:paddingStart="8dp"
+            android:textColor="@drawable/category_comment_text_color_selector"
+            android:background="@drawable/category_comment_text_color_selector"
+            android:textColorHint="@color/colorHint"
+            android:textSize="20sp" />
+
+        <TextView
+            android:id="@+id/popup_user_comment"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="10dp"
+            android:drawablePadding="8dp"
+            android:drawableStart="@drawable/comment"
+            android:paddingEnd="8dp"
+            android:paddingStart="8dp"
+            android:textColorHint="@color/colorHint"
+            android:textSize="20sp"
+            android:textColor="@drawable/category_comment_text_color_selector"
+            android:background="@drawable/category_comment_text_color_selector"/>
+
+    </LinearLayout>
+
+    <TextView
+        android:id="@+id/popupEnterNewLine"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center_horizontal|bottom"
+        android:layout_marginTop="20dp"
+        android:textColor="@drawable/add_button_color_selector"
+        android:text="@string/add_line"
+        android:textSize="28sp"
+        android:background="@drawable/add_button_color_selector"/>
+
+
+</LinearLayout>

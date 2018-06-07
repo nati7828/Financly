@@ -1,0 +1,42 @@
+{
+  "project_info": {
+    "project_number": "195404131701",
+    "firebase_url": "https://financly-1992.firebaseio.com",
+    "project_id": "financly-1992",
+    "storage_bucket": "financly-1992.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:195404131701:android:d27f40be4e734918",
+        "android_client_info": {
+          "package_name": "nati.financly"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "195404131701-lc1qrjk0mgjr5motsdnuvllmvfi98ugl.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCS_0VlwAypVUl_eNLt40Gl0EPHaxjp25k"
+        }
+      ],
+      "services": {
+        "analytics_service": {
+          "status": 1
+        },
+        "appinvite_service": {
+          "status": 1,
+          "other_platform_oauth_client": []
+        },
+        "ads_service": {
+          "status": 2
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

@@ -1,0 +1,60 @@
+<resources>
+
+    <!-- Base application theme. -->
+    <style name="AppTheme" parent="Theme.AppCompat.Light.DarkActionBar">
+        <item name="colorPrimary">@color/colorPrimary</item>
+        <item name="colorPrimaryDark">@color/colorDarkGray</item>
+        <item name="colorAccent">@color/colorAccent</item>
+    </style>
+
+    <style name="CostumeBar" parent="Theme.AppCompat.Light.NoActionBar">
+        <item name="android:activatedBackgroundIndicator">@drawable/drawer_item_color</item>
+        <item name="colorPrimary">@color/colorKindBlue</item>
+        <item name="colorPrimaryDark">@color/colorDarkGray</item>
+        <item name="colorAccent">@color/colorAccent</item>
+    </style>
+
+    <style name="expandedToolbarTitlePositive">
+        <item name="android:textSize">40sp</item>
+        <item name="android:textColor">@color/colorGreen</item>
+        <item name="android:textStyle">bold</item>
+    </style>
+    <style name="collapsedToolbarTitlePositive">
+        <item name="android:textSize">20sp</item>
+        <item name="android:textColor">@color/colorGreen</item>
+    </style>
+
+    <style name="expandedToolbarTitleZero">
+        <item name="android:textSize">40sp</item>
+        <item name="android:textColor">@color/colorWhite</item>
+        <item name="android:textStyle">bold</item>
+    </style>
+    <style name="collapsedToolbarTitleZero">
+        <item name="android:textSize">20sp</item>
+        <item name="android:textColor">@color/colorWhite</item>
+    </style>
+
+    <style name="expandedToolbarTitleNegative">
+        <item name="android:textSize">40sp</item>
+        <item name="android:textColor">@color/colorRed</item>
+        <item name="android:textStyle">bold</item>
+    </style>
+    <style name="collapsedToolbarTitleNegative">
+        <item name="android:textSize">20sp</item>
+        <item name="android:textColor">@color/colorRed</item>
+    </style>
+
+    <style name="moneyShekelIconPositive">
+        <item name="android:textColor">@color/colorGreen</item>
+    </style>
+
+    <style name="moneyShekelIconNegative">
+        <item name="android:text">nati</item>
+        <item name="android:textColor">@color/colorRed</item>
+    </style>
+
+    <style name="CustomDialog" >
+        <item name="android:windowBackground">@drawable/custom_dialog_background</item>
+    </style>
+
+</resources>

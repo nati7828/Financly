@@ -1,0 +1,89 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="wrap_content" android:layout_height="wrap_content"
+    android:padding="16dp"
+    android:background="@color/colorDarkGray">
+
+    <TextView
+        android:id="@+id/comment_dialog_title"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/details"
+        android:textSize="22sp"
+        android:textStyle="bold"
+        android:textColor="@color/colorBlue"
+        android:layout_alignParentTop="true"/>
+
+    <TextView
+        android:layout_marginTop="5dp"
+        android:id="@+id/comment_dialog_message"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/dialog_message"
+        android:textSize="18sp"
+        android:textColor="@color/colorWhite"
+        android:layout_below="@id/comment_dialog_title"/>
+
+    <Spinner
+        android:layout_marginTop="15dp"
+        android:spinnerMode="dropdown"
+        android:layout_width="200dp"
+        android:layout_height="wrap_content"
+        android:id="@+id/comment_dialog_spinner"
+        android:layout_alignParentStart="true"
+        android:layout_below="@id/comment_dialog_message"
+        />
+
+    <EditText
+        android:layout_marginTop="15dp"
+        android:inputType="textFilter"
+        android:maxLength="20"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:textColor="@color/colorWhite"
+        android:textColorHint="@color/colorHint"
+        android:hint="@string/editTextDescribe"
+        android:id="@+id/comment_dialog__comment_et"
+        android:layout_below="@+id/comment_dialog_spinner"
+        android:layout_alignParentStart="true"
+        />
+
+    <TextView
+        android:layout_width="60dp"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/comment_dialog__comment_et"
+        android:layout_alignParentStart="true"
+        android:text="0/20"
+        android:textColor="@color/colorBlue"
+        android:id="@+id/comment_dialog_counter_tv"
+        tools:ignore="HardcodedText" />
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentEnd="true"
+        android:layout_below="@id/comment_dialog_counter_tv"
+        android:layout_marginTop="40dp"
+        android:layout_marginEnd="60dp"
+        android:text="@string/cancel"
+        android:textColor="@drawable/category_comment_text_color_selector"
+        android:textSize="18sp"
+        android:id="@+id/comment_dialog_cancelBtn"
+        />
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentEnd="true"
+        android:layout_marginTop="40dp"
+        android:layout_marginEnd="5dp"
+        android:layout_below="@id/comment_dialog_counter_tv"
+        android:text="@string/OK"
+        android:textColor="@drawable/category_comment_text_color_selector"
+        android:textSize="18sp"
+        android:id="@+id/comment_dialog_okBtn"
+        />
+
+
+</RelativeLayout>

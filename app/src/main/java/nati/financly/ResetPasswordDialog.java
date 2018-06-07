@@ -16,8 +16,6 @@ import com.google.firebase.auth.FirebaseAuth;
 public class ResetPasswordDialog extends AppCompatDialogFragment {
 
     private Context context;
-    private FirebaseAuth.AuthStateListener authStateListener;
-
     @NonNull
     @Override
     public Dialog onCreateDialog(Bundle savedInstanceState) {

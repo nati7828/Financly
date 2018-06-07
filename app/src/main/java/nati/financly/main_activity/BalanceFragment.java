@@ -45,7 +45,7 @@ import java.util.Locale;
 import nati.financly.ItemView;
 import nati.financly.R;
 
-public class BalanceMainFragment extends Fragment {
+public class BalanceFragment extends Fragment {
 
     private FirebaseAuth.AuthStateListener mAuthListener;
     private DatabaseReference myRef;
@@ -63,7 +63,7 @@ public class BalanceMainFragment extends Fragment {
 
     FloatingActionButton fab;
 
-    public BalanceMainFragment() {
+    public BalanceFragment() {
         //Empty constructor
     }
 
@@ -196,7 +196,7 @@ public class BalanceMainFragment extends Fragment {
 
             @Override
             public void onCancelled(DatabaseError databaseError) {
-                Toast.makeText(getActivity(), "Canceled", Toast.LENGTH_SHORT).show();
+                Toast.makeText(getActivity(), R.string.cancel, Toast.LENGTH_SHORT).show();
             }
         });
 

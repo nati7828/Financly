@@ -13,11 +13,11 @@ import java.util.Calendar;
 
 public class DatePickerFragment extends DialogFragment implements DatePickerDialog.OnDateSetListener {
 
-    BalanceMainFragment balanceMainFragment;
+    BalanceFragment balanceFragment;
     @NonNull
     @Override
     public Dialog onCreateDialog(Bundle savedInstanceState) {
-        balanceMainFragment = new BalanceMainFragment();
+        balanceFragment = new BalanceFragment();
         // Use the current date as the default date in the picker
         final Calendar c = Calendar.getInstance();
         int year = c.get(Calendar.YEAR);
@@ -34,6 +34,6 @@ public class DatePickerFragment extends DialogFragment implements DatePickerDial
         String date = year + "/" + month + "/" + day;
         Bundle args = new Bundle();
         args.putString("date", date);
-        balanceMainFragment.setArguments(args);
+        balanceFragment.setArguments(args);
     }
 }

@@ -6,6 +6,9 @@ import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.v7.app.AppCompatActivity;
+import android.text.Spannable;
+import android.text.SpannableString;
+import android.text.style.ForegroundColorSpan;
 import android.util.Log;
 import android.view.View;
 import android.view.animation.Animation;
@@ -32,6 +35,7 @@ public class LoginActivity extends AppCompatActivity {
     private EditText et_email;
     private ProgressBar progressBar;
 
+
     boolean isEmailVerified;//boolean to check if user already exists.
 
     Button loginBtn;
@@ -48,6 +52,12 @@ public class LoginActivity extends AppCompatActivity {
         loginBtn = findViewById(R.id.login_login_btn);
         et_password = findViewById(R.id.login_password_et);
         et_email = findViewById(R.id.login_email_et);
+
+        Button toRegisterPageBtn = findViewById(R.id.login_register_btn);
+
+        Spannable darkerText = new SpannableString(toRegisterPageBtn.getText().toString());
+        darkerText.setSpan(new ForegroundColorSpan(getResources().getColor(R.color.colorHint)), 22, toRegisterPageBtn.length(), Spannable.SPAN_INCLUSIVE_EXCLUSIVE);
+        toRegisterPageBtn.setText(darkerText);
 
         //Save the email on the phone, and show it on start.
         SharedPreferences preferences = getSharedPreferences("MyPrefs", MODE_PRIVATE);

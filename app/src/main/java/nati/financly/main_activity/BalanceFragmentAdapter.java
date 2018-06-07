@@ -185,7 +185,6 @@ public class BalanceFragmentAdapter extends RecyclerView.Adapter<BalanceFragment
                             listener.onEditClick(position);
                             return true;
                         case 2:
-                            Toast.makeText(context,"chewcking" + position,Toast.LENGTH_SHORT).show();
                             listener.onDeleteClick(position);
                             return true;
                     }

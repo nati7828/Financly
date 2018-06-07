@@ -92,7 +92,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         }
 
         if (savedInstanceState == null) {
-            getSupportFragmentManager().beginTransaction().add(R.id.fragment_container, new BalanceMainFragment()).commit();
+            getSupportFragmentManager().beginTransaction().add(R.id.fragment_container, new BalanceFragment()).commit();
             navigationView.setCheckedItem(R.id.nav_balance);//Show that we are on the balance page - highlight the message item.
         }
 
@@ -129,7 +129,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
                 if (getSupportActionBar() != null) {
                     getSupportActionBar().hide();
                 }
-                getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container, new BalanceMainFragment(), "balance_fragment").commit();
+                getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container, new BalanceFragment(), "balance_fragment").commit();
                 break;
             case R.id.nav_details:
                 getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container, new UserDetailsFragment()).commit();

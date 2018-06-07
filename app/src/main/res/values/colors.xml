@@ -12,10 +12,9 @@
     <color name="colorKindBlue">#4473ae</color>
     <color name="colorDarkBlue">#204262</color>
     <color name="colorBlue">#4baed5</color>
-    <color name="colorBlue2">#67cdf5</color>
-    <color name="colorLightBlue">#78d9ff</color>
     <color name="colorWhite">#ffffff</color>
     <color name="colorHint">#f1f1f1</color>
+    <color name="colorHint2">#c3c3c3</color>
     <color name="colorGreen">#32ab2e</color>
     <color name="colorRed">#fae84b46</color>
 

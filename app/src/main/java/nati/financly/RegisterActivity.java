@@ -1,13 +1,11 @@
 package nati.financly;
 
-import android.graphics.Color;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.v7.app.AppCompatActivity;
 import android.text.Spannable;
 import android.text.SpannableString;
 import android.text.style.ForegroundColorSpan;
-import android.util.Log;
 import android.view.View;
 import android.view.animation.Animation;
 import android.view.animation.TranslateAnimation;
@@ -52,11 +50,8 @@ public class RegisterActivity extends AppCompatActivity {
 
         signUp = findViewById(R.id.signin_register_btn);
         Spannable darkerText = new SpannableString(signUp.getText().toString());
-        Log.d("####",darkerText + "..");
-        darkerText.setSpan(new ForegroundColorSpan(Color.RED), 0, 6, Spannable.SPAN_INCLUSIVE_EXCLUSIVE);
-        String dark = String.valueOf(darkerText);
-        Log.d("#",dark + "..");
-        signUp.setText(dark);
+        darkerText.setSpan(new ForegroundColorSpan(getResources().getColor(R.color.colorHint)), 21, signUp.length(), Spannable.SPAN_INCLUSIVE_EXCLUSIVE);
+        signUp.setText(darkerText);
 
         progressBar = findViewById(R.id.register_progress_bar);
         firebaseAuth = FirebaseAuth.getInstance();

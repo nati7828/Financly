@@ -1,11 +1,17 @@
 package nati.financly;
 
+import android.graphics.Color;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.v7.app.AppCompatActivity;
+import android.text.Spannable;
+import android.text.SpannableString;
+import android.text.style.ForegroundColorSpan;
+import android.util.Log;
 import android.view.View;
 import android.view.animation.Animation;
 import android.view.animation.TranslateAnimation;
+import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ProgressBar;
 import android.widget.Toast;
@@ -29,9 +35,11 @@ public class RegisterActivity extends AppCompatActivity {
     private EditText user_validatePass;
     private EditText user_email;
     private ProgressBar progressBar;
+    private Button signUp;
 
     ItemView itemView;
     User user;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -41,6 +49,14 @@ public class RegisterActivity extends AppCompatActivity {
         user_pass = findViewById(R.id.register_pass_et);
         user_validatePass = findViewById(R.id.register_pass_validate_et);
         user_email = findViewById(R.id.register_email_et);
+
+        signUp = findViewById(R.id.signin_register_btn);
+        Spannable darkerText = new SpannableString(signUp.getText().toString());
+        Log.d("####",darkerText + "..");
+        darkerText.setSpan(new ForegroundColorSpan(Color.RED), 0, 6, Spannable.SPAN_INCLUSIVE_EXCLUSIVE);
+        String dark = String.valueOf(darkerText);
+        Log.d("#",dark + "..");
+        signUp.setText(dark);
 
         progressBar = findViewById(R.id.register_progress_bar);
         firebaseAuth = FirebaseAuth.getInstance();
@@ -89,40 +105,34 @@ public class RegisterActivity extends AppCompatActivity {
                     if (task.isSuccessful()) {
                         progressBar.setVisibility(View.VISIBLE);
                         firebaseUser = firebaseAuth.getCurrentUser();//get current user.
+
+                        user.setName(user_name.getText().toString());//input of the user.
+                        user.setEmail(user_email.getText().toString());//another input of the user.
+
+                        String userId = firebaseUser.getUid();//get the userId from firebase.
+                        DBUser.child(userId).setValue(user); // set each user with his own details.
+
                         //Check if the user is created successfully, and send him email verification.
-                        if (firebaseUser != null) {
-                            user.setName(user_name.getText().toString());//input of the user.
-                            user.setEmail(user_email.getText().toString());//another input of the user.
-
-                            //itemView.setName(user_name.getText().toString());//input of the user.
-                            //itemView.setEmail(user_email.getText().toString());//another input of the user.
-                            String userId = firebaseUser.getUid();//get the userId from firebase.
-                            DBUser.child(userId).setValue(user); // set each user with his own details.
-
-                            firebaseUser.sendEmailVerification().addOnCompleteListener(new OnCompleteListener<Void>() {
-                                @Override
-                                public void onComplete(@NonNull Task<Void> task) {
-                                    if (task.isSuccessful()) {
-                                        Toast.makeText(RegisterActivity.this, "היכנס לאימייל שלך על מנת לבצע אימות", Toast.LENGTH_SHORT).show();
-                                        firebaseAuth.signOut();
-                                    } else {
-                                        Toast.makeText(RegisterActivity.this, "נדרש מייל אימות,אנא נסה שנית", Toast.LENGTH_SHORT).show();
-                                    }
+                        firebaseUser.sendEmailVerification().addOnCompleteListener(new OnCompleteListener<Void>() {
+                            @Override
+                            public void onComplete(@NonNull Task<Void> task) {
+                                if (task.isSuccessful()) {
+                                    Toast.makeText(RegisterActivity.this, "היכנס לאימייל שלך על מנת לבצע אימות", Toast.LENGTH_LONG).show();
+                                    firebaseAuth.signOut();
+                                } else {
+                                    Toast.makeText(RegisterActivity.this, "נדרש מייל אימות,אנא נסה שנית", Toast.LENGTH_SHORT).show();
                                 }
-                            });
-                        } else {
-                            Toast.makeText(RegisterActivity.this, "ישנה תקלה, נסה שנית", Toast.LENGTH_SHORT).show();
-                        }
-
+                            }
+                        });
                         finish();
                     } else {
-                        Toast.makeText(RegisterActivity.this, "יצירת המשתמש לא בוצעה בהצלחה,אנא נסה שנית", Toast.LENGTH_SHORT).show();
+                        Toast.makeText(RegisterActivity.this, "יצירת המשתמש לא בוצעה בהצלחה,בדוק את הפרטים שהזנת ונסה שנית", Toast.LENGTH_SHORT).show();
                     }
                 }
             });
         }
     }
-    ////
+    //end of sign up function(via button)//
     //sign_in(btn) function//
     public void AlreadyHaveUser(View view) {
         finish();

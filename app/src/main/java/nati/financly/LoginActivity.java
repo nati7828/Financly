@@ -32,7 +32,7 @@ public class LoginActivity extends AppCompatActivity {
     private EditText et_email;
     private ProgressBar progressBar;
 
-    boolean isEmailVerified;
+    boolean isEmailVerified;//boolean to check if user already exists.
 
     Button loginBtn;
     int loginBtnCount;
@@ -43,13 +43,13 @@ public class LoginActivity extends AppCompatActivity {
         setContentView(R.layout.activity_login);
 
         isEmailVerified = false;
-        ////
+
         progressBar = findViewById(R.id.login_progress_bar);
         loginBtn = findViewById(R.id.login_login_btn);
         et_password = findViewById(R.id.login_password_et);
         et_email = findViewById(R.id.login_email_et);
-        ////
 
+        //Save the email on the phone, and show it on start.
         SharedPreferences preferences = getSharedPreferences("MyPrefs", MODE_PRIVATE);
         String email = preferences.getString("email", "");
         et_email.setText(email);
@@ -64,11 +64,7 @@ public class LoginActivity extends AppCompatActivity {
             public void onAuthStateChanged(@NonNull FirebaseAuth firebaseAuth) {
                 user = firebaseAuth.getCurrentUser();
                 if (user != null) {
-                    if (user.isEmailVerified()) {
-                        isEmailVerified = true;
-                    } else {
-                        isEmailVerified = false;
-                    }
+                    isEmailVerified = user.isEmailVerified();
                 }
             }
         };
@@ -102,7 +98,6 @@ public class LoginActivity extends AppCompatActivity {
             dialog.setArguments(bundle);
             dialog.show(getSupportFragmentManager(), "dialog");
         } else {
-
             final Animation animation = new TranslateAnimation(Animation.ABSOLUTE, -50, Animation.ABSOLUTE, 0);
             animation.setDuration(80);
             et_email.startAnimation(animation);
@@ -149,8 +144,7 @@ public class LoginActivity extends AppCompatActivity {
 
                             Intent intent = new Intent(LoginActivity.this, MainActivity.class);
                             startActivity(intent);
-                        } else {
-                            if (firebaseAuth.getCurrentUser() != null) {
+                        } else if (firebaseAuth.getCurrentUser() != null) {
                                 loginBtnCount = 0;
                                 progressBar.setVisibility(View.INVISIBLE);
                                 view.setClickable(true);
@@ -161,7 +155,6 @@ public class LoginActivity extends AppCompatActivity {
                                     et_password.startAnimation(animation);
                                     Toast.makeText(LoginActivity.this, "הסיסמא שגויה", Toast.LENGTH_SHORT).show();
                                 }
-                            }
                         }
 
                     } else {

@@ -84,7 +84,8 @@
     <string name="Logout">התנתק</string>
     <string name="search">חפש</string>
     <string name="exit">exit</string>
-    <string name="user_icon">user_icon</string>
-    <string name="home">home</string>
+    <string name="user_icon">אייקון</string>
+    <string name="home">בית</string>
+    <string name="RegisterTitle">הרשמה</string>
 
 </resources>

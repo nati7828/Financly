@@ -56,7 +56,7 @@ public class BalanceMainFragment extends Fragment {
     private ArrayList<ItemView> rvItems;
 
     private CollapsingToolbarLayout collapsingToolbarLayout;
-    TextView emptyScreenTv, moneyTv;
+    TextView emptyScreenTv;
     EditText search_et;
     ImageButton searchBtn, exitBtn;
     NestedScrollView nestedScrollView;
@@ -433,7 +433,6 @@ public class BalanceMainFragment extends Fragment {
         spannedMoney.setSpan(new RelativeSizeSpan(0.85f), 0, 1, Spannable.SPAN_INCLUSIVE_EXCLUSIVE);
         spannedMoney.setSpan(new StyleSpan(Typeface.NORMAL), 0, 3, Spannable.SPAN_INCLUSIVE_EXCLUSIVE);
         collapsingToolbarLayout.setTitle(spannedMoney + "");
-        //moneyTv.setText(spannedMoney);
         adapter.notifyDataSetChanged();
 
         //In case the list is empty(no incomes/expanses) show text

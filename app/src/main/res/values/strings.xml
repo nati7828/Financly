@@ -11,7 +11,7 @@
     <string name="pass">Password</string>
     <string name="pass_validate">Confirm Password</string>
     <string name="email">Email</string>
-    <string name="sign_in">Sign in</string>
+    <string name="sign_in">Sign up</string>
     <string name="have_user_so_sign_in">Have a user already? Login here</string>
     <string name="app_background_img">Background picture</string>
     <string name="icon">Icon</string>
@@ -90,6 +90,7 @@
     <string name="exit">exit</string>
     <string name="user_icon">user_icon</string>
     <string name="home">home</string>
+    <string name="RegisterTitle">Register</string>
 
 
 </resources>

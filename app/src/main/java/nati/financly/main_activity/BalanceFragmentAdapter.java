@@ -18,7 +18,6 @@ import android.view.animation.Animation;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import java.util.ArrayList;
 import java.util.Locale;
@@ -134,20 +133,6 @@ public class BalanceFragmentAdapter extends RecyclerView.Adapter<BalanceFragment
             userComment = itemView.findViewById(R.id.main_rv_category_details);
             rvItemDate = itemView.findViewById(R.id.main_rv_date);
             rvItemMoneyLabel = itemView.findViewById(R.id.main_rv_money_text);
-            //short click, works fine//
-//            itemView.setOnClickListener(new View.OnClickListener() {
-//                @Override
-//                public void onClick(View view) {
-//                    if (listener != null) {
-//                        int pos = getAdapterPosition();
-////                        Log.d("*** position number ", pos + "");
-//                        if (pos != RecyclerView.NO_POSITION) {
-//                            listener.onItemClick(pos);
-//                        }
-//                    }
-//                }
-//            });
-
 
             itemView.setOnClickListener(this);
             itemView.setOnCreateContextMenuListener(this);
@@ -172,6 +157,7 @@ public class BalanceFragmentAdapter extends RecyclerView.Adapter<BalanceFragment
 
             edit.setOnMenuItemClickListener(this);
             delete.setOnMenuItemClickListener(this);
+
         }
 
         @Override

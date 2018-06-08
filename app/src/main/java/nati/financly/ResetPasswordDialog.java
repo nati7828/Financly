@@ -1,7 +1,6 @@
 package nati.financly;
 
 import android.app.Dialog;
-import android.content.Context;
 import android.content.DialogInterface;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
@@ -15,14 +14,11 @@ import com.google.firebase.auth.FirebaseAuth;
 
 public class ResetPasswordDialog extends AppCompatDialogFragment {
 
-    private Context context;
     @NonNull
     @Override
     public Dialog onCreateDialog(Bundle savedInstanceState) {
 
-        context = getContext();
-
-        AlertDialog.Builder builder = new AlertDialog.Builder(getActivity(), android.R.style.Theme_Holo_Dialog_NoActionBar_MinWidth);
+        AlertDialog.Builder builder = new AlertDialog.Builder(getActivity(), R.style.dialog);
         builder.setTitle(R.string.dialog_reset_title)
                 .setMessage(R.string.dialog_reset_message);
 
@@ -41,16 +37,15 @@ public class ResetPasswordDialog extends AppCompatDialogFragment {
                                 @Override
                                 public void onComplete(@NonNull Task<Void> task) {
                                     if (task.isSuccessful()) {
-                                        Toast.makeText(context, R.string.email_sent, Toast.LENGTH_LONG).show();
+                                        Toast.makeText(getActivity(), R.string.email_sent, Toast.LENGTH_LONG).show();
                                     } else {
-                                        Toast.makeText(context, R.string.email_was_not_sent_successfully, Toast.LENGTH_LONG).show();
+                                        Toast.makeText(getActivity(), R.string.email_was_not_sent_successfully, Toast.LENGTH_LONG).show();
                                     }
                                 }
                             });
                 } else {
-                    Toast.makeText(context, R.string.email_text_is_empty, Toast.LENGTH_LONG).show();
+                    Toast.makeText(getActivity(), R.string.email_text_is_empty, Toast.LENGTH_LONG).show();
                 }
-
             }
         });
 

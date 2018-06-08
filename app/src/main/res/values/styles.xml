@@ -7,10 +7,35 @@
         <item name="colorAccent">@color/colorAccent</item>
     </style>
 
-    <style name="CostumeBar" parent="Theme.AppCompat.Light.NoActionBar">
+    <style name="CostumeToolBar" parent="Theme.AppCompat.Light.NoActionBar">
         <item name="colorPrimary">@color/colorPrimary</item>
         <item name="colorPrimaryDark">@color/colorDarkGray</item>
         <item name="colorAccent">@color/colorAccent</item>
+    </style>
+
+    <style name="dialog" parent="Theme.AppCompat.Dialog.MinWidth">
+        <item name="colorPrimary">@color/colorPrimary</item>
+        <item name="colorPrimaryDark">@color/colorDarkGray</item>
+        <item name="colorAccent">@color/colorAccent</item>
+        <item name="android:textColor">@color/colorAccent</item>
+        <item name="android:background">@color/colorVeryDarkGray</item>
+    </style>
+
+    <style name="date_dialog" parent="Theme.AppCompat.Light.Dialog.Alert">
+        <item name="colorControlNormal">@android:color/white</item>
+        <item name="colorControlActivated">@color/colorBlue</item>
+        <item name="textColorAlertDialogListItem">@color/colorWhite</item>
+        <item name="colorAccent">@color/colorAccent</item>
+        <item name="android:textColorPrimary">@color/colorHint</item>
+    </style>
+
+    <style name="time_dialog" parent="Theme.AppCompat.Light.Dialog.Alert">
+        <item name="colorControlNormal">@android:color/white</item>
+        <item name="colorControlActivated">@color/colorBlue</item>
+        <item name="textColorAlertDialogListItem">@color/colorWhite</item>
+        <item name="colorAccent">@color/colorAccent</item>
+        <item name="android:textColorPrimary">@color/colorVeryDarkGray</item>
+        <item name="android:textColorSecondary">@color/colorDarkGray</item>
     </style>
 
     <style name="expandedToolbarTitlePositive">
@@ -50,10 +75,6 @@
     <style name="moneyShekelIconNegative">
         <item name="android:text">nati</item>
         <item name="android:textColor">@color/colorRed</item>
-    </style>
-
-    <style name="CustomDialog" >
-        <item name="android:windowBackground">@drawable/custom_dialog_background</item>
     </style>
 
 </resources>

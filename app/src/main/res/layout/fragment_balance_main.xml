@@ -6,7 +6,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:fitsSystemWindows="true"
-    tools:context=".main_activity.BalanceMainFragment">
+    tools:context=".main_activity.BalanceFragment">
 
     <android.support.design.widget.CoordinatorLayout
         android:id="@+id/coordinator"
@@ -30,7 +30,7 @@
                 android:fitsSystemWindows="true"
                 app:collapsedTitleGravity="left"
                 app:collapsedTitleTextAppearance="@android:color/transparent"
-                app:contentScrim="@color/colorToolBar"
+                app:contentScrim="@color/colorPrimary"
                 app:expandedTitleGravity="left|bottom"
                 app:expandedTitleTextAppearance="@android:color/transparent"
                 app:layout_scrollFlags="scroll|exitUntilCollapsed"

@@ -85,11 +85,13 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         });
 
         toolbar = findViewById(R.id.main_toolbar);
-        //Setting the costume tool bar of the activity
+
         setSupportActionBar(toolbar);
         if (getSupportActionBar() != null) {
             getSupportActionBar().hide(); // Hiding the activity costume toolbar because the first page is fragment with it's own costume toolbar.
         }
+        //Setting the costume tool bar of the activity
+
 
         if (savedInstanceState == null) {
             getSupportFragmentManager().beginTransaction().add(R.id.fragment_container, new BalanceFragment()).commit();

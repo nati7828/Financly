@@ -17,7 +17,7 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name=".main_activity.MainActivity" android:theme="@style/CostumeBar">
+        <activity android:name=".main_activity.MainActivity" android:theme="@style/CostumeToolBar">
 
         </activity>
         <activity android:name=".RegisterActivity" />

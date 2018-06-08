@@ -5,7 +5,6 @@ import android.app.DatePickerDialog;
 import android.app.Dialog;
 import android.app.TimePickerDialog;
 import android.content.DialogInterface;
-import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
@@ -41,7 +40,6 @@ public class PopUpDialogAddLine extends DialogFragment implements PassDataBetwee
     private DatePickerDialog.OnDateSetListener dateListener;
     private TimePickerDialog.OnTimeSetListener timeListener;
 
-    String h = "..";
     BalanceFragmentAdapter adapter;
     DatabaseReference userRef;
     String date_time;
@@ -52,17 +50,11 @@ public class PopUpDialogAddLine extends DialogFragment implements PassDataBetwee
     private TextView popupCategoryName;
     private TextView popupUserComment;
 
-    @Override
-    public void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        setStyle(DialogFragment.STYLE_NORMAL, R.style.CustomDialog);
-    }
-
     @NonNull
     @Override
     public Dialog onCreateDialog(Bundle savedInstanceState) {
 
-        final AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
+        final AlertDialog.Builder builder = new AlertDialog.Builder(getActivity(),R.style.dialog);
         final LayoutInflater inflater = getActivity().getLayoutInflater();
         final View view = inflater.inflate(R.layout.dialog_add_line, null, false);
         builder.setView(view);
@@ -77,6 +69,7 @@ public class PopUpDialogAddLine extends DialogFragment implements PassDataBetwee
         if (popupUserComment.getText().toString().equals("")) {
             popupUserComment.setVisibility(View.INVISIBLE);
         }
+
         popupDismiss.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -87,7 +80,6 @@ public class PopUpDialogAddLine extends DialogFragment implements PassDataBetwee
         //Click the add new line button - add the content to the database//
         popupEnter.setOnClickListener(new View.OnClickListener() {
             public void onClick(View view) {
-
                 String key = userRef.push().getKey();
                 String dtStart = popupDate.getText().toString();
                 String stampDate = "";
@@ -213,12 +205,12 @@ public class PopUpDialogAddLine extends DialogFragment implements PassDataBetwee
                 int minute = cal.get(Calendar.MINUTE);
 
                 dateDialog = new DatePickerDialog(getActivity(),
-                        android.R.style.Theme_Holo_Dialog,
+                        R.style.date_dialog,
                         dateListener,
                         year, month, day);
 
                 if (dateDialog.getWindow() != null) {
-                    dateDialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
+                    dateDialog.getWindow().setBackgroundDrawable(new ColorDrawable(getResources().getColor(R.color.colorDarkGray)));
                 }
 
                 dateDialog.setButton(DialogInterface.BUTTON_NEGATIVE, getString(R.string.cancel), new DialogInterface.OnClickListener() {
@@ -228,15 +220,16 @@ public class PopUpDialogAddLine extends DialogFragment implements PassDataBetwee
                         }
                     }
                 });
+
                 dateDialog.show(); // when clicking the date TextView, the date dialog will be shown.
 
                 timeDialog = new TimePickerDialog(getActivity(),
-                        android.R.style.Theme_Holo_Dialog,
+                        R.style.time_dialog,
                         timeListener,
                         hour, minute, android.text.format.DateFormat.is24HourFormat(getActivity()));
 
                 if (timeDialog.getWindow() != null) {
-                    timeDialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
+                    timeDialog.getWindow().setBackgroundDrawable(new ColorDrawable(getResources().getColor(R.color.colorDarkGray)));
                 }
 
                 timeDialog.setButton(DialogInterface.BUTTON_NEGATIVE, getString(R.string.cancel), new DialogInterface.OnClickListener() {
@@ -262,7 +255,6 @@ public class PopUpDialogAddLine extends DialogFragment implements PassDataBetwee
                 } else {
                     date_time = day + "/" + month + "/" + year;
                 }
-                //date_time = day + "/" + month + "/" + year;
                 timeDialog.show();
             }
         };
@@ -284,7 +276,6 @@ public class PopUpDialogAddLine extends DialogFragment implements PassDataBetwee
                 }
                 popupDate.setText(date_time);
                 getDialog().show();
-                //dismiss();
             }
         };
 
@@ -313,7 +304,6 @@ public class PopUpDialogAddLine extends DialogFragment implements PassDataBetwee
         return builder.create();
     }
 
-
     //TRYING TO SET ON CLICK LISTENER ON COMMENT TEXT
 //    @Override
 //    public void onResume() {
@@ -339,7 +329,6 @@ public class PopUpDialogAddLine extends DialogFragment implements PassDataBetwee
     public void passCategoryAndComment(String category, String comment) {
         popupCategoryName.setText(category);
         popupUserComment.setText(comment);
-
         if (!comment.equals("")) {
             popupUserComment.setVisibility(View.VISIBLE);
         } else {

@@ -22,6 +22,8 @@ import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 
+import java.util.Locale;
+
 public class RegisterActivity extends AppCompatActivity {
     FirebaseDatabase database = FirebaseDatabase.getInstance();
     DatabaseReference DBUser = database.getReference("Users");
@@ -50,7 +52,11 @@ public class RegisterActivity extends AppCompatActivity {
 
         signUp = findViewById(R.id.signin_register_btn);
         Spannable darkerText = new SpannableString(signUp.getText().toString());
-        darkerText.setSpan(new ForegroundColorSpan(getResources().getColor(R.color.colorHint)), 21, signUp.length(), Spannable.SPAN_INCLUSIVE_EXCLUSIVE);
+        if (Locale.getDefault().getDisplayLanguage().equals("English")){
+            darkerText.setSpan(new ForegroundColorSpan(getResources().getColor(R.color.colorHint)), 21, signUp.length(), Spannable.SPAN_INCLUSIVE_EXCLUSIVE);
+        }else{
+            darkerText.setSpan(new ForegroundColorSpan(getResources().getColor(R.color.colorHint)), 17, signUp.length(), Spannable.SPAN_INCLUSIVE_EXCLUSIVE);
+        }
         signUp.setText(darkerText);
 
         progressBar = findViewById(R.id.register_progress_bar);

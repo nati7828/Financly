@@ -24,6 +24,8 @@ import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 
+import java.util.Locale;
+
 import nati.financly.main_activity.MainActivity;
 
 public class LoginActivity extends AppCompatActivity {
@@ -53,10 +55,17 @@ public class LoginActivity extends AppCompatActivity {
         et_password = findViewById(R.id.login_password_et);
         et_email = findViewById(R.id.login_email_et);
 
+
         Button toRegisterPageBtn = findViewById(R.id.login_register_btn);
 
         Spannable darkerText = new SpannableString(toRegisterPageBtn.getText().toString());
-        darkerText.setSpan(new ForegroundColorSpan(getResources().getColor(R.color.colorHint)), 23, toRegisterPageBtn.length(), Spannable.SPAN_INCLUSIVE_EXCLUSIVE);
+
+        if (Locale.getDefault().getDisplayLanguage().equals("English")){
+            darkerText.setSpan(new ForegroundColorSpan(getResources().getColor(R.color.colorHint)), 23, toRegisterPageBtn.length(), Spannable.SPAN_INCLUSIVE_EXCLUSIVE);
+        }else{
+            Toast.makeText(getApplicationContext(),"in else.. not english",Toast.LENGTH_SHORT).show();
+            darkerText.setSpan(new ForegroundColorSpan(getResources().getColor(R.color.colorHint)), 20, toRegisterPageBtn.length(), Spannable.SPAN_INCLUSIVE_EXCLUSIVE);
+        }
         toRegisterPageBtn.setText(darkerText);
 
         //Save the email on the phone, and show it on start.

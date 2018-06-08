@@ -20,7 +20,6 @@
                 android:useLevel="false">
                 <gradient
                     android:startColor="@color/colorAccent"
-                    android:centerColor="@color/colorAccent2"
                     android:endColor="@color/colorHint"
 
                     android:angle="0"

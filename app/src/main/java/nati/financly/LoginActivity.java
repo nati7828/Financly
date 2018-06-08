@@ -56,7 +56,7 @@ public class LoginActivity extends AppCompatActivity {
         Button toRegisterPageBtn = findViewById(R.id.login_register_btn);
 
         Spannable darkerText = new SpannableString(toRegisterPageBtn.getText().toString());
-        darkerText.setSpan(new ForegroundColorSpan(getResources().getColor(R.color.colorHint)), 22, toRegisterPageBtn.length(), Spannable.SPAN_INCLUSIVE_EXCLUSIVE);
+        darkerText.setSpan(new ForegroundColorSpan(getResources().getColor(R.color.colorHint)), 23, toRegisterPageBtn.length(), Spannable.SPAN_INCLUSIVE_EXCLUSIVE);
         toRegisterPageBtn.setText(darkerText);
 
         //Save the email on the phone, and show it on start.

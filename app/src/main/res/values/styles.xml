@@ -8,8 +8,7 @@
     </style>
 
     <style name="CostumeBar" parent="Theme.AppCompat.Light.NoActionBar">
-        <item name="android:activatedBackgroundIndicator">@drawable/drawer_item_color</item>
-        <item name="colorPrimary">@color/colorKindBlue</item>
+        <item name="colorPrimary">@color/colorPrimary</item>
         <item name="colorPrimaryDark">@color/colorDarkGray</item>
         <item name="colorAccent">@color/colorAccent</item>
     </style>

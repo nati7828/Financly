@@ -24,6 +24,8 @@ import com.google.firebase.database.FirebaseDatabase;
 
 import java.util.Locale;
 
+import nati.financly.main_activity.ItemView;
+
 public class RegisterActivity extends AppCompatActivity {
     FirebaseDatabase database = FirebaseDatabase.getInstance();
     DatabaseReference DBUser = database.getReference("Users");

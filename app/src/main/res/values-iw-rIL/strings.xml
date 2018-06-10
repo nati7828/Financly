@@ -1,19 +1,16 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <string name="app_name">פיננסלי</string>
-    <string name="userName"> שם משתמש</string>
+    <string name="name">שם</string>
     <string name="password"> סיסמא</string>
     <string name="login_title">התחברות</string>
     <string name="login">התחבר</string>
     <string name="register">אין לך משתמש עדיין? הירשם כאן</string>
-    <string name="forgot_username_or_password">שכחתי שם משתמש/סיסמא</string>
-    <string name="name">שם</string>
-    <string name="pass">סיסמא</string>
+    <string name="forgot_username_or_password">שכחתי את הסיסמא</string>
     <string name="pass_validate">אישור סיסמא</string>
     <string name="email">אימייל</string>
-    <string name="sign_in">הירשם</string>
+    <string name="sign_up">הירשם</string>
     <string name="have_user_so_sign_in">יש לך כבר משתמש? התחבר כאן</string>
-    <string name="app_background_img">תמונת רקע</string>
     <string name="icon">אייקון</string>
     <string name="category_name">שם קטגוריה</string>
     <string name="OpenDrawer">Open</string>
@@ -23,32 +20,30 @@
     <string name="OK">אישור</string>
 
     <string name="dialog_reset_title">שחזור סיסמא</string>
-    <string name="dialog_reset_message">לחץ אישור כדי לקבל לינק שחזור למייל שלך</string>
-    <string name="dialog_reset_cancel">ביטול</string>
-    <string name="dialog_reset_ok">אישור</string>
-    <string name="email_sent">לינק לשחזור סיסמא נשלח לכתובת המייל שלך</string>
+    <string name="dialog_reset_message">לחץ אישור כדי לקבל לינק שחזור סיסמא למייל שלך</string>
+
+    <string name="email_sent">לינק לשיחזור  הסיסמא נשלח כעת למייל שלך</string>
     <string name="email_was_not_sent_successfully">המייל לא נשלח בהצלחה, אנא בדוק את כתובת המייל שהזנת ונסה שנית</string>
     <string name="email_text_is_empty">תיבת הטקסט ריקה, אנא הכנס את כתובת המייל הנכונה שלך ונסה שנית</string>
 
     <string name="dialog_logout_title">התנתקות</string>
     <string name="dialog_logout_message">האם אתה בטוח שברצונך להתנתק מהמערכת?</string>
-    <string name="dialog_logout_cancel">ביטול</string>
-    <string name="dialog_logout_ok">אישור</string>
 
-    <string name="emptyText">אין הכנסה/הוצאה, \nלחץ על כפתור הפלוס בתחתית המסך כדי להוסיף אחד, או לחץ על כפתור התפריט לאפשרויות נוספות.</string>
+    <string name="emptyText">אין הכנסה/הוצאה, \nלחץ על כפתור הפלוס בתחתית המסך כדי להוסיף אחד, או על כפתור התפריט לאפשרויות נוספות.</string>
     <string name="details">פירוט</string>
     <string name="dialog_message">בחר קטגוריה ותאר את ההוצאה/הכנסה שלך</string>
     <string name="editTextDescribe">תאר את ההוצאה/הכנסה שלך</string>
+
     <string name="בית">בית</string>
     <string name="אוכל">אוכל</string>
-    <string name="ביגוד">ביגוד</string>
+    <string name="ביגוד">ביגוד והנעלה</string>
     <string name="שכירות">שכירות</string>
     <string name="משכנתא">משכנתא</string>
     <string name="חשבונות">חשבונות</string>
     <string name="הלוואות">הלוואות</string>
-    <string name="טואלטיקה">טואלטיקה</string>
+    <string name="טואלטיקה">טואלטיקה וניקיון</string>
     <string name="רכב">רכב</string>
-    <string name="מוניות">מוניות</string>
+    <string name="Public_transport">תחבורה ציבורית</string>
     <string name="ביטוחים">ביטוחים</string>
     <string name="תקשורת">תקשורת</string>
     <string name="חדר_כושר">חדר כושר</string>
@@ -75,17 +70,20 @@
     <string name="good_afternoon">אחה"צ טובים</string>
     <string name="good_evening">ערב טוב</string>
     <string name="good_night">לילה טוב</string>
+
     <string name="choose">בחר פעולה</string>
     <string name="edit">ערוך</string>
     <string name="delete">מחק</string>
     <string name="MyBalance">המאזן שלי</string>
-    <string name="Systrm">מערכת</string>
+    <string name="System">מערכת</string>
+    <string name="MyDetails">הפרטים שלי</string>
     <string name="About">אודות</string>
     <string name="Logout">התנתק</string>
     <string name="search">חפש</string>
-    <string name="exit">exit</string>
+    <string name="exit">יציאה</string>
     <string name="user_icon">אייקון</string>
     <string name="home">בית</string>
     <string name="RegisterTitle">הרשמה</string>
+    <string name="change">שנה</string>
 
 </resources>

@@ -1,4 +1,4 @@
-package nati.financly;
+package nati.financly.main_activity;
 
 public class ItemView {
     private int image;

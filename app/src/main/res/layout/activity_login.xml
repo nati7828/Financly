@@ -1,8 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:orientation="vertical"
     tools:context=".LoginActivity">
 
     <RelativeLayout
@@ -11,10 +12,12 @@
         >
 
         <ImageView
+            android:contentDescription="image"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:src="@drawable/b1"
-            android:scaleType="fitXY"/>
+            android:scaleType="fitXY"
+            tools:ignore="HardcodedText" />
 
         <ImageView
             android:id="@+id/login_image_shekel"
@@ -40,7 +43,6 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="vertical"
-        android:layout_marginTop="185dp"
         android:background="@color/colorDarkGray">
 
         <EditText
@@ -153,4 +155,4 @@
     </LinearLayout>
 
 
-</RelativeLayout>
+</LinearLayout>

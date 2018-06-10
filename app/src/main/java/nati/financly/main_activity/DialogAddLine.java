@@ -11,6 +11,7 @@ import android.support.annotation.NonNull;
 import android.support.v4.app.DialogFragment;
 import android.text.Editable;
 import android.text.TextWatcher;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.animation.Animation;
@@ -20,6 +21,7 @@ import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.TimePicker;
+import android.widget.Toast;
 
 import com.google.firebase.database.DatabaseReference;
 
@@ -31,10 +33,9 @@ import java.util.Calendar;
 import java.util.Date;
 import java.util.Locale;
 
-import nati.financly.ItemView;
 import nati.financly.R;
 
-public class PopUpDialogAddLine extends DialogFragment implements PassDataBetweenDialogs {
+public class DialogAddLine extends DialogFragment implements PassDataBetweenDialogs, TextWatcher {
     private DatePickerDialog dateDialog;
     private TimePickerDialog timeDialog;
     private DatePickerDialog.OnDateSetListener dateListener;
@@ -50,10 +51,14 @@ public class PopUpDialogAddLine extends DialogFragment implements PassDataBetwee
     private TextView popupCategoryName;
     private TextView popupUserComment;
 
+    ItemView itemView;
+
+    boolean isEditing = false;
+    String category, comment, date, money;
+
     @NonNull
     @Override
     public Dialog onCreateDialog(Bundle savedInstanceState) {
-
         final AlertDialog.Builder builder = new AlertDialog.Builder(getActivity(),R.style.dialog);
         final LayoutInflater inflater = getActivity().getLayoutInflater();
         final View view = inflater.inflate(R.layout.dialog_add_line, null, false);
@@ -63,16 +68,42 @@ public class PopUpDialogAddLine extends DialogFragment implements PassDataBetwee
         popupDate = view.findViewById(R.id.popup_date);
         popupCategoryName = view.findViewById(R.id.popup_category_name);
         popupUserComment = view.findViewById(R.id.popup_user_comment);
-        ImageView popupDismiss = view.findViewById(R.id.popupDismiss);
         TextView popupEnter = view.findViewById(R.id.popupEnterNewLine);
+        ImageView popupDismiss = view.findViewById(R.id.popupDismiss);
 
         if (popupUserComment.getText().toString().equals("")) {
             popupUserComment.setVisibility(View.INVISIBLE);
         }
 
+        if (isEditing) {
+            //Toast.makeText(getActivity(),"no null...",Toast.LENGTH_SHORT).show();
+            popupCategoryName.setText(category);
+            if (!comment.isEmpty()) {
+                popupUserComment.setVisibility(View.VISIBLE);
+                popupUserComment.setText(comment);
+            }
+            else{
+                popupUserComment.setVisibility(View.INVISIBLE);
+            }
+
+            Log.d("###","money: " + money + ", date:" + date);
+
+            popupDate.setText(date);
+
+            int textIntVal = Integer.parseInt(money);
+            DecimalFormat formatter = (DecimalFormat) NumberFormat.getInstance(Locale.getDefault());
+            formatter.applyPattern("#,###,###,###");
+            String formattedString = formatter.format(textIntVal);
+            popupMoney.setText(formattedString);
+
+            popupEnter.setText(R.string.change);
+        }
+
+        //Click the 'X' button to exit the dialog.
         popupDismiss.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                isEditing = false;
                 dismiss();
             }
         });
@@ -80,7 +111,6 @@ public class PopUpDialogAddLine extends DialogFragment implements PassDataBetwee
         //Click the add new line button - add the content to the database//
         popupEnter.setOnClickListener(new View.OnClickListener() {
             public void onClick(View view) {
-                String key = userRef.push().getKey();
                 String dtStart = popupDate.getText().toString();
                 String stampDate = "";
                 //convert the date to another pattern
@@ -93,12 +123,31 @@ public class PopUpDialogAddLine extends DialogFragment implements PassDataBetwee
                     e.printStackTrace();
                 }
 
-                ItemView itemView = new ItemView(popupCategoryName.getText().toString(), stampDate, popupMoney.getText().toString(), popupUserComment.getText().toString());
+                //If itemView has values, user is editing.
+                if (isEditing){
+                    //textChangedListener();
+
+                    itemView.setIncome_outcome(popupMoney.getText().toString());
+                    itemView.setCategoryName(popupCategoryName.getText().toString());
+                    itemView.setDate(popupDate.getText().toString());
+                    if (!popupUserComment.getText().toString().trim().isEmpty()){
+                        itemView.setUserComment(popupUserComment.getText().toString());
+                    }
+                    itemView.setDate(stampDate);
+                    userRef.child(itemView.getKey()).setValue(itemView);
+                }
+                itemView = new ItemView(popupCategoryName.getText().toString(), stampDate, popupMoney.getText().toString(), popupUserComment.getText().toString());
                 //write to that node
                 if (!popupMoney.getText().toString().isEmpty() && !popupCategoryName.getText().toString().isEmpty()) {
-                    userRef.child(key).setValue(itemView);
-                    adapter.notifyDataSetChanged();
-                    dismiss();
+                    if (!isEditing){
+                        Toast.makeText(getActivity(),"not editing..",Toast.LENGTH_SHORT).show();
+                        String key = userRef.push().getKey();
+                        itemView.setKey(key);
+                        userRef.child(key).setValue(itemView);
+                    }
+                        isEditing = false;
+                        adapter.notifyDataSetChanged();
+                        dismiss();
                 } else {
                     final Animation animation = new TranslateAnimation(Animation.ABSOLUTE, -50, Animation.ABSOLUTE, 0);
                     animation.setDuration(80);
@@ -109,6 +158,8 @@ public class PopUpDialogAddLine extends DialogFragment implements PassDataBetwee
                         popupCategoryName.startAnimation(animation);
                     }
                 }
+
+
             }
         });
         //End of popupEnter OnClick.
@@ -156,38 +207,7 @@ public class PopUpDialogAddLine extends DialogFragment implements PassDataBetwee
 
         //In order to show the user the edit text with "," in big numbers - like 10,000 instead of 10000,
         //I made a listener and after every user interaction, it will format the text to the desired one(with commas).
-        popupMoney.addTextChangedListener(new TextWatcher() {
-            @Override
-            public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {
-
-            }
-
-            @Override
-            public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
-
-            }
-
-            @Override
-            public void afterTextChanged(Editable editable) {
-                popupMoney.removeTextChangedListener(this);
-                try {
-                    String originalString = editable.toString();
-
-                    if (originalString.contains(",")) {
-                        originalString = originalString.replaceAll(",", "");
-                    }
-                    int textIntVal = Integer.parseInt(originalString);
-                    DecimalFormat formatter = (DecimalFormat) NumberFormat.getInstance(Locale.getDefault());
-                    formatter.applyPattern("#,###,###,###");
-                    String formattedString = formatter.format(textIntVal);
-                    popupMoney.setText(formattedString);
-                    popupMoney.setSelection(popupMoney.getText().length());
-                } catch (NumberFormatException nfe) {
-                    nfe.printStackTrace();
-                }
-                popupMoney.addTextChangedListener(this);
-            }
-        });
+       popupMoney.addTextChangedListener(this);
         //End of text Converting.
 
 
@@ -228,9 +248,11 @@ public class PopUpDialogAddLine extends DialogFragment implements PassDataBetwee
                         timeListener,
                         hour, minute, android.text.format.DateFormat.is24HourFormat(getActivity()));
 
+
                 if (timeDialog.getWindow() != null) {
                     timeDialog.getWindow().setBackgroundDrawable(new ColorDrawable(getResources().getColor(R.color.colorDarkGray)));
                 }
+
 
                 timeDialog.setButton(DialogInterface.BUTTON_NEGATIVE, getString(R.string.cancel), new DialogInterface.OnClickListener() {
                     @Override
@@ -285,7 +307,7 @@ public class PopUpDialogAddLine extends DialogFragment implements PassDataBetwee
                 String text = popupCategoryName.getText().toString().trim();
 
                 Category_Comment_Dialog dialog = new Category_Comment_Dialog();
-                dialog.setTargetFragment(PopUpDialogAddLine.this, 1);
+                dialog.setTargetFragment(DialogAddLine.this, 1);
                 dialog.show(getFragmentManager(), "Category_Comment_Dialog");
 
                 if (!text.equals("")) {
@@ -293,13 +315,12 @@ public class PopUpDialogAddLine extends DialogFragment implements PassDataBetwee
                 } else {
                     dialog.selectedSpinnerItem = "בית";
                 }
-
+                //if comment is not empty,
                 if (popupUserComment.getVisibility() == View.VISIBLE && !popupUserComment.getText().toString().isEmpty()) {
                     dialog.commentText = popupUserComment.getText().toString();
                 }
             }
         });
-
         ////
         return builder.create();
     }
@@ -315,7 +336,7 @@ public class PopUpDialogAddLine extends DialogFragment implements PassDataBetwee
 //                public void onClick(View view) {
 //                    Category_Comment_Dialog dialog = new Category_Comment_Dialog();
 //
-//                    dialog.setTargetFragment(PopUpDialogAddLine.this,1);
+//                    dialog.setTargetFragment(DialogAddLine.this,1);
 //                    dialog.show(getFragmentManager(),"Category_Comment_Dialog");
 //                    dialog.commentText = popupUserComment.getText().toString();
 //                }
@@ -335,4 +356,66 @@ public class PopUpDialogAddLine extends DialogFragment implements PassDataBetwee
             popupUserComment.setVisibility(View.INVISIBLE);
         }
     }
+
+    public void setItemViewForEditing(ItemView itemView) {
+        String category = itemView.getCategoryName();
+        String comment = itemView.getUserComment();
+        String date = itemView.getDate();
+        String money = itemView.getIncome_outcome();
+
+        Log.d("###",category + comment + date + money);
+        isEditing = true;
+
+        this.itemView = itemView;
+        this.category = category;
+        this.comment = comment;
+        this.date = date;
+        this.money = money;
+    }
+
+    //get the adapter and the user reference from balance fragment to use them in this dialog.
+    public void setUserRefAndAdapter(DatabaseReference userRef, BalanceFragmentAdapter adapter) {
+        this.userRef = userRef;
+        this.adapter = adapter;
+    }
+
+    @Override
+    public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+    }
+
+    @Override
+    public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+
+    }
+
+    @Override
+    public void afterTextChanged(Editable editable) {
+        Log.d("###",editable + "...");
+        popupMoney.removeTextChangedListener(this);
+        try {
+            String originalString = editable.toString();
+
+            Log.d("###original",originalString+ " ...");
+            if (originalString.contains(",")) {
+                originalString = originalString.replaceAll(",", "");
+            }
+            Log.d("###original",originalString+ " 2...");
+
+            int textIntVal = Integer.parseInt(originalString);
+            DecimalFormat formatter = (DecimalFormat) NumberFormat.getInstance(Locale.getDefault());
+            formatter.applyPattern("#,###,###,###");
+            String formattedString = formatter.format(textIntVal);
+            popupMoney.setText(formattedString);
+            popupMoney.setSelection(popupMoney.getText().length());
+        } catch (NumberFormatException nfe) {
+            nfe.printStackTrace();
+        }
+        popupMoney.addTextChangedListener(this);
+    }
+
+    ////NumbersTextChanges////
+
+    ////End of NumbersTextChanges////
+
+
 }

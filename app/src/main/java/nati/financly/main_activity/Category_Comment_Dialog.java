@@ -93,7 +93,7 @@ public class Category_Comment_Dialog extends AppCompatDialogFragment {
         categoriesList.add(new SpinnerItem(getString(R.string.חיסכון), R.drawable.savings));
         categoriesList.add(new SpinnerItem(getString(R.string.טואלטיקה), R.drawable.toliet_and_clean));
         categoriesList.add(new SpinnerItem(getString(R.string.רכב), R.drawable.car));
-        categoriesList.add(new SpinnerItem(getString(R.string.מוניות), R.drawable.taxi));
+        categoriesList.add(new SpinnerItem(getString(R.string.Public_transport), R.drawable.taxi));
         categoriesList.add(new SpinnerItem(getString(R.string.ביטוחים), R.drawable.insurance));
         categoriesList.add(new SpinnerItem(getString(R.string.תקשורת), R.drawable.phone));
         categoriesList.add(new SpinnerItem(getString(R.string.חדר_כושר), R.drawable.gym));
@@ -167,7 +167,7 @@ public class Category_Comment_Dialog extends AppCompatDialogFragment {
     public void onAttach(Context context) {
         super.onAttach(context);
         try {
-            //passing the category and comment - the listener connects between the fragments.
+            //passing the category and comment - the interface connects between the fragments.
             passDataBetweenDialogsListener = (PassDataBetweenDialogs) getTargetFragment();
         } catch (ClassCastException e) {
             Log.e("**onAttach**", "onAttach: ClassCastException : " + e.getMessage());

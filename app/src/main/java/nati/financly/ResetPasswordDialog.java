@@ -23,10 +23,10 @@ public class ResetPasswordDialog extends AppCompatDialogFragment {
                 .setMessage(R.string.dialog_reset_message);
 
         //creating and handling the cancel button.
-        builder.setNegativeButton(R.string.dialog_reset_cancel, null);
+        builder.setNegativeButton(R.string.cancel, null);
 
         //creating and handling the Ok button.
-        builder.setPositiveButton(R.string.dialog_reset_ok, new DialogInterface.OnClickListener() {
+        builder.setPositiveButton(R.string.OK, new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialog, int i) {
                 String email = getArguments().getString("user_email");

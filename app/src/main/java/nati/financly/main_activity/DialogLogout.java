@@ -19,7 +19,7 @@ public class DialogLogout extends AppCompatDialogFragment {
                 .setMessage(R.string.dialog_logout_message);
 
         //creating and handling the cancel button.
-        builder.setNegativeButton(R.string.dialog_logout_cancel, new DialogInterface.OnClickListener() {
+        builder.setNegativeButton(R.string.cancel, new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialogInterface, int i) {
                 dismiss();
@@ -27,7 +27,7 @@ public class DialogLogout extends AppCompatDialogFragment {
         });
 
         //creating and handling the Ok button.
-        builder.setPositiveButton(R.string.dialog_logout_ok, new DialogInterface.OnClickListener() {
+        builder.setPositiveButton(R.string.OK, new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialog, int i) {
                 getActivity().finish();

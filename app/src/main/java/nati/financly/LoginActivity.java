@@ -60,10 +60,10 @@ public class LoginActivity extends AppCompatActivity {
 
         Spannable darkerText = new SpannableString(toRegisterPageBtn.getText().toString());
 
+        //check language, adapt the spanned text with text length, if it's english - span other than in hebrew.
         if (Locale.getDefault().getDisplayLanguage().equals("English")){
             darkerText.setSpan(new ForegroundColorSpan(getResources().getColor(R.color.colorHint)), 23, toRegisterPageBtn.length(), Spannable.SPAN_INCLUSIVE_EXCLUSIVE);
         }else{
-            Toast.makeText(getApplicationContext(),"in else.. not english",Toast.LENGTH_SHORT).show();
             darkerText.setSpan(new ForegroundColorSpan(getResources().getColor(R.color.colorHint)), 20, toRegisterPageBtn.length(), Spannable.SPAN_INCLUSIVE_EXCLUSIVE);
         }
         toRegisterPageBtn.setText(darkerText);

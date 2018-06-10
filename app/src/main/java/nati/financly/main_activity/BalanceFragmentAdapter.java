@@ -22,7 +22,6 @@ import android.widget.TextView;
 import java.util.ArrayList;
 import java.util.Locale;
 
-import nati.financly.ItemView;
 import nati.financly.R;
 
 public class BalanceFragmentAdapter extends RecyclerView.Adapter<BalanceFragmentAdapter.ViewHolder> {
@@ -87,6 +86,10 @@ public class BalanceFragmentAdapter extends RecyclerView.Adapter<BalanceFragment
         String currentMoneyChange = currentItem.getIncome_outcome();
         String formattedMoney = String.format(Locale.getDefault(), "%,d", Integer.valueOf(currentMoneyChange));
         String shekel = "₪ ";
+        if(Locale.getDefault().getDisplayLanguage().equals(Locale.ENGLISH.toString().toLowerCase())){
+            shekel = "$";
+        }
+
         String txtMoney = shekel + formattedMoney;
 
         Spannable spannedMoney = new SpannableString(txtMoney);

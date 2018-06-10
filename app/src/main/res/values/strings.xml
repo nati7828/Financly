@@ -1,59 +1,50 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <string name="app_name">Financly</string>
-    <string name="userName"> Name</string>
-    <string name="password"> Password</string>
+    <string name="name">Name</string>
+    <string name="password">Password</string>
     <string name="login_title">Login</string>
     <string name="login">Login</string>
     <string name="register">Do not have a user yet? Sign in here</string>
     <string name="forgot_username_or_password">I forgot password</string>
-    <string name="name">Name</string>
-    <string name="pass">Password</string>
     <string name="pass_validate">Confirm Password</string>
     <string name="email">Email</string>
-    <string name="sign_in">Sign up</string>
+    <string name="sign_up">Sign up</string>
     <string name="have_user_so_sign_in">Have a user already? Login here</string>
-    <string name="app_background_img">Background picture</string>
     <string name="icon">Icon</string>
     <string name="category_name">Category Name</string>
     <string name="OpenDrawer">Open navigation drawer</string>
     <string name="CloseDrawer">Close navigation drawer</string>
 
-    <string name="hello_blank_fragment">Hello blank fragment</string>
-
     <string name="cancel">Cancel</string>
     <string name="OK">OK</string>
+
     <string name="dialog_reset_title">Reset Password</string>
-    <string name="dialog_reset_message">To reset your password press OK and enter the link in your email</string>
-    <string name="dialog_reset_cancel">Cancel</string>
-    <string name="dialog_reset_ok">OK</string>
+    <string name="dialog_reset_message">Press OK to get password reset link to your email</string>
 
     <string name="email_sent">Password reset link was sent to your email address</string>
-    <string name="email_was_not_sent_successfully">Email was not sent successfully, Please check your email address and try again</string>
-    <string name="email_text_is_empty">Email text is empty, please fill the correct email in the text</string>
+    <string name="email_was_not_sent_successfully">Email was not sent successfully, Please check the email address you entered and try again</string>
+    <string name="email_text_is_empty">Email text is empty, please fill your correct email in the text and try again</string>
 
     <string name="dialog_logout_title">Logout</string>
     <string name="dialog_logout_message">Are you sure you want to logout from the System?</string>
-    <string name="dialog_logout_cancel">Cancel</string>
-    <string name="dialog_logout_ok">OK</string>
+
 
     <string name="emptyText">No income/expanse,\nClick the plus button in the bottom corner to add one, Or tap the menu button for more options.</string>
     <string name="details">Details</string>
     <string name="dialog_message">Choose a category and  describe your income/expanse</string>
-    <string name="editTextDescribe">Describe your income/expance</string>
-    <string name="משכורת">Salary</string>
-    <string name="תשלום">Payment</string>
+    <string name="editTextDescribe">Describe your income/expanse</string>
+
     <string name="בית">House</string>
     <string name="אוכל">Food</string>
-    <string name="קניות">Shopping</string>
     <string name="ביגוד">Clothes and shoes</string>
     <string name="שכירות">Rent</string>
     <string name="משכנתא">Mortgage</string>
     <string name="חשבונות">Bills</string>
     <string name="הלוואות">Loans</string>
-    <string name="טואלטיקה">Toilet and clean</string>
+    <string name="טואלטיקה">Toilet and cleaning</string>
     <string name="רכב">Car</string>
-    <string name="מוניות">Public transport</string>
+    <string name="Public_transport">Public transport</string>
     <string name="ביטוחים">Insurance</string>
     <string name="תקשורת">Communications</string>
     <string name="חדר_כושר">Gym</string>
@@ -66,9 +57,12 @@
     <string name="חיות">Pets</string>
     <string name="מתנות">Gifts</string>
     <string name="אחר">Other</string>
+    <string name="משכורת">Salary</string>
+    <string name="תשלום">Payment</string>
+    <string name="קניות">Shopping</string>
 
     <string name="add_line">Add</string>
-    <string name="choose_category">Choose category</string>
+    <string name="choose_category">Select category</string>
     <string name="enter_amount">Enter amount</string>
 
     <string name="drawer_welcome">Hello</string>
@@ -77,11 +71,12 @@
     <string name="good_afternoon">Good afternoon</string>
     <string name="good_evening">Good evening</string>
     <string name="good_night">Good night</string>
+
     <string name="choose">Choose action</string>
     <string name="edit">Edit</string>
     <string name="delete">Delete</string>
     <string name="MyBalance">My balance</string>
-    <string name="Systrm">System</string>
+    <string name="System">System</string>
     <string name="MyDetails">My details</string>
     <string name="About">About</string>
     <string name="Logout">Logout</string>
@@ -91,6 +86,7 @@
     <string name="user_icon">user_icon</string>
     <string name="home">home</string>
     <string name="RegisterTitle">Register</string>
+    <string name="change">Change</string>
 
 
 </resources>

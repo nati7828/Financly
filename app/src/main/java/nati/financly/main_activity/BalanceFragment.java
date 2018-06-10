@@ -1,5 +1,6 @@
 package nati.financly.main_activity;
 
+
 import android.content.Context;
 import android.graphics.Color;
 import android.graphics.Typeface;
@@ -42,7 +43,6 @@ import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Locale;
 
-import nati.financly.ItemView;
 import nati.financly.R;
 
 public class BalanceFragment extends Fragment {
@@ -69,11 +69,14 @@ public class BalanceFragment extends Fragment {
 
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-        final View v = inflater.inflate(R.layout.fragment_balance_main, container, false);
+        final View v = inflater.inflate(R.layout.fragment_balance, container, false);
 
         Toolbar toolbar = v.findViewById(R.id.balance_toolbar);
         ((AppCompatActivity) getActivity()).setSupportActionBar(toolbar);
         ((AppCompatActivity) getActivity()).getSupportActionBar();
+
+
+        final DialogAddLine dialogAddLine = new DialogAddLine();
 
         fab = v.findViewById(R.id.main_activity_fab);
 
@@ -163,10 +166,17 @@ public class BalanceFragment extends Fragment {
         userRef = myRef.child("Users").child(userId);
 
         adapter.setOnItemClickListener(new OnItemClickListener() {
-
             @Override
             public void onEditClick(int position) {
-                Toast.makeText(getActivity(),"clicked number" + position,Toast.LENGTH_SHORT).show();
+                ItemView selectedItem = rvItems.get(position);
+
+                dialogAddLine.setItemViewForEditing(selectedItem);
+
+                dialogAddLine.setUserRefAndAdapter(userRef,adapter);
+                dialogAddLine.show(getFragmentManager(), "dialogAddLine");
+                // adapter.originalList(rvItems);
+                //myRef.child("Users").child(userId).child(selectedKey);///////////////////////// edit next.....
+                //adapter.notifyDataSetChanged();
             }
 
             @Override
@@ -178,6 +188,7 @@ public class BalanceFragment extends Fragment {
 
                 ItemView selectedItem = rvItems.get(position);
                 String selectedKey = selectedItem.getKey();
+
 
                // adapter.originalList(rvItems);
                 myRef.child("Users").child(userId).child(selectedKey).removeValue();
@@ -204,12 +215,9 @@ public class BalanceFragment extends Fragment {
 
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
-            public void onClick(View view) {
-                PopUpDialogAddLine popUpDialogAddLine = new PopUpDialogAddLine();
-                popUpDialogAddLine.userRef = userRef;
-                popUpDialogAddLine.adapter = adapter;
-
-                popUpDialogAddLine.show(getFragmentManager(), "popUpDialogAddLine");
+            public void onClick(View view){
+                dialogAddLine.setUserRefAndAdapter(userRef,adapter);
+                dialogAddLine.show(getFragmentManager(), "dialogAddLine");
             }
         });
 
@@ -219,6 +227,8 @@ public class BalanceFragment extends Fragment {
         //
     }
     //End of onCreate//
+
+
 
 
     //ShowData method - invokes in the OnCreateView//
@@ -320,7 +330,7 @@ public class BalanceFragment extends Fragment {
                     case "טואלטיקה":
                         itemView.setImage(R.drawable.toliet_and_clean);
                         break;
-                    case "Toilet and clean":
+                    case "Toilet and cleaning":
                         itemView.setImage(R.drawable.toliet_and_clean);
                         break;
                     case "רכב":

@@ -1,7 +1,7 @@
 package nati.financly;
 
 public class User {
-    private String name, email;
+    private String name, email, money;
 
     public User(){
         //empty constructor
@@ -21,5 +21,13 @@ public class User {
 
     public void setEmail(String email) {
         this.email = email;
+    }
+
+    public String getMoney() {
+        return money;
+    }
+
+    public void setMoney(String money) {
+        this.money = money;
     }
 }

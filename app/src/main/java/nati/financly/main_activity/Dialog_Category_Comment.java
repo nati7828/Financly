@@ -5,7 +5,6 @@ import android.content.Context;
 import android.graphics.PorterDuff;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
-import android.support.annotation.Nullable;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatDialogFragment;
 import android.text.Editable;
@@ -22,7 +21,7 @@ import java.util.ArrayList;
 
 import nati.financly.R;
 
-public class Category_Comment_Dialog extends AppCompatDialogFragment {
+public class Dialog_Category_Comment extends AppCompatDialogFragment {
 
     EditText comment;
     Spinner spinner;
@@ -35,12 +34,6 @@ public class Category_Comment_Dialog extends AppCompatDialogFragment {
 
     String selectedSpinnerItem = "";
     String commentText = "";
-
-    @Override
-    public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
-        super.onViewCreated(view, savedInstanceState);
-        view.setBackgroundColor(getResources().getColor(R.color.colorGreen));
-    }
 
     @NonNull
     @Override
@@ -121,6 +114,8 @@ public class Category_Comment_Dialog extends AppCompatDialogFragment {
 
             }
         });
+
+
         //Set the string to the method that send the appropriate item.
         //the string is initialized from the
         setSpinText(selectedSpinnerItem);
@@ -128,8 +123,6 @@ public class Category_Comment_Dialog extends AppCompatDialogFragment {
 
         //Change the spinner arrow color.
         spinner.getBackground().setColorFilter(getResources().getColor(R.color.colorWhite), PorterDuff.Mode.SRC_ATOP);
-
-        builder.setView(view);
 
         cancelBtn.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -143,10 +136,12 @@ public class Category_Comment_Dialog extends AppCompatDialogFragment {
             public void onClick(View view) {
                 String commentText = comment.getText().toString().trim();
                 passDataBetweenDialogsListener.passCategoryAndComment(category, commentText);
+                Log.d("##",getParentFragment()+"..");
                 getDialog().dismiss();
             }
         });
 
+        builder.setView(view);
         return builder.create();
     }
     //End of onCreateDialog//
@@ -163,11 +158,15 @@ public class Category_Comment_Dialog extends AppCompatDialogFragment {
         }
     }
 
+    public void updateSelectedSpinnerItemValue(String newValue){
+        selectedSpinnerItem = newValue;
+    }
+
     @Override
     public void onAttach(Context context) {
         super.onAttach(context);
         try {
-            //passing the category and comment - the interface connects between the fragments.
+            //Passing the category and comment - the interface connects between the fragments(and the activity).
             passDataBetweenDialogsListener = (PassDataBetweenDialogs) getTargetFragment();
         } catch (ClassCastException e) {
             Log.e("**onAttach**", "onAttach: ClassCastException : " + e.getMessage());

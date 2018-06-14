@@ -54,9 +54,9 @@ public class RegisterActivity extends AppCompatActivity {
 
         signUp = findViewById(R.id.signin_register_btn);
         Spannable darkerText = new SpannableString(signUp.getText().toString());
-        if (Locale.getDefault().getDisplayLanguage().equals("English")){
+        if (Locale.getDefault().getDisplayLanguage().equals("English")) {
             darkerText.setSpan(new ForegroundColorSpan(getResources().getColor(R.color.colorHint)), 21, signUp.length(), Spannable.SPAN_INCLUSIVE_EXCLUSIVE);
-        }else{
+        } else {
             darkerText.setSpan(new ForegroundColorSpan(getResources().getColor(R.color.colorHint)), 17, signUp.length(), Spannable.SPAN_INCLUSIVE_EXCLUSIVE);
         }
         signUp.setText(darkerText);
@@ -78,39 +78,43 @@ public class RegisterActivity extends AppCompatActivity {
         Animation animation = new TranslateAnimation(Animation.ABSOLUTE, -50, Animation.ABSOLUTE, 0);
         animation.setDuration(100);
 
-        String name = user_name.getText().toString();
-        String pass = user_pass.getText().toString();
-        String validatePass = user_validatePass.getText().toString();
-        String email = user_email.getText().toString();
+        final String nameTxt = user_name.getText().toString();
+        final String passTxt = user_pass.getText().toString();
+        final String validatePassTxt = user_validatePass.getText().toString();
+        final String emailTxt = user_email.getText().toString();
 
-        if (name.isEmpty() || pass.isEmpty() || email.isEmpty() || validatePass.isEmpty()) {
-            if (name.isEmpty()) {
+        if (nameTxt.isEmpty() || passTxt.isEmpty() || emailTxt.isEmpty() || validatePassTxt.isEmpty()) {
+            if (nameTxt.isEmpty()) {
                 user_name.startAnimation(animation);
             }
-            if (pass.isEmpty()) {
+            if (passTxt.isEmpty()) {
                 user_pass.startAnimation(animation);
             }
-            if (validatePass.isEmpty()) {
+            if (validatePassTxt.isEmpty()) {
                 user_validatePass.startAnimation(animation);
             }
-            if (email.isEmpty()) {
+            if (emailTxt.isEmpty()) {
                 user_email.startAnimation(animation);
             }
-        } else if (!validatePass.equals(pass)) {
+        } else if (passTxt.length() < 6) {
+            user_pass.startAnimation(animation);
+            Toast.makeText(this, R.string.register_pass_alert, Toast.LENGTH_SHORT).show();
+        } else if (!validatePassTxt.equals(passTxt)) {
             user_validatePass.startAnimation(animation);
             //user_validatePass.startAnimation(animation);
-            Toast.makeText(this, "הסיסמא לא זהה", Toast.LENGTH_SHORT).show();
+            Toast.makeText(this, R.string.password_not_equal, Toast.LENGTH_SHORT).show();
         } else {
             //Create user with email and password
-            firebaseAuth.createUserWithEmailAndPassword(email, pass).addOnCompleteListener(new OnCompleteListener<AuthResult>() {
+            firebaseAuth.createUserWithEmailAndPassword(emailTxt, passTxt).addOnCompleteListener(new OnCompleteListener<AuthResult>() {
                 @Override
                 public void onComplete(@NonNull Task<AuthResult> task) {
                     if (task.isSuccessful()) {
                         progressBar.setVisibility(View.VISIBLE);
                         firebaseUser = firebaseAuth.getCurrentUser();//get current user.
 
-                        user.setName(user_name.getText().toString());//input of the user.
-                        user.setEmail(user_email.getText().toString());//another input of the user.
+                        user.setName(nameTxt);//input of the user.
+                        user.setEmail(emailTxt);//another input of the user.
+                        user.setMoney("0");
 
                         String userId = firebaseUser.getUid();//get the userId from firebase.
                         DBUser.child(userId).setValue(user); // set each user with his own details.
@@ -120,21 +124,28 @@ public class RegisterActivity extends AppCompatActivity {
                             @Override
                             public void onComplete(@NonNull Task<Void> task) {
                                 if (task.isSuccessful()) {
-                                    Toast.makeText(RegisterActivity.this, "היכנס לאימייל שלך על מנת לבצע אימות", Toast.LENGTH_LONG).show();
+                                    Toast.makeText(RegisterActivity.this, R.string.enter_email, Toast.LENGTH_LONG).show();
                                     firebaseAuth.signOut();
                                 } else {
-                                    Toast.makeText(RegisterActivity.this, "נדרש מייל אימות,אנא נסה שנית", Toast.LENGTH_SHORT).show();
+                                    Toast.makeText(RegisterActivity.this, R.string.email_verification, Toast.LENGTH_SHORT).show();
                                 }
                             }
                         });
                         finish();
                     } else {
-                        Toast.makeText(RegisterActivity.this, "יצירת המשתמש לא בוצעה בהצלחה,בדוק את הפרטים שהזנת ונסה שנית", Toast.LENGTH_SHORT).show();
+                        if (task.getException() != null) {
+                            if (Locale.getDefault().getDisplayLanguage().equals("English")) {
+                                Toast.makeText(RegisterActivity.this, task.getException().getMessage(), Toast.LENGTH_LONG).show();
+                            } else {
+                                Toast.makeText(RegisterActivity.this, "כתובת האימייל הזאת כבר נמצאת בשימוש על ידי חשבון אחר", Toast.LENGTH_LONG).show();
+                            }
+                        }
                     }
                 }
             });
         }
     }
+
     //end of sign up function(via button)//
     //sign_in(btn) function//
     public void AlreadyHaveUser(View view) {

@@ -21,6 +21,9 @@ public class AboutFragment extends Fragment {
         // Inflate the layout for this fragment
         View v =  inflater.inflate(R.layout.fragment_about, container, false);
 
+
+
+
         return v;
     }
 

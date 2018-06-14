@@ -21,6 +21,7 @@ import android.text.TextWatcher;
 import android.text.style.ForegroundColorSpan;
 import android.text.style.RelativeSizeSpan;
 import android.text.style.StyleSpan;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -47,20 +48,22 @@ import nati.financly.R;
 
 public class BalanceFragment extends Fragment {
 
-    private FirebaseAuth.AuthStateListener mAuthListener;
+    //private FirebaseAuth.AuthStateListener mAuthListener;
     private DatabaseReference myRef;
     private DatabaseReference userRef;
 
     private String userId;
     private BalanceFragmentAdapter adapter;
+    //original list
     private ArrayList<ItemView> rvItems;
+    //filtered list
+    ArrayList<ItemView> filteredList;
 
     private CollapsingToolbarLayout collapsingToolbarLayout;
     TextView emptyScreenTv;
     EditText search_et;
     ImageButton searchBtn, exitBtn;
     NestedScrollView nestedScrollView;
-
     FloatingActionButton fab;
 
     public BalanceFragment() {
@@ -78,6 +81,8 @@ public class BalanceFragment extends Fragment {
 
         final DialogAddLine dialogAddLine = new DialogAddLine();
 
+        nestedScrollView = v.findViewById(R.id.nestedScrollView);
+        emptyScreenTv = v.findViewById(R.id.emptyScreenTextView);
         fab = v.findViewById(R.id.main_activity_fab);
 
         searchBtn = v.findViewById(R.id.balance_main_search_btn);
@@ -96,7 +101,7 @@ public class BalanceFragment extends Fragment {
                 public void afterTextChanged(Editable editable) {
                     String text = editable.toString();
 
-                    ArrayList<ItemView> filteredList = new ArrayList<>();
+                    filteredList = new ArrayList<>();
 
                     for (int i = 0; i<rvItems.size(); i++ ) {
                         if (rvItems.get(i).getCategoryName().toLowerCase().contains(text.toLowerCase()) ||
@@ -106,9 +111,18 @@ public class BalanceFragment extends Fragment {
                             filteredList.add(rvItems.get(i));
                         }
                     }
-                    adapter.filteredList(filteredList);
+
+                    if(filteredList != null && !filteredList.isEmpty() && filteredList.size() != rvItems.size()){
+                        adapter.filteredList(filteredList);
+                    }
+                    if(filteredList.size() == 0 || filteredList.size() == rvItems.size()){
+                        adapter.originalList(rvItems);
+                    }
+
                 }
             });
+
+
 
 
 
@@ -117,10 +131,10 @@ public class BalanceFragment extends Fragment {
             public void onClick(View view) {
                 search_et.setVisibility(View.VISIBLE);
                 search_et.setText("");
-                adapter.originalList(rvItems);
+//                adapter.originalList(rvItems);
                 search_et.requestFocus();
                 InputMethodManager imm = (InputMethodManager) getActivity().getSystemService(Context.INPUT_METHOD_SERVICE);
-                if (imm != null) {
+                if (imm != null) {//show keyboard
                     imm.toggleSoftInput(InputMethodManager.SHOW_FORCED, InputMethodManager.HIDE_IMPLICIT_ONLY);
                 }
                 exitBtn.setVisibility(View.VISIBLE);
@@ -135,12 +149,10 @@ public class BalanceFragment extends Fragment {
                 search_et.setText("");
                 search_et.setVisibility(View.GONE);
                 InputMethodManager imm = (InputMethodManager) getActivity().getSystemService(Context.INPUT_METHOD_SERVICE);
-                if (imm != null) {
+                if (imm != null) {//hide keyboard
                     imm.hideSoftInputFromWindow(view.getWindowToken(), 0);
                 }
                 view.setVisibility(View.GONE);
-                adapter.originalList(rvItems);
-                adapter.notifyDataSetChanged();
             }
         });
 
@@ -150,11 +162,11 @@ public class BalanceFragment extends Fragment {
         FirebaseUser user = mAuth.getCurrentUser();
 
         collapsingToolbarLayout = v.findViewById(R.id.balance_fragment_title);
-
+        //showMoneyBalanceListener.showBalance(money);
         if (user != null) {
             userId = user.getUid();
-        }
 
+        }
         //Recycler view part//
         final RecyclerView recyclerView = v.findViewById(R.id.main_activity_rv);
         recyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
@@ -168,7 +180,12 @@ public class BalanceFragment extends Fragment {
         adapter.setOnItemClickListener(new OnItemClickListener() {
             @Override
             public void onEditClick(int position) {
-                ItemView selectedItem = rvItems.get(position);
+                ItemView selectedItem;
+                if(filteredList != null && !filteredList.isEmpty() && filteredList.size() != rvItems.size()){
+                    selectedItem = filteredList.get(position);
+                }else{
+                    selectedItem = rvItems.get(position);
+                }
 
                 dialogAddLine.setItemViewForEditing(selectedItem);
 
@@ -181,20 +198,29 @@ public class BalanceFragment extends Fragment {
 
             @Override
             public void onDeleteClick(int position) {
-                if (!search_et.isShown())
-                {
-                    adapter.filteredList(rvItems);
+                ItemView selectedItem;
+                String selectedKey;
+
+
+
+                if(filteredList != null && !filteredList.isEmpty() && filteredList.size() != rvItems.size()){
+                    Log.d("#not null", "filtered...");
+                    Log.d("###","filter size: " + filteredList.size());
+                    Log.d("###","original size: " + rvItems.size());
+
+                    selectedItem = filteredList.get(position);
+                    selectedKey = selectedItem.getKey();
+                    myRef.child("Users").child(userId).child(selectedKey).removeValue();
+                    adapter.filteredList(filteredList);
+                }else{
+                    Log.d("#null", "original...");
+                    Log.d("###","original size: " + rvItems.size());
+
+                    selectedItem = rvItems.get(position);
+                    selectedKey = selectedItem.getKey();
+                    myRef.child("Users").child(userId).child(selectedKey).removeValue();
+                    adapter.originalList(rvItems);
                 }
-
-                ItemView selectedItem = rvItems.get(position);
-                String selectedKey = selectedItem.getKey();
-
-
-               // adapter.originalList(rvItems);
-                myRef.child("Users").child(userId).child(selectedKey).removeValue();
-                adapter.notifyItemRemoved(position);
-                adapter.notifyItemRangeChanged(position, rvItems.size());
-                adapter.notifyDataSetChanged();
             }
         });
 
@@ -202,7 +228,9 @@ public class BalanceFragment extends Fragment {
         userRef.orderByChild("date").addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
-                showData(dataSnapshot);
+                if (isAdded()) {
+                    showData(dataSnapshot);
+                }
             }
 
             @Override
@@ -221,8 +249,6 @@ public class BalanceFragment extends Fragment {
             }
         });
 
-        nestedScrollView = v.findViewById(R.id.nestedScrollView);
-        emptyScreenTv = v.findViewById(R.id.emptyScreenTextView);
         return v;
         //
     }
@@ -235,7 +261,6 @@ public class BalanceFragment extends Fragment {
     private void showData(DataSnapshot dataSnapshot) {
         int moneySum = 0;
         rvItems.clear();
-
         for (DataSnapshot ds : dataSnapshot.getChildren()) {
             ItemView itemView = new ItemView();
             String date = ds.child("date").getValue(String.class);
@@ -421,7 +446,6 @@ public class BalanceFragment extends Fragment {
                         itemView.setImage(R.drawable.other);
                         break;
                 }
-                adapter.filteredList(rvItems);
                 rvItems.add(0, itemView);
             }
         }
@@ -435,9 +459,13 @@ public class BalanceFragment extends Fragment {
             collapsingToolbarLayout.setCollapsedTitleTextAppearance(R.style.collapsedToolbarTitleNegative);
             collapsingToolbarLayout.setExpandedTitleTextAppearance(R.style.expandedToolbarTitleNegative);
         }
+
+
         String formattedMoneySum = String.format(Locale.getDefault(), "%,d", moneySum);
         String shekel = "₪ ";
         String txtMoney = shekel + formattedMoneySum;
+        userRef.child("money").setValue(String.valueOf(txtMoney));
+
         Spannable spannedMoney = new SpannableString(txtMoney);
         spannedMoney.setSpan(new ForegroundColorSpan(Color.WHITE), 0, 1, Spannable.SPAN_INCLUSIVE_EXCLUSIVE);
         spannedMoney.setSpan(new RelativeSizeSpan(0.85f), 0, 1, Spannable.SPAN_INCLUSIVE_EXCLUSIVE);
@@ -463,4 +491,6 @@ public class BalanceFragment extends Fragment {
         }
     }
     //End showData method//
+
 }
+

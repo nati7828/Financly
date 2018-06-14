@@ -21,7 +21,6 @@ import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.TimePicker;
-import android.widget.Toast;
 
 import com.google.firebase.database.DatabaseReference;
 
@@ -76,7 +75,6 @@ public class DialogAddLine extends DialogFragment implements PassDataBetweenDial
         }
 
         if (isEditing) {
-            //Toast.makeText(getActivity(),"no null...",Toast.LENGTH_SHORT).show();
             popupCategoryName.setText(category);
             if (!comment.isEmpty()) {
                 popupUserComment.setVisibility(View.VISIBLE);
@@ -99,7 +97,7 @@ public class DialogAddLine extends DialogFragment implements PassDataBetweenDial
             popupEnter.setText(R.string.change);
         }
 
-        //Click the 'X' button to exit the dialog.
+        //Click the 'X' button to exit_dialog the dialog.
         popupDismiss.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -140,7 +138,7 @@ public class DialogAddLine extends DialogFragment implements PassDataBetweenDial
                 //write to that node
                 if (!popupMoney.getText().toString().isEmpty() && !popupCategoryName.getText().toString().isEmpty()) {
                     if (!isEditing){
-                        Toast.makeText(getActivity(),"not editing..",Toast.LENGTH_SHORT).show();
+                        //Toast.makeText(getActivity(),"not editing..",Toast.LENGTH_SHORT).show();
                         String key = userRef.push().getKey();
                         itemView.setKey(key);
                         userRef.child(key).setValue(itemView);
@@ -306,14 +304,16 @@ public class DialogAddLine extends DialogFragment implements PassDataBetweenDial
             public void onClick(View view) {
                 String text = popupCategoryName.getText().toString().trim();
 
-                Category_Comment_Dialog dialog = new Category_Comment_Dialog();
+                Dialog_Category_Comment dialog = new Dialog_Category_Comment();
                 dialog.setTargetFragment(DialogAddLine.this, 1);
-                dialog.show(getFragmentManager(), "Category_Comment_Dialog");
+                dialog.show(getFragmentManager(), "Dialog_Category_Comment");
 
                 if (!text.equals("")) {
-                    dialog.selectedSpinnerItem = text;
+                    //dialog.selectedSpinnerItem = text;
+                    dialog.updateSelectedSpinnerItemValue(text);
                 } else {
-                    dialog.selectedSpinnerItem = "בית";
+                    dialog.updateSelectedSpinnerItemValue("בית");
+                    //dialog.selectedSpinnerItem = "בית";
                 }
                 //if comment is not empty,
                 if (popupUserComment.getVisibility() == View.VISIBLE && !popupUserComment.getText().toString().isEmpty()) {
@@ -334,10 +334,10 @@ public class DialogAddLine extends DialogFragment implements PassDataBetweenDial
 //            popupUserComment.setOnClickListener(new View.OnClickListener() {
 //                @Override
 //                public void onClick(View view) {
-//                    Category_Comment_Dialog dialog = new Category_Comment_Dialog();
+//                    Dialog_Category_Comment dialog = new Dialog_Category_Comment();
 //
 //                    dialog.setTargetFragment(DialogAddLine.this,1);
-//                    dialog.show(getFragmentManager(),"Category_Comment_Dialog");
+//                    dialog.show(getFragmentManager(),"Dialog_Category_Comment");
 //                    dialog.commentText = popupUserComment.getText().toString();
 //                }
 //            });

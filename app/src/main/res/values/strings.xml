@@ -87,6 +87,18 @@
     <string name="home">home</string>
     <string name="RegisterTitle">Register</string>
     <string name="change">Change</string>
+    <string name="about">About</string>
+    <string name="my_details">My details</string>
+    <string name="register_pass_alert">The password must contain at least six characters</string>
+    <string name="email_verification">Email verification is required,make sure your internet connections are OK and try again</string>
+    <string name="enter_email">Enter your email in order to finish authentication</string>
+    <string name="password_not_equal">The password is not equal</string>
+    <string name="name_with_colon">Name :</string>
+    <string name="name_hint">user name</string>
+    <string name="email_with_colon">Email :</string>
+    <string name="my_balance_with_colon">My balance :</string>
+    <string name="user_email">user email</string>
+    <string name="text_about_page">The Application Financly is a platform to manage and track the user finance. The user can add his incomes or expanses by categories and describe each one of them, in an easy and convenient way.</string>
 
 
 </resources>

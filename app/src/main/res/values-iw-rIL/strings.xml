@@ -85,5 +85,17 @@
     <string name="home">בית</string>
     <string name="RegisterTitle">הרשמה</string>
     <string name="change">שנה</string>
+    <string name="about">אודות</string>
+    <string name="my_details">הפרטים שלי</string>
+    <string name="register_pass_alert">הסיסמא חייבת להיות לפחות בעלת שש תווים</string>
+    <string name="email_verification">נדרש מייל אימות,אנא נסה שנית</string>
+    <string name="enter_email">היכנס לאימייל שלך על מנת לבצע אימות</string>
+    <string name="password_not_equal">הסיסמא לא זהה</string>
+    <string name="name_with_colon">שם :</string>
+    <string name="name_hint">שם המשתמש</string>
+    <string name="email_with_colon">אימייל :</string>
+    <string name="my_balance_with_colon">המאזן שלי :</string>
+    <string name="user_email">האימייל של המשתמש</string>
+    <string name="text_about_page">האפליקציה פיננסלי היא פלטפורמה לניהול ומעקב אחר ההוצאות של המשתמש. באפשרות המשתמש להוסיף הוצאות או הכנסות לפי קטגוריות ולפרט על כל אחת מהן, בדרך קלה ונוחה.</string>
 
 </resources>

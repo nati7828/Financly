@@ -28,7 +28,6 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
     private DrawerLayout drawerLayout;
     private ActionBarDrawerToggle drawerToggle;
     private Toolbar toolbar;
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -58,7 +57,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
             public void onDataChange(DataSnapshot dataSnapshot) {
                 String name = dataSnapshot.getValue(String.class);
 
-                TextView t = findViewById(R.id.drawer_header_welcome_user_txt_view);
+                TextView welcomeText = findViewById(R.id.drawer_header_welcome_user_txt_view);
                 Calendar c = Calendar.getInstance();
                 int timeOfDay = c.get(Calendar.HOUR_OF_DAY);
 
@@ -75,7 +74,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
                     timeWelcome = getString(R.string.good_night);
                 }
                 String welcome = timeWelcome + ", " + name;
-                t.setText(welcome);
+                welcomeText.setText(welcome);
             }
 
             @Override
@@ -97,8 +96,8 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
             getSupportFragmentManager().beginTransaction().add(R.id.fragment_container, new BalanceFragment()).commit();
             navigationView.setCheckedItem(R.id.nav_balance);//Show that we are on the balance page - highlight the message item.
         }
-
     }
+
 
     //Action when the back button is pressed.
     @Override
@@ -135,9 +134,11 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
                 break;
             case R.id.nav_details:
                 getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container, new UserDetailsFragment()).commit();
+                getSupportActionBar().setTitle(R.string.my_details);
                 break;
             case R.id.nav_about:
                 getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container, new AboutFragment()).commit();
+                getSupportActionBar().setTitle(R.string.about);
                 break;
             case R.id.nav_logout:
                 item.setCheckable(false);
@@ -154,5 +155,6 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         return drawerToggle.onOptionsItemSelected(item) || super.onOptionsItemSelected(item);
 
     }
+
 
 }

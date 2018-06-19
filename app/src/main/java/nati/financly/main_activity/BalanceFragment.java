@@ -11,6 +11,7 @@ import android.support.design.widget.FloatingActionButton;
 import android.support.v4.app.Fragment;
 import android.support.v4.widget.NestedScrollView;
 import android.support.v7.app.AppCompatActivity;
+import android.support.v7.widget.DefaultItemAnimator;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
@@ -18,6 +19,7 @@ import android.text.Editable;
 import android.text.Spannable;
 import android.text.SpannableString;
 import android.text.TextWatcher;
+import android.text.format.DateFormat;
 import android.text.style.ForegroundColorSpan;
 import android.text.style.RelativeSizeSpan;
 import android.text.style.StyleSpan;
@@ -66,6 +68,8 @@ public class BalanceFragment extends Fragment {
     NestedScrollView nestedScrollView;
     FloatingActionButton fab;
 
+    String passedDate;
+
     public BalanceFragment() {
         //Empty constructor
     }
@@ -78,7 +82,6 @@ public class BalanceFragment extends Fragment {
         ((AppCompatActivity) getActivity()).setSupportActionBar(toolbar);
         ((AppCompatActivity) getActivity()).getSupportActionBar();
 
-
         final DialogAddLine dialogAddLine = new DialogAddLine();
 
         nestedScrollView = v.findViewById(R.id.nestedScrollView);
@@ -88,42 +91,39 @@ public class BalanceFragment extends Fragment {
         searchBtn = v.findViewById(R.id.balance_main_search_btn);
         exitBtn = v.findViewById(R.id.balance_main_exit_search_btn);
         search_et = v.findViewById(R.id.balance_main_search_et);
-            search_et.addTextChangedListener(new TextWatcher() {
-                @Override
-                public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+        search_et.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+            }
+
+            @Override
+            public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+            }
+
+            @Override
+            public void afterTextChanged(Editable editable) {
+                String text = editable.toString();
+
+                filteredList = new ArrayList<>();
+
+                for (int i = 0; i < rvItems.size(); i++) {
+                    if (rvItems.get(i).getCategoryName().toLowerCase().contains(text.toLowerCase()) ||
+                            rvItems.get(i).getUserComment().toLowerCase().contains(text.toLowerCase()) ||
+                            rvItems.get(i).getDate().contains(text) ||
+                            rvItems.get(i).getIncome_outcome().contains(text)) {
+                        filteredList.add(rvItems.get(i));
+                    }
                 }
 
-                @Override
-                public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+                if (filteredList != null && !filteredList.isEmpty() && filteredList.size() != rvItems.size()) {
+                    adapter.filteredList(filteredList);
+                }
+                if (filteredList.size() == 0 || filteredList.size() == rvItems.size()) {
+                    adapter.originalList(rvItems);
                 }
 
-                @Override
-                public void afterTextChanged(Editable editable) {
-                    String text = editable.toString();
-
-                    filteredList = new ArrayList<>();
-
-                    for (int i = 0; i<rvItems.size(); i++ ) {
-                        if (rvItems.get(i).getCategoryName().toLowerCase().contains(text.toLowerCase()) ||
-                                rvItems.get(i).getUserComment().toLowerCase().contains(text.toLowerCase()) ||
-                                rvItems.get(i).getDate().contains(text)||
-                                rvItems.get(i).getIncome_outcome().contains(text)) {
-                            filteredList.add(rvItems.get(i));
-                        }
-                    }
-
-                    if(filteredList != null && !filteredList.isEmpty() && filteredList.size() != rvItems.size()){
-                        adapter.filteredList(filteredList);
-                    }
-                    if(filteredList.size() == 0 || filteredList.size() == rvItems.size()){
-                        adapter.originalList(rvItems);
-                    }
-
-                }
-            });
-
-
-
+            }
+        });
 
 
         searchBtn.setOnClickListener(new View.OnClickListener() {
@@ -165,11 +165,17 @@ public class BalanceFragment extends Fragment {
         //showMoneyBalanceListener.showBalance(money);
         if (user != null) {
             userId = user.getUid();
-
         }
         //Recycler view part//
         final RecyclerView recyclerView = v.findViewById(R.id.main_activity_rv);
-        recyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
+        LinearLayoutManager layoutManager = new LinearLayoutManager(getActivity()) {
+            @Override
+            public boolean supportsPredictiveItemAnimations() {
+                return true;
+            }
+        };
+        recyclerView.setLayoutManager(layoutManager);
+        recyclerView.setItemAnimator(new DefaultItemAnimator());
 
         rvItems = new ArrayList<>();
         adapter = new BalanceFragmentAdapter(getActivity(), rvItems);
@@ -181,16 +187,18 @@ public class BalanceFragment extends Fragment {
             @Override
             public void onEditClick(int position) {
                 ItemView selectedItem;
-                if(filteredList != null && !filteredList.isEmpty() && filteredList.size() != rvItems.size()){
+                if (filteredList != null && !filteredList.isEmpty() && filteredList.size() != rvItems.size()) {
                     selectedItem = filteredList.get(position);
-                }else{
+                } else {
                     selectedItem = rvItems.get(position);
                 }
 
                 dialogAddLine.setItemViewForEditing(selectedItem);
 
-                dialogAddLine.setUserRefAndAdapter(userRef,adapter);
-                dialogAddLine.show(getFragmentManager(), "dialogAddLine");
+                dialogAddLine.setUserRefAndAdapter(userRef, adapter);
+                if (!dialogAddLine.isAdded()) {
+                    dialogAddLine.show(getFragmentManager(), "dialogAddLine");
+                }
                 // adapter.originalList(rvItems);
                 //myRef.child("Users").child(userId).child(selectedKey);///////////////////////// edit next.....
                 //adapter.notifyDataSetChanged();
@@ -201,20 +209,18 @@ public class BalanceFragment extends Fragment {
                 ItemView selectedItem;
                 String selectedKey;
 
-
-
-                if(filteredList != null && !filteredList.isEmpty() && filteredList.size() != rvItems.size()){
+                if (filteredList != null && !filteredList.isEmpty() && filteredList.size() != rvItems.size()) {
                     Log.d("#not null", "filtered...");
-                    Log.d("###","filter size: " + filteredList.size());
-                    Log.d("###","original size: " + rvItems.size());
+                    Log.d("###", "filter size: " + filteredList.size());
+                    Log.d("###", "original size: " + rvItems.size());
 
                     selectedItem = filteredList.get(position);
                     selectedKey = selectedItem.getKey();
                     myRef.child("Users").child(userId).child(selectedKey).removeValue();
                     adapter.filteredList(filteredList);
-                }else{
+                } else {
                     Log.d("#null", "original...");
-                    Log.d("###","original size: " + rvItems.size());
+                    Log.d("###", "original size: " + rvItems.size());
 
                     selectedItem = rvItems.get(position);
                     selectedKey = selectedItem.getKey();
@@ -223,7 +229,6 @@ public class BalanceFragment extends Fragment {
                 }
             }
         });
-
 
         userRef.orderByChild("date").addValueEventListener(new ValueEventListener() {
             @Override
@@ -243,8 +248,8 @@ public class BalanceFragment extends Fragment {
 
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
-            public void onClick(View view){
-                dialogAddLine.setUserRefAndAdapter(userRef,adapter);
+            public void onClick(View view) {
+                dialogAddLine.setUserRefAndAdapter(userRef, adapter);
                 dialogAddLine.show(getFragmentManager(), "dialogAddLine");
             }
         });
@@ -253,8 +258,6 @@ public class BalanceFragment extends Fragment {
         //
     }
     //End of onCreate//
-
-
 
 
     //ShowData method - invokes in the OnCreateView//
@@ -275,20 +278,28 @@ public class BalanceFragment extends Fragment {
                 moneySum += Integer.parseInt(income_outcome);
             }
             //Format the time in millis to date - to show the user the date in dd/MM//yyyy, HH:mm format.
-            SimpleDateFormat formatter = new SimpleDateFormat("dd/MM/yyyy, HH:mm", Locale.getDefault());
+
+            SimpleDateFormat formatter;
+
+            //if(Locale.getDefault().getDisplayLanguage().equals(Locale.ENGLISH.getDisplayName())){
+            if (!DateFormat.is24HourFormat(getActivity())) {
+                formatter = new SimpleDateFormat("MM/dd/yyyy, KK:mm aa", Locale.getDefault());
+            } else {
+                formatter = new SimpleDateFormat("dd/MM/yyyy, HH:mm", Locale.getDefault());
+            }
             // Create a calendar object that will convert the date and time value in
             // milliseconds to date.
             if (date != null) {
                 Calendar calendar = Calendar.getInstance();
                 calendar.setTimeInMillis(Long.valueOf(date));
                 String formattedDate = formatter.format(calendar.getTime());
-
-                itemView.setCategoryName(categoryName);
-                itemView.setUserComment(userComment);
                 itemView.setDate(formattedDate);
-                itemView.setIncome_outcome(income_outcome);
-                itemView.setKey(key);
             }
+
+            itemView.setCategoryName(categoryName);
+            itemView.setUserComment(userComment);
+            itemView.setIncome_outcome(income_outcome);
+            itemView.setKey(key);
 
             if (itemView.getCategoryName() != null) {
                 switch (itemView.getCategoryName()) {
@@ -355,7 +366,7 @@ public class BalanceFragment extends Fragment {
                     case "טואלטיקה":
                         itemView.setImage(R.drawable.toliet_and_clean);
                         break;
-                    case "Toilet and cleaning":
+                    case "Toiletries/Cleaning":
                         itemView.setImage(R.drawable.toliet_and_clean);
                         break;
                     case "רכב":
@@ -449,7 +460,7 @@ public class BalanceFragment extends Fragment {
                 rvItems.add(0, itemView);
             }
         }
-        if(moneySum == 0){
+        if (moneySum == 0) {
             collapsingToolbarLayout.setCollapsedTitleTextAppearance(R.style.collapsedToolbarTitleZero);
             collapsingToolbarLayout.setExpandedTitleTextAppearance(R.style.expandedToolbarTitleZero);
         } else if (moneySum > 0) {
@@ -492,5 +503,8 @@ public class BalanceFragment extends Fragment {
     }
     //End showData method//
 
+    public void passDate(String passedDate) {
+        this.passedDate = passedDate;
+    }
 }
 

@@ -56,6 +56,15 @@ public class DialogAddLine extends DialogFragment implements PassDataBetweenDial
     boolean isEditing = false;
     String category, comment, date, money;
 
+    String stampDate = "";
+    Calendar cal = Calendar.getInstance();
+    int year = cal.get(Calendar.YEAR);
+    int month = cal.get(Calendar.MONTH) + 1;
+    int day = cal.get(Calendar.DAY_OF_MONTH);
+
+    int hour = cal.get(Calendar.HOUR_OF_DAY);
+    int minute = cal.get(Calendar.MINUTE);
+
     @NonNull
     @Override
     public Dialog onCreateDialog(Bundle savedInstanceState) {
@@ -85,14 +94,12 @@ public class DialogAddLine extends DialogFragment implements PassDataBetweenDial
                     popupUserComment.setVisibility(View.INVISIBLE);
                 }
 
-                Log.d("###", "money: " + money + ", date:" + date);
-
                 popupDate.setText(date);
 
                 String moneyInt;
-                if (money.contains(",")){
-                    moneyInt = money.replace(",","");
-                }else{
+                if (money.contains(",")) {
+                    moneyInt = money.replace(",", "");
+                } else {
                     moneyInt = money;
                 }
                 int textIntVal = Integer.parseInt(moneyInt);
@@ -118,33 +125,8 @@ public class DialogAddLine extends DialogFragment implements PassDataBetweenDial
                 public void onClick(View view) {
                     String dtStart = popupDate.getText().toString();
 
-                    SimpleDateFormat format;
-                    format = new SimpleDateFormat("dd/MM/yyyy, HH:mm", Locale.getDefault());
 
-//                    if (!DateFormat.is24HourFormat(getActivity())) {//if 12 hours format show am/pm
-//                        format = new SimpleDateFormat("MM/dd/yyyy, KK:mm aa", Locale.getDefault());
-//                        if (date != null) {
-//                            String am_pm = date.substring(date.length() - 2, date.length());
-//                            int hour = Integer.parseInt(date.substring(12, 14));
-//                            int minute = Integer.parseInt(date.substring(15, 17));
-//
-//                        Log.d("###", "" + hour + ":" + minute + ", " + am_pm);
-//
-//
-//                    }
-//                    else {
-//                        format = new SimpleDateFormat("dd/MM/yyyy, HH:mm", Locale.getDefault());
-//                    }
-
-                    String stampDate = "";
-                    //Convert the date to another pattern to send to the fire base database.
-                    try {
-                        Date date = format.parse(dtStart);
-                        long stamp = date.getTime();
-                        stampDate = String.valueOf(stamp);
-                    } catch (ParseException e) {
-                        e.printStackTrace();
-                    }
+                    formatDate(dtStart);
 
                     //If itemView has values, user is editing.
                     if (isEditing) {
@@ -164,7 +146,7 @@ public class DialogAddLine extends DialogFragment implements PassDataBetweenDial
                     }
                     if (!popupMoney.getText().toString().isEmpty() && !popupCategoryName.getText().toString().isEmpty()) {
                         if (!isEditing) {
-                            //Toast.makeText(getActivity(),"not editing..",Toast.LENGTH_SHORT).show();
+                            //if user is creating a new item -> create a new node in the firebase DB.
                             String key = userRef.push().getKey();
                             itemView.setKey(key);
                             userRef.child(key).setValue(itemView);
@@ -183,114 +165,52 @@ public class DialogAddLine extends DialogFragment implements PassDataBetweenDial
                         }
                     }
 
-
                 }
             });
             //End of popupEnter OnClick.
 
-
-            //Make a new String which hold the current date and time automatically
-            final Calendar cal = Calendar.getInstance();
-            final int year = cal.get(Calendar.YEAR);
-            final int month = cal.get(Calendar.MONTH) + 1;
-            final int day = cal.get(Calendar.DAY_OF_MONTH);
-
-            final int hour = cal.get(Calendar.HOUR_OF_DAY);
-            final int minute = cal.get(Calendar.MINUTE);
-            String currentDate = "";
-            String currentTime = "";
-
-//            if (!DateFormat.is24HourFormat(getActivity())) {
-//                // If the time format is 12 hours show mm//dd/yyyy.
-//
-//                if (day < 10 && month < 10) {
-//                    currentDate = "0" + month + "/" + "0" + day + "/" + year;
-//                } else if (day < 10) {
-//                    currentDate = month + "/" + "0" + day + "/" + year;
-//                } else if (month < 10) {
-//                    currentDate = "0" + month + "/" + day + "/" + year;
-//                } else {
-//                    currentDate = month + "/" + day + "/" + year;
-//                }
-//
-//                //Show the hour and minutes always as : hh/mm - ex: 12:12 .
-//                if (hour < 10 && minute < 10) {
-//                    currentTime = "0" + hour + ":" + "0" + minute;
-//                } else if (hour < 10) {
-//                    currentTime = "0" + hour + ":" + minute;
-//                } else if (minute < 10) {
-//                    currentTime = hour + ":" + "0" + minute;
-//                } else {
-//                    currentTime = hour + ":" + minute;
-//                }
-
-//            } else { // If not 12 hours format show dd/mm/yyyy.
-                //Show the date(month and days) always as MM and not M - ex: 05 and not 5(00/05/00).
-                if (day < 10 && month < 10) {
-                    currentDate = "0" + day + "/" + "0" + month + "/" + year;
-                } else if (day < 10) {
-                    currentDate = "0" + day + "/" + month + "/" + year;
-                } else if (month < 10) {
-                    currentDate = day + "/" + "0" + month + "/" + year;
-                } else {
-                    currentDate = day + "/" + month + "/" + year;
-                }
-
-                //Show the hour and minutes always as : hh/mm - ex: 12:12 .
-                if (hour < 10 && minute < 10) {
-                    currentTime = "0" + hour + ":" + "0" + minute;
-                } else if (hour < 10) {
-                    currentTime = "0" + hour + ":" + minute;
-                } else if (minute < 10) {
-                    currentTime = hour + ":" + "0" + minute;
-                } else {
-                    currentTime = hour + ":" + minute;
-                }
-//            }
-
-            String date_and_time = currentDate + ", " + currentTime;
-
             if (isEditing) {
-                popupDate.setText(itemView.getDate());
+                String itemViewDate = itemView.getDate();
+                popupDate.setText(itemViewDate);
             } else {
-                popupDate.setText(date_and_time);
+                updateDate(day, month-1, year);
+                updateTime(hour, minute);
             }
 
             //In order to show the user the edit text with "," in big numbers - like 10,000 instead of 10000,
             //I made a listener and after every user interaction, it will format the text to the desired one(with commas).
             popupMoney.addTextChangedListener(this);
-            //End of text Converting.
-
 
             //When press the date textView, calender dialog pops up, so the user can choose the desired date//
             popupDate.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
                     getDialog().hide();
-                    Calendar cal = Calendar.getInstance();
-                    int year = cal.get(Calendar.YEAR);
-                    int month = cal.get(Calendar.MONTH);
-                    int day = cal.get(Calendar.DAY_OF_MONTH);
-
-                    int hour = cal.get(Calendar.HOUR_OF_DAY);
-                    int minute = cal.get(Calendar.MINUTE);
-
                     if (isEditing) {
                         String date = popupDate.getText().toString();
-                        Log.d("###date: ", date + "...");
-                        day = Integer.parseInt(date.substring(0, 2));
-                        month = Integer.parseInt(date.substring(3, 5));
                         year = Integer.parseInt(date.substring(6, 10));
-
                         hour = Integer.parseInt(date.substring(12, 14));
                         minute = Integer.parseInt(date.substring(15, 17));
-                        Log.d("#minute", hour + ":" + minute);
+
+                        if (!DateFormat.is24HourFormat(getActivity())) {
+                            //If date format is 12 hours.
+                            day = Integer.parseInt(date.substring(3, 5));
+                            month = Integer.parseInt(date.substring(0, 2));
+                            if (date.toLowerCase().contains("PM".toLowerCase())) {
+                                hour += 12;
+                            }
+                        } else {
+                            //If date format is 24 hours.
+                            day = Integer.parseInt(date.substring(0, 2));
+                            month = Integer.parseInt(date.substring(3, 5));
+                        }
                     }
 
+                    ////Date dialog////
                     dateDialog = new DatePickerDialog(getActivity(),
                             R.style.date_dialog,
                             dateListener,
-                            year, month, day);
+                            year, month-1, day);
 
                     if (dateDialog.getWindow() != null) {
                         dateDialog.getWindow().setBackgroundDrawable(new ColorDrawable(getResources().getColor(R.color.colorDarkGray)));
@@ -305,11 +225,13 @@ public class DialogAddLine extends DialogFragment implements PassDataBetweenDial
                     });
 
                     dateDialog.show(); // when clicking the date TextView, the date dialog will be shown.
+                    ////End of date dialog////
 
+                    ////Time dialog////
                     timeDialog = new TimePickerDialog(getActivity(),
                             R.style.time_dialog,
                             timeListener,
-                            hour, minute, android.text.format.DateFormat.is24HourFormat(getActivity()));
+                            hour, minute, DateFormat.is24HourFormat(getActivity()));
 
 
                     if (timeDialog.getWindow() != null) {
@@ -323,57 +245,32 @@ public class DialogAddLine extends DialogFragment implements PassDataBetweenDial
                             dateDialog.show();
                         }
                     });
+                    ////End of Time dialog////
                 }
             });
+            //End of popupDate//
 
+            //DatePicker listener//
             dateListener = new DatePickerDialog.OnDateSetListener() {
                 @Override
                 public void onDateSet(DatePicker datePicker, int year, int month, int day) {
-
-                    if (day < 10 && month < 10) {
-                        date_time = "0" + day + "/" + "0" + month + "/" + year;
-                    } else if (day < 10) {
-                        date_time = "0" + day + "/" + month + "/" + year;
-                    } else if (month < 10) {
-                        date_time = day + "/" + "0" + month + "/" + year;
-                    } else {
-                        date_time = day + "/" + month + "/" + year;
-                    }
+                    updateDate(day, month, year);
                     timeDialog.show();
                 }
             };
-            //End of date dialog//
+            //End of datePicker listener//
 
             //TimePicker listener//
             timeListener = new TimePickerDialog.OnTimeSetListener() {
                 @Override
                 public void onTimeSet(TimePicker timePicker, int hour, int minute) {
-                    //showing the user the time in hh:mm format, instead of h:m - ex: if the time is 03:09 - show it that way instead of 3:9.
-                    if (hour < 10 && minute < 10) {
-                        date_time = date_time + ", " + "0" + hour + ":" + "0" + minute;
-                    } else if (hour < 10) {
-                        date_time = date_time + ", " + "0" + hour + ":" + minute;
-                    } else if (minute < 10) {
-                        date_time = date_time + ", " + hour + ":" + "0" + minute;
-                    } else {
-                        date_time = date_time + ", " + hour + ":" + minute;
-                    }
-
-
-                    if (!DateFormat.is24HourFormat(getActivity())) {
-                        if (hour >= 12) {
-                            date_time = date_time + "PM";
-                        } else {
-                            date_time = date_time + "AM";
-                        }
-                    }
-
-                    popupDate.setText(date_time);
+                    updateTime(hour, minute);
                     getDialog().show();
-
                 }
             };
+            //End of timePicker listener//
 
+            //Pressing the categoryName text will open category_comment dialog.
             popupCategoryName.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
@@ -384,48 +281,117 @@ public class DialogAddLine extends DialogFragment implements PassDataBetweenDial
                     dialog.show(getFragmentManager(), "Dialog_Category_Comment");
 
                     if (!text.equals("")) {
-                        //dialog.selectedSpinnerItem = text;
                         dialog.updateSelectedSpinnerItemValue(text);
                     } else {
                         dialog.updateSelectedSpinnerItemValue("בית");
-                        //dialog.selectedSpinnerItem = "בית";
                     }
                     //if comment is not empty,
                     if (popupUserComment.getVisibility() == View.VISIBLE && !popupUserComment.getText().toString().isEmpty()) {
-                        dialog.commentText = popupUserComment.getText().toString();
+                        String comment_text = popupUserComment.getText().toString();
+                        dialog.updateCommentText(comment_text);//move the String to category_comment_dialog.
                     }
                 }
             });
-            ////
 
+            //Pressing the userComment text will open category_comment dialog.
+            popupUserComment.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    String text = popupCategoryName.getText().toString().trim();
+                    Dialog_Category_Comment dialog = new Dialog_Category_Comment();
+                    dialog.setTargetFragment(DialogAddLine.this, 1);
+                    dialog.show(getFragmentManager(), "Dialog_Category_Comment");
 
+                    if (!text.equals("")) {
+                        dialog.updateSelectedSpinnerItemValue(text);
+                    } else {
+                        dialog.updateSelectedSpinnerItemValue("בית");
+                    }
+                    String comment_text = popupUserComment.getText().toString();
+                    dialog.updateCommentText(comment_text);//move the String to category_comment_dialog.
+                }
+            });
         }
         return builder.create();
 
     }
 
-    //TRYING TO SET ON CLICK LISTENER ON COMMENT TEXT
-//    @Override
-//    public void onResume() {
-//        super.onResume();
-//        if (popupUserComment.getVisibility() == View.VISIBLE && !popupUserComment.getText().toString().isEmpty()){
-//
-//            popupUserComment.setOnClickListener(new View.OnClickListener() {
-//                @Override
-//                public void onClick(View view) {
-//                    Dialog_Category_Comment dialog = new Dialog_Category_Comment();
-//
-//                    dialog.setTargetFragment(DialogAddLine.this,1);
-//                    dialog.show(getFragmentManager(),"Dialog_Category_Comment");
-//                    dialog.commentText = popupUserComment.getText().toString();
-//                }
-//            });
-//        }else{
-//            Toast.makeText(getActivity(),"not good",Toast.LENGTH_SHORT).show();
-//        }
-//    }
+    private void formatDate(String dtStart) {
+        SimpleDateFormat format;
+        // format = new SimpleDateFormat("dd/MM/yyyy, HH:mm", Locale.getDefault());
+
+        if (!DateFormat.is24HourFormat(getActivity())) {//if 12 hours format show am/pm
+            format = new SimpleDateFormat("MM/dd/yyyy, KK:mm aa", Locale.getDefault());
+        } else {
+            format = new SimpleDateFormat("dd/MM/yyyy, HH:mm", Locale.getDefault());
+        }
+
+        String stampDate = "";
+        //Convert the date to another pattern to send to the fire base database.
+        try {
+            Date date = format.parse(dtStart);
+            long stamp = date.getTime();
+            stampDate = String.valueOf(stamp);
+        } catch (ParseException e) {
+            e.printStackTrace();
+        }
+        this.stampDate = stampDate;
+    }
 
 
+    private void updateDate(int day, int month, int year) {
+        month+=1;
+        if (!DateFormat.is24HourFormat(getActivity())) {
+            //If Format is 12 hours
+            if (day < 10 && month < 10) {
+                date_time = "0" + month + "/" + "0" + day + "/" + year;
+            } else if (day < 10) {
+                date_time = month + "/" + "0" + day + "/" + year;
+            } else if (month < 10) {
+                date_time = "0" + month + "/" + day + "/" + year;
+            } else {
+                date_time = month + "/" + day + "/" + year;
+            }
+        } else {
+            if (day < 10 && month < 10) {
+                date_time = "0" + day + "/" + "0" + month + "/" + year;
+            } else if (day < 10) {
+                date_time = "0" + day + "/" + month + "/" + year;
+            } else if (month < 10) {
+                date_time = day + "/" + "0" + month + "/" + year;
+            } else {
+                date_time = day + "/" + month + "/" + year;
+            }
+        }
+    }
+
+    private void updateTime(int hour, int minute) {
+        if (!DateFormat.is24HourFormat(getActivity())) {
+            // If dateFormat is 12 hours
+            if (hour >= 12) {
+                hour -= 12;
+                date_time += " PM";
+            } else {
+                date_time += " AM";
+            }
+        }
+
+        //Showing the user the time in hh:mm format, instead of h:m - ex: if the time is 03:09 - show it that way instead of 3:9.
+        //Because the date_string last chars are " AM/ PM" I cut the string and add the formatted date before these last chars.
+        if (hour < 10 && minute < 10) {
+            date_time = date_time.substring(0, date_time.length() - 3) + ", " + "0" + hour + ":" + "0" + minute + date_time.substring(date_time.length() - 3, date_time.length());
+        } else if (hour < 10) {
+            date_time = date_time.substring(0, date_time.length() - 3) + ", " + "0" + hour + ":" + minute + date_time.substring(date_time.length() - 3, date_time.length());
+        } else if (minute < 10) {
+            date_time = date_time.substring(0, date_time.length() - 3) + ", " + hour + ":" + "0" + minute + date_time.substring(date_time.length() - 3, date_time.length());
+        } else {
+            date_time = date_time.substring(0, date_time.length() - 3) + ", " + hour + ":" + minute + date_time.substring(date_time.length() - 3, date_time.length());
+        }
+
+        popupDate.setText(date_time);
+    }
+
+    //Implementing interface//
     @Override
     public void passCategoryAndComment(String category, String comment) {
         popupCategoryName.setText(category);
@@ -437,17 +403,13 @@ public class DialogAddLine extends DialogFragment implements PassDataBetweenDial
         }
     }
 
-    public void passDate(){
-
-    }
-
+    //Method to use in the balanceFragment - to get the itemView for editing.
     public void setItemViewForEditing(ItemView itemView) {
         String category = itemView.getCategoryName();
         String comment = itemView.getUserComment();
         String date = itemView.getDate();
         String money = itemView.getIncome_outcome();
 
-        Log.d("###", category + comment + date + money);
         isEditing = true;
 
         this.itemView = itemView;
@@ -463,6 +425,7 @@ public class DialogAddLine extends DialogFragment implements PassDataBetweenDial
         this.adapter = adapter;
     }
 
+    //Implementing textWatcher listener//
     @Override
     public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {
     }
@@ -474,17 +437,12 @@ public class DialogAddLine extends DialogFragment implements PassDataBetweenDial
 
     @Override
     public void afterTextChanged(Editable editable) {
-        Log.d("###", editable + "...");
         popupMoney.removeTextChangedListener(this);
         try {
             String originalString = editable.toString();
-
-            Log.d("###original", originalString + " ...");
             if (originalString.contains(",")) {
                 originalString = originalString.replaceAll(",", "");
             }
-            Log.d("###original", originalString + " 2...");
-
             int textIntVal = Integer.parseInt(originalString);
             DecimalFormat formatter = (DecimalFormat) NumberFormat.getInstance(Locale.getDefault());
             formatter.applyPattern("#,###,###,###");
@@ -496,10 +454,6 @@ public class DialogAddLine extends DialogFragment implements PassDataBetweenDial
         }
         popupMoney.addTextChangedListener(this);
     }
-
-    ////NumbersTextChanges////
-
-    ////End of NumbersTextChanges////
-
+    //End of textWatcher listener//
 
 }

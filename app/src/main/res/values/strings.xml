@@ -23,7 +23,7 @@
     <string name="dialog_reset_message">Press OK to get password reset link to your email</string>
 
     <string name="email_sent">Password reset link was sent to your email address</string>
-    <string name="email_was_not_sent_successfully">Email was not sent successfully, Please check the email address you entered and try again</string>
+    <string name="email_was_not_sent_successfully">Email is not exists, Check The email you entered and try again</string>
     <string name="email_text_is_empty">Email text is empty, please fill your correct email in the text and try again</string>
 
     <string name="dialog_logout_title">Logout</string>
@@ -89,7 +89,6 @@
     <string name="change">Change</string>
     <string name="about">About</string>
     <string name="my_details">My details</string>
-    <string name="register_pass_alert">The password must contain at least six characters</string>
     <string name="email_verification">Email verification is required,make sure your internet connections are OK and try again</string>
     <string name="enter_email">Enter your email in order to finish authentication</string>
     <string name="password_not_equal">The password is not equal</string>
@@ -99,6 +98,13 @@
     <string name="my_balance_with_colon">My balance :</string>
     <string name="user_email">user email</string>
     <string name="text_about_page">The Application Financly is a platform to manage and track the user finance. The user can add his incomes or expanses by categories and describe each one of them, in an easy and convenient way.</string>
+    <string name="email_not_verified">Verify your email in the link you got in it </string>
+    <string name="password_is_wrong">Password is wrong</string>
+    <string name="email_is_wrong">Email address is wrong or does not exists</string>
+    <string name="weak_password">The password must contain at least six characters</string>
+    <string name="malformed_email">Please enter a valid email address</string>
+    <string name="email_already_exists">Email is already exists</string>
+    <string name="resend_email">Resend verification email</string>
 
 
 </resources>

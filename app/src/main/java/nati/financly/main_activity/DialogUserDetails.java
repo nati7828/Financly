@@ -1,8 +1,10 @@
 package nati.financly.main_activity;
 
 import android.app.Dialog;
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
+import android.support.v4.content.LocalBroadcastManager;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatDialogFragment;
 import android.view.LayoutInflater;
@@ -25,6 +27,8 @@ public class DialogUserDetails extends AppCompatDialogFragment {
     String name = "";
     String email = "";
 
+    EditText nameET;
+
     @NonNull
     @Override
     public Dialog onCreateDialog(Bundle savedInstanceState) {
@@ -46,7 +50,7 @@ public class DialogUserDetails extends AppCompatDialogFragment {
 
         final DatabaseReference userRef = myRef.child("Users").child(userId);
 
-        final EditText nameET = view.findViewById(R.id.user_details_dialog_nameET);
+        nameET = view.findViewById(R.id.user_details_dialog_nameET);
         final EditText emailET = view.findViewById(R.id.user_details_dialog_emailET);
 
         TextView cancelBtn = view.findViewById(R.id.user_details_dialog_cancelBtn);
@@ -63,6 +67,8 @@ public class DialogUserDetails extends AppCompatDialogFragment {
                 dismiss();
             }
         });
+
+
         if (user != null)
             okBtn.setOnClickListener(new View.OnClickListener() {
                 @Override
@@ -70,6 +76,7 @@ public class DialogUserDetails extends AppCompatDialogFragment {
                     final String name_text = nameET.getText().toString();
                     if (!name_text.equals(name)) {
                         userRef.child("name").setValue(name_text);
+                        updateName();
                     }
 
                     final String email_text = emailET.getText().toString();
@@ -102,6 +109,15 @@ public class DialogUserDetails extends AppCompatDialogFragment {
 
         builder.setView(view);
         return builder.create();
+    }
+
+
+    public void updateName(){
+        LocalBroadcastManager manager = LocalBroadcastManager.getInstance(getActivity());
+
+        Intent intent = new Intent("user_name");
+        intent.putExtra("name",nameET.getText().toString());
+        manager.sendBroadcast(intent);
     }
 
     //Get name and email from the userDetailsFragment to show them in this dialog editText's.

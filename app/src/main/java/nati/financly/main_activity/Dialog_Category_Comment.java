@@ -172,4 +172,9 @@ public class Dialog_Category_Comment extends AppCompatDialogFragment {
             Log.e("**onAttach**", "onAttach: ClassCastException : " + e.getMessage());
         }
     }
+
+    //Method to get the text from dialog_add_line.
+    public void updateCommentText(String comment_text) {
+        commentText = comment_text;
+    }
 }

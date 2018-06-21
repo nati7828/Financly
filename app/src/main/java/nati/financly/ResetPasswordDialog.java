@@ -1,11 +1,13 @@
 package nati.financly;
 
 import android.app.Dialog;
+import android.content.Context;
 import android.content.DialogInterface;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatDialogFragment;
+import android.util.Log;
 import android.widget.Toast;
 
 import com.google.android.gms.tasks.OnCompleteListener;
@@ -13,6 +15,8 @@ import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.FirebaseAuth;
 
 public class ResetPasswordDialog extends AppCompatDialogFragment {
+
+    Context context;
 
     @NonNull
     @Override
@@ -37,18 +41,30 @@ public class ResetPasswordDialog extends AppCompatDialogFragment {
                                 @Override
                                 public void onComplete(@NonNull Task<Void> task) {
                                     if (task.isSuccessful()) {
-                                        Toast.makeText(getActivity(), R.string.email_sent, Toast.LENGTH_LONG).show();
+                                        Toast.makeText(context, R.string.email_sent, Toast.LENGTH_LONG).show();
                                     } else {
-                                        Toast.makeText(getActivity(), R.string.email_was_not_sent_successfully, Toast.LENGTH_LONG).show();
+                                        if (task.getException() != null) {
+                                            try {
+                                                throw task.getException();
+                                            } catch (Exception e) {
+                                                Toast.makeText(context, R.string.email_was_not_sent_successfully, Toast.LENGTH_LONG).show();
+                                                Log.d("$$$", "exception : " + e);
+                                            }
+                                        }
                                     }
                                 }
                             });
                 } else {
-                    Toast.makeText(getActivity(), R.string.email_text_is_empty, Toast.LENGTH_LONG).show();
+                    Toast.makeText(context, R.string.email_text_is_empty, Toast.LENGTH_LONG).show();
                 }
             }
         });
 
         return builder.create();
     }
+
+    public void passContext(Context context) {
+        this.context = context;
+    }
+
 }

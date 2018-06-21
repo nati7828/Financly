@@ -7,10 +7,11 @@ import android.support.annotation.NonNull;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatDialogFragment;
 
+import com.google.firebase.auth.FirebaseAuth;
+
 import nati.financly.R;
 
 public class DialogLogout extends AppCompatDialogFragment {
-
     @NonNull
     @Override
     public Dialog onCreateDialog(Bundle savedInstanceState) {
@@ -30,6 +31,8 @@ public class DialogLogout extends AppCompatDialogFragment {
         builder.setPositiveButton(R.string.OK, new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialog, int i) {
+                FirebaseAuth firebaseAuth = FirebaseAuth.getInstance();
+                firebaseAuth.signOut();
                 getActivity().finish();
             }
         });

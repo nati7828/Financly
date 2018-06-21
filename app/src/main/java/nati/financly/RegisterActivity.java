@@ -6,6 +6,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.text.Spannable;
 import android.text.SpannableString;
 import android.text.style.ForegroundColorSpan;
+import android.util.Log;
 import android.view.View;
 import android.view.animation.Animation;
 import android.view.animation.TranslateAnimation;
@@ -18,6 +19,9 @@ import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseAuthInvalidCredentialsException;
+import com.google.firebase.auth.FirebaseAuthUserCollisionException;
+import com.google.firebase.auth.FirebaseAuthWeakPasswordException;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
@@ -98,10 +102,9 @@ public class RegisterActivity extends AppCompatActivity {
             }
         } else if (passTxt.length() < 6) {
             user_pass.startAnimation(animation);
-            Toast.makeText(this, R.string.register_pass_alert, Toast.LENGTH_SHORT).show();
+            Toast.makeText(this, R.string.weak_password, Toast.LENGTH_SHORT).show();
         } else if (!validatePassTxt.equals(passTxt)) {
             user_validatePass.startAnimation(animation);
-            //user_validatePass.startAnimation(animation);
             Toast.makeText(this, R.string.password_not_equal, Toast.LENGTH_SHORT).show();
         } else {
             //Create user with email and password
@@ -134,10 +137,27 @@ public class RegisterActivity extends AppCompatActivity {
                         finish();
                     } else {
                         if (task.getException() != null) {
-                            if (Locale.getDefault().getDisplayLanguage().equals("English")) {
+                            try {
+                                throw task.getException();
+                            }
+                            //If password is smaller than six chars.
+                            catch (FirebaseAuthWeakPasswordException weakPassword) {
+                                Log.d("###", "onComplete: weak_password");
+                                Toast.makeText(RegisterActivity.this, R.string.weak_password,Toast.LENGTH_SHORT).show();
+                            }
+                            //If user enters wrong email format.
+                            catch (FirebaseAuthInvalidCredentialsException malformedEmail) {
+                                Log.d("###", "onComplete: malformed_email" + malformedEmail);
+                                Toast.makeText(RegisterActivity.this, R.string.malformed_email, Toast.LENGTH_LONG).show();
+                            }//If email is aready exists.
+                            catch (FirebaseAuthUserCollisionException existEmail) {
+                                Log.d("###", "onComplete: exist_email" + existEmail);
+                                Toast.makeText(RegisterActivity.this, R.string.email_already_exists, Toast.LENGTH_LONG).show();
+                            }
+                            //Other exceptions
+                            catch (Exception e) {
+                                Log.d("###", "onComplete: " + e.getMessage());
                                 Toast.makeText(RegisterActivity.this, task.getException().getMessage(), Toast.LENGTH_LONG).show();
-                            } else {
-                                Toast.makeText(RegisterActivity.this, "כתובת האימייל הזאת כבר נמצאת בשימוש על ידי חשבון אחר", Toast.LENGTH_LONG).show();
                             }
                         }
                     }

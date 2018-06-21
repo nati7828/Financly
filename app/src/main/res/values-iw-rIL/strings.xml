@@ -21,9 +21,8 @@
 
     <string name="dialog_reset_title">שחזור סיסמא</string>
     <string name="dialog_reset_message">לחץ אישור כדי לקבל לינק שחזור סיסמא למייל שלך</string>
-
     <string name="email_sent">לינק לשיחזור  הסיסמא נשלח כעת למייל שלך</string>
-    <string name="email_was_not_sent_successfully">המייל לא נשלח בהצלחה, אנא בדוק את כתובת המייל שהזנת ונסה שנית</string>
+    <string name="email_was_not_sent_successfully">אימייל לא קיים, בדוק את האימייל שהכנסת ונסה שנית</string>
     <string name="email_text_is_empty">תיבת הטקסט ריקה, אנא הכנס את כתובת המייל הנכונה שלך ונסה שנית</string>
 
     <string name="dialog_logout_title">התנתקות</string>
@@ -87,7 +86,6 @@
     <string name="change">שנה</string>
     <string name="about">אודות</string>
     <string name="my_details">הפרטים שלי</string>
-    <string name="register_pass_alert">הסיסמא חייבת להיות לפחות בעלת שש תווים</string>
     <string name="email_verification">נדרש מייל אימות,אנא נסה שנית</string>
     <string name="enter_email">היכנס לאימייל שלך על מנת לבצע אימות</string>
     <string name="password_not_equal">הסיסמא לא זהה</string>
@@ -97,5 +95,12 @@
     <string name="my_balance_with_colon">המאזן שלי :</string>
     <string name="user_email">האימייל של המשתמש</string>
     <string name="text_about_page">האפליקציה פיננסלי היא פלטפורמה לניהול ומעקב אחר ההוצאות של המשתמש. באפשרות המשתמש להוסיף הוצאות או הכנסות לפי קטגוריות ולפרט על כל אחת מהן, בדרך קלה ונוחה.</string>
+    <string name="email_not_verified">בצע אימות בקישור שקיבלת לאימייל</string>
+    <string name="password_is_wrong">הסיסמא שגויה</string>
+    <string name="email_is_wrong">כתובת האימייל שגויה או לא קיימת</string>
+    <string name="weak_password">הסיסמא חייבת להכיל לפחות שישה תווים</string>
+    <string name="malformed_email">אנא הזן כתובת אימייל חוקית</string>
+    <string name="email_already_exists">כתובת האימייל הזאת כבר נמצאת בשימוש על ידי חשבון אחר</string>
+    <string name="resend_email">שלח מייל אימות מחדש</string>
 
 </resources>

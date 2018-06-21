@@ -31,7 +31,6 @@ import android.view.inputmethod.InputMethodManager;
 import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
@@ -60,15 +59,12 @@ public class BalanceFragment extends Fragment {
     private ArrayList<ItemView> rvItems;
     //filtered list
     ArrayList<ItemView> filteredList;
-
     private CollapsingToolbarLayout collapsingToolbarLayout;
     TextView emptyScreenTv;
     EditText search_et;
     ImageButton searchBtn, exitBtn;
     NestedScrollView nestedScrollView;
     FloatingActionButton fab;
-
-    String passedDate;
 
     public BalanceFragment() {
         //Empty constructor
@@ -91,6 +87,7 @@ public class BalanceFragment extends Fragment {
         searchBtn = v.findViewById(R.id.balance_main_search_btn);
         exitBtn = v.findViewById(R.id.balance_main_exit_search_btn);
         search_et = v.findViewById(R.id.balance_main_search_et);
+        filteredList = new ArrayList<>();
         search_et.addTextChangedListener(new TextWatcher() {
             @Override
             public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {
@@ -104,22 +101,29 @@ public class BalanceFragment extends Fragment {
             public void afterTextChanged(Editable editable) {
                 String text = editable.toString();
 
-                filteredList = new ArrayList<>();
 
+                filteredList.clear();
+                //Filter the original list//
                 for (int i = 0; i < rvItems.size(); i++) {
                     if (rvItems.get(i).getCategoryName().toLowerCase().contains(text.toLowerCase()) ||
                             rvItems.get(i).getUserComment().toLowerCase().contains(text.toLowerCase()) ||
                             rvItems.get(i).getDate().contains(text) ||
                             rvItems.get(i).getIncome_outcome().contains(text)) {
                         filteredList.add(rvItems.get(i));
+                    }else{
+                        adapter.filteredList(filteredList);
                     }
                 }
 
-                if (filteredList != null && !filteredList.isEmpty() && filteredList.size() != rvItems.size()) {
-                    adapter.filteredList(filteredList);
-                }
-                if (filteredList.size() == 0 || filteredList.size() == rvItems.size()) {
+                if (filteredList.size() == rvItems.size()) {
                     adapter.originalList(rvItems);
+                    Log.d("$$size","original size " + rvItems.size());
+                }
+
+                if (filteredList != null && !filteredList.isEmpty()) {
+                    adapter.filteredList(filteredList);
+                    Log.d("$$size","filtered size " + filteredList.size());
+                    updateRecyclerViewSize(filteredList.size());
                 }
 
             }
@@ -193,15 +197,12 @@ public class BalanceFragment extends Fragment {
                     selectedItem = rvItems.get(position);
                 }
 
-                dialogAddLine.setItemViewForEditing(selectedItem);
+                dialogAddLine.setItemViewForEditing(selectedItem);//send the dialog the itemView for editing
 
                 dialogAddLine.setUserRefAndAdapter(userRef, adapter);
                 if (!dialogAddLine.isAdded()) {
                     dialogAddLine.show(getFragmentManager(), "dialogAddLine");
                 }
-                // adapter.originalList(rvItems);
-                //myRef.child("Users").child(userId).child(selectedKey);///////////////////////// edit next.....
-                //adapter.notifyDataSetChanged();
             }
 
             @Override
@@ -210,18 +211,12 @@ public class BalanceFragment extends Fragment {
                 String selectedKey;
 
                 if (filteredList != null && !filteredList.isEmpty() && filteredList.size() != rvItems.size()) {
-                    Log.d("#not null", "filtered...");
-                    Log.d("###", "filter size: " + filteredList.size());
-                    Log.d("###", "original size: " + rvItems.size());
-
                     selectedItem = filteredList.get(position);
                     selectedKey = selectedItem.getKey();
                     myRef.child("Users").child(userId).child(selectedKey).removeValue();
                     adapter.filteredList(filteredList);
-                } else {
-                    Log.d("#null", "original...");
-                    Log.d("###", "original size: " + rvItems.size());
 
+                } else {
                     selectedItem = rvItems.get(position);
                     selectedKey = selectedItem.getKey();
                     myRef.child("Users").child(userId).child(selectedKey).removeValue();
@@ -240,7 +235,6 @@ public class BalanceFragment extends Fragment {
 
             @Override
             public void onCancelled(DatabaseError databaseError) {
-                Toast.makeText(getActivity(), R.string.cancel, Toast.LENGTH_SHORT).show();
             }
         });
 
@@ -250,7 +244,9 @@ public class BalanceFragment extends Fragment {
             @Override
             public void onClick(View view) {
                 dialogAddLine.setUserRefAndAdapter(userRef, adapter);
-                dialogAddLine.show(getFragmentManager(), "dialogAddLine");
+                if(!dialogAddLine.isAdded()) {
+                    dialogAddLine.show(getFragmentManager(), "dialogAddLine");
+                }
             }
         });
 
@@ -258,6 +254,9 @@ public class BalanceFragment extends Fragment {
         //
     }
     //End of onCreate//
+
+    private void updateRecyclerViewSize(int size){
+    }
 
 
     //ShowData method - invokes in the OnCreateView//
@@ -278,10 +277,8 @@ public class BalanceFragment extends Fragment {
                 moneySum += Integer.parseInt(income_outcome);
             }
             //Format the time in millis to date - to show the user the date in dd/MM//yyyy, HH:mm format.
-
             SimpleDateFormat formatter;
 
-            //if(Locale.getDefault().getDisplayLanguage().equals(Locale.ENGLISH.getDisplayName())){
             if (!DateFormat.is24HourFormat(getActivity())) {
                 formatter = new SimpleDateFormat("MM/dd/yyyy, KK:mm aa", Locale.getDefault());
             } else {
@@ -295,7 +292,6 @@ public class BalanceFragment extends Fragment {
                 String formattedDate = formatter.format(calendar.getTime());
                 itemView.setDate(formattedDate);
             }
-
             itemView.setCategoryName(categoryName);
             itemView.setUserComment(userComment);
             itemView.setIncome_outcome(income_outcome);
@@ -503,8 +499,5 @@ public class BalanceFragment extends Fragment {
     }
     //End showData method//
 
-    public void passDate(String passedDate) {
-        this.passedDate = passedDate;
-    }
 }
 

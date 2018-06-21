@@ -25,8 +25,6 @@ import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseAuthInvalidCredentialsException;
 import com.google.firebase.auth.FirebaseAuthInvalidUserException;
 import com.google.firebase.auth.FirebaseUser;
-import com.google.firebase.database.DatabaseReference;
-import com.google.firebase.database.FirebaseDatabase;
 
 import java.util.Locale;
 
@@ -41,11 +39,9 @@ public class LoginActivity extends AppCompatActivity {
     private EditText et_email;
     private ProgressBar progressBar;
 
-    boolean isEmailCorrect;
-
     boolean isEmailVerified;//boolean to check if user already exists.
 
-    Button loginBtn;
+    Button loginBtn, verifyEmailAgainBtn;
     int loginBtnCount;
 
     @Override
@@ -57,6 +53,7 @@ public class LoginActivity extends AppCompatActivity {
 
         progressBar = findViewById(R.id.login_progress_bar);
         loginBtn = findViewById(R.id.login_login_btn);
+        verifyEmailAgainBtn = findViewById(R.id.login_resend_email);
         et_password = findViewById(R.id.login_password_et);
         et_email = findViewById(R.id.login_email_et);
 
@@ -93,12 +90,18 @@ public class LoginActivity extends AppCompatActivity {
             }
         };
 
+        if (!isEmailVerified) {
+            verifyEmailAgainBtn.setVisibility(View.VISIBLE);
+        } else {
+            verifyEmailAgainBtn.setVisibility(View.GONE);
+        }
+
     }
 
     @Override
     protected void onStart() {
         super.onStart();
-        progressBar.setVisibility(View.INVISIBLE);
+        progressBar.setVisibility(View.GONE);
         firebaseAuth.addAuthStateListener(authStateListener);
         loginBtnCount = 0;
         loginBtn.setClickable(true);
@@ -120,6 +123,7 @@ public class LoginActivity extends AppCompatActivity {
             // set ResetPasswordDialog Arguments
             ResetPasswordDialog dialog = new ResetPasswordDialog();
             dialog.setArguments(bundle);
+            dialog.passContext(this);
             dialog.show(getSupportFragmentManager(), "dialog");
         } else {
             final Animation animation = new TranslateAnimation(Animation.ABSOLUTE, -50, Animation.ABSOLUTE, 0);
@@ -169,68 +173,32 @@ public class LoginActivity extends AppCompatActivity {
 
                         } else if (firebaseAuth.getCurrentUser() != null) {
                             loginBtnCount = 0;
-                            progressBar.setVisibility(View.INVISIBLE);
+                            progressBar.setVisibility(View.GONE);
                             view.setClickable(true);
-                            final FirebaseDatabase mFirebaseDatabase = FirebaseDatabase.getInstance();
-                            final DatabaseReference myRef = mFirebaseDatabase.getReference();
-                            DatabaseReference userRef = myRef.child("Users").child(user.getUid());
-
-//                            userRef.addListenerForSingleValueEvent(new ValueEventListener() {
-//                                @Override
-//                                public void onDataChange(DataSnapshot dataSnapshot) {
-//
-//                                    Log.d("##ds,",dataSnapshot+"");
-//                                    Log.d("##dchildren,",dataSnapshot.child("email")+"");
-//
-//                                }
-//
-//
-//                                @Override
-//                                public void onCancelled(DatabaseError databaseError) {
-//
-//                                }
-//                            });
-
-//                            if (!email.equals(firebaseAuth.getCurrentUser().getEmail())) {
-//                                et_email.startAnimation(animation);
-//                                Toast.makeText(LoginActivity.this, "כתובת האימייל שגויה", Toast.LENGTH_SHORT).show();
-//                            } else {
-//                                et_password.startAnimation(animation);
-//                                Toast.makeText(LoginActivity.this, "הסיסמא שגויה", Toast.LENGTH_SHORT).show();
-//                            }
-//                            Log.d("##auth:", firebaseAuth.getCurrentUser().getEmail());
-
                         }
-                        try
-                        {
-                            if(task.getException()!= null) {
+                        try {
+                            if (task.getException() != null) {
                                 throw task.getException();
                             }
                         }
                         //If user enters wrong email.
-                        catch (FirebaseAuthInvalidUserException invalidEmail)
-                        {
+                        catch (FirebaseAuthInvalidUserException invalidEmail) {
                             et_email.startAnimation(animation);
-                            Toast.makeText(LoginActivity.this,"כתובת האימייל שגויה או לא קיימת",Toast.LENGTH_SHORT).show();
-
+                            Toast.makeText(LoginActivity.this, R.string.email_is_wrong, Toast.LENGTH_SHORT).show();
                         }
                         //If user enters wrong password.
-                        catch (FirebaseAuthInvalidCredentialsException wrongPassword)
-                        {
+                        catch (FirebaseAuthInvalidCredentialsException wrongPassword) {
                             et_password.startAnimation(animation);
-                            Toast.makeText(LoginActivity.this,"הסיסמא שגויה או שלא קיימת",Toast.LENGTH_SHORT).show();
-
-                            // TODO: Take your action
-                        }
-                        catch (Exception e)
-                        {
+                            Toast.makeText(LoginActivity.this, R.string.password_is_wrong, Toast.LENGTH_SHORT).show();
+                        } catch (Exception e) {
                             Log.d("*onCompleate*", "onComplete: " + e.getMessage());
                         }
-                        //If email has not been verified show toast.
-                    } else {
+
+                    } else { //If email has not been verified show Toast.
                         loginBtn.setClickable(true);
-                        progressBar.setVisibility(View.INVISIBLE);
-                        Toast.makeText(getApplicationContext(), "בצע אימות בקישור שקיבלת לאימייל", Toast.LENGTH_SHORT).show();
+                        progressBar.setVisibility(View.GONE);
+                        Toast.makeText(getApplicationContext(), R.string.email_not_verified, Toast.LENGTH_SHORT).show();
+
                     }
                 }
             });
@@ -242,6 +210,13 @@ public class LoginActivity extends AppCompatActivity {
     public void Register(View view) {
         Intent intent = new Intent(this, RegisterActivity.class);
         startActivity(intent);
+    }
+
+    public void ResendEmail(View view) {
+        if (user != null) {
+            user.sendEmailVerification();
+            Toast.makeText(this, "מייל אימות נשלח לכתובת האימייל שלך", Toast.LENGTH_SHORT).show();
+        }
     }
     ////
 }

@@ -1,8 +1,13 @@
 package nati.financly.main_activity;
 
+import android.content.BroadcastReceiver;
+import android.content.Context;
+import android.content.Intent;
+import android.content.IntentFilter;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.design.widget.NavigationView;
+import android.support.v4.content.LocalBroadcastManager;
 import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
@@ -28,6 +33,8 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
     private DrawerLayout drawerLayout;
     private ActionBarDrawerToggle drawerToggle;
     private Toolbar toolbar;
+    TextView welcomeText;
+    String timeWelcome = "";
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -57,11 +64,11 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
             public void onDataChange(DataSnapshot dataSnapshot) {
                 String name = dataSnapshot.getValue(String.class);
 
-                TextView welcomeText = findViewById(R.id.drawer_header_welcome_user_txt_view);
+                welcomeText = findViewById(R.id.drawer_header_welcome_user_txt_view);
                 Calendar c = Calendar.getInstance();
                 int timeOfDay = c.get(Calendar.HOUR_OF_DAY);
 
-                String timeWelcome = "";
+
                 if(timeOfDay >= 6 && timeOfDay < 12){
                     timeWelcome = getString(R.string.good_morning);
                 }else if(timeOfDay >= 12 && timeOfDay < 16){
@@ -96,6 +103,26 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
             getSupportFragmentManager().beginTransaction().add(R.id.fragment_container, new BalanceFragment()).commit();
             navigationView.setCheckedItem(R.id.nav_balance);//Show that we are on the balance page - highlight the message item.
         }
+
+
+        listenToUserName();
+
+    }
+
+    private void listenToUserName(){
+        LocalBroadcastManager manager = LocalBroadcastManager.getInstance(this);
+
+        BroadcastReceiver listener = new BroadcastReceiver() {
+            @Override
+            public void onReceive(Context context, Intent intent) {
+                String name = intent.getStringExtra("name");
+                String newWelcome = timeWelcome + ", " + name;
+                welcomeText.setText(newWelcome);
+            }
+        };
+        IntentFilter filter = new IntentFilter("user_name");
+
+        manager.registerReceiver(listener,filter);
     }
 
 

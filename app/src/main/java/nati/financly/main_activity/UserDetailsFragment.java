@@ -134,34 +134,25 @@ public class UserDetailsFragment extends Fragment implements View.OnClickListene
             }
         });
 
+        //Method to update name of user in drawer header
+
         return v;
     }
 
     @Override
     public void onClick(View view) {
-
         final Animation animation = new AlphaAnimation(0.5f, 1);
         animation.setDuration(80);
         view.startAnimation(animation);
 
-
-
         switch (view.getId()) {
             case R.id.user_details_button:
-
                     DialogUserDetails dialog = new DialogUserDetails();
                     String userName = nameTV.getText().toString();
                     String userEmail = emailTV.getText().toString();
                     dialog.getNameAndEmailFromFragment(userName, userEmail);
                     dialog.show(getFragmentManager(), "dialogUserDetails");
-
         }
     }
     //End of onCreateView//
-
-   public void updateName(String name_text){
-        this.name_text = name_text;
-    }
-
-
 }

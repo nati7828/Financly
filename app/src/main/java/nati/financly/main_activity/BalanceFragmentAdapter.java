@@ -7,7 +7,6 @@ import android.text.Spannable;
 import android.text.SpannableString;
 import android.text.style.RelativeSizeSpan;
 import android.text.style.StyleSpan;
-import android.util.Log;
 import android.view.ContextMenu;
 import android.view.LayoutInflater;
 import android.view.Menu;
@@ -90,11 +89,8 @@ public class BalanceFragmentAdapter extends RecyclerView.Adapter<BalanceFragment
 
         if(currentMoneyChange.contains(",")) {
             formattedMoney = currentMoneyChange;
-            Log.d("formated",formattedMoney + " contains ..");
         }else {
             formattedMoney = String.format(Locale.getDefault(), "%,d", Integer.valueOf(currentMoneyChange));
-            Log.d("formated else",formattedMoney + " not contains ..");
-
         }
         String shekel = "₪ ";
         if(Locale.getDefault().getDisplayLanguage().equals(Locale.ENGLISH.getDisplayName())){
@@ -108,7 +104,6 @@ public class BalanceFragmentAdapter extends RecyclerView.Adapter<BalanceFragment
         spannedMoney.setSpan(new StyleSpan(Typeface.NORMAL), 0, 1, Spannable.SPAN_INCLUSIVE_EXCLUSIVE);
 //        spannedMoney.setSpan(new ForegroundColorSpan(R.style.moneyShekelIconPositive), 0, 1, Spannable.SPAN_INCLUSIVE_EXCLUSIVE);
         if (!currentMoneyChange.isEmpty()) {
-            Log.d("###curr",currentMoneyChange + "..");
             if (currentMoneyChange.contains(",")){
                 currentMoneyChange = currentMoneyChange.replace(",","");
             }

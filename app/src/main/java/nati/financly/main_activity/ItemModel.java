@@ -1,22 +1,16 @@
 package nati.financly.main_activity;
 
-public class ItemView {
+public class ItemModel {
     private int image;
     private String categoryName, userComment, date, income_outcome, key, name, email;
 
     //Empty constructor
-    public ItemView() {
+    public ItemModel() {
 
-    }
-
-    //Constructor for RegisterActivity
-    public ItemView(String name, String email) {
-        this.name = name;
-        this.email = email;
     }
 
     //Constructor for BalanceMainFragment
-    public ItemView(String categoryName, String date, String income_outcome, String userComment) {
+    public ItemModel(String categoryName, String date, String income_outcome, String userComment) {
         this.categoryName = categoryName;
         this.date = date;
         this.income_outcome = income_outcome;

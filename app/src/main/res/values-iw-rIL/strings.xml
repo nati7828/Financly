@@ -106,5 +106,8 @@
     <string name="My_details">הפרטים שלי</string>
     <string name="change_your_name">באפשרותך לשנות את שמך</string>
     <string name="enter_the_desired_name">הכנס את השם הרצוי</string>
+    <string name="incomes">הכנסות</string>
+    <string name="expanses">הוצאות</string>
+    <string name="other">אחר</string>
 
 </resources>

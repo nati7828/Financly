@@ -50,7 +50,7 @@ public class DialogAddLine extends DialogFragment implements PassDataBetweenDial
     private TextView popupCategoryName;
     private TextView popupUserComment;
 
-    ItemView itemView;
+    ItemModel itemModel;
 
     boolean isEditing = false;
 
@@ -84,10 +84,10 @@ public class DialogAddLine extends DialogFragment implements PassDataBetweenDial
             }
 
             if (isEditing) {
-                String date = itemView.getDate();
-                String category = itemView.getCategoryName();
-                String comment = itemView.getUserComment();
-                String money = itemView.getIncome_outcome();
+                String date = itemModel.getDate();
+                String category = itemModel.getCategoryName();
+                String comment = itemModel.getUserComment();
+                String money = itemModel.getIncome_outcome();
 
                 popupCategoryName.setText(category);
                 if (!comment.isEmpty()) {
@@ -128,32 +128,32 @@ public class DialogAddLine extends DialogFragment implements PassDataBetweenDial
                 public void onClick(View view) {
                     String stampDate = formatDate(popupDate.getText().toString());
 
-                    //If itemView has values, user is editing.
+                    //If itemModel has values, user is editing.
                     if (isEditing) {
                         if (!popupMoney.getText().toString().isEmpty()) {
-                            itemView.setIncome_outcome(popupMoney.getText().toString());
+                            itemModel.setIncome_outcome(popupMoney.getText().toString());
                         }
 
-                        itemView.setCategoryName(popupCategoryName.getText().toString());
+                        itemModel.setCategoryName(popupCategoryName.getText().toString());
 
                         if (!popupUserComment.getText().toString().trim().isEmpty()) {
-                            itemView.setUserComment(popupUserComment.getText().toString());
+                            itemModel.setUserComment(popupUserComment.getText().toString());
                         }
-                        itemView.setDate(stampDate);
+                        itemModel.setDate(stampDate);
                         if(textsChanged) { //If there were changes in the texts, update DB.
-                            userRef.child(itemView.getKey()).setValue(itemView);//edit node in DB.
+                            userRef.child(itemModel.getKey()).setValue(itemModel);//edit node in DB.
                         }
                     } else {
-                        itemView = new ItemView(popupCategoryName.getText().toString(), stampDate, popupMoney.getText().toString(), popupUserComment.getText().toString());
+                        itemModel = new ItemModel(popupCategoryName.getText().toString(), stampDate, popupMoney.getText().toString(), popupUserComment.getText().toString());
                     }
                     if (!popupMoney.getText().toString().isEmpty() && !popupCategoryName.getText().toString().isEmpty()) {
                         if (!isEditing) {
                             String key = userRef.push().getKey();
-                            itemView.setKey(key);
-                            userRef.child(key).setValue(itemView); // create a new node in DB.
+                            itemModel.setKey(key);
+                            userRef.child(key).setValue(itemModel); // create a new node in DB.
                         }
                         isEditing = false;
-                        itemView.setDate(popupDate.getText().toString());//changing item for the adapter.
+                        itemModel.setDate(popupDate.getText().toString());//changing item for the adapter.
                         adapter.notifyDataSetChanged();
                         dismiss();
                     } else {
@@ -173,7 +173,7 @@ public class DialogAddLine extends DialogFragment implements PassDataBetweenDial
 
             if (isEditing) {
                 //if is editing show the text from the selected item
-                popupDate.setText(itemView.getDate());
+                popupDate.setText(itemModel.getDate());
             } else {
                 //if adding new item - set the text with the current time.
                 updateDate(day, month - 1, year);
@@ -283,10 +283,11 @@ public class DialogAddLine extends DialogFragment implements PassDataBetweenDial
                     dialog.setTargetFragment(DialogAddLine.this, 1);
                     dialog.show(getFragmentManager(), "Dialog_Category_Comment");
 
+                    //defaulting spinner item is house.
                     if (!text.equals("")) {
                         dialog.updateSelectedSpinnerItemValue(text);
                     } else {
-                        dialog.updateSelectedSpinnerItemValue("בית");
+                        dialog.updateSelectedSpinnerItemValue("משכורת");
                     }
                     //if comment is not empty,
                     if (popupUserComment.getVisibility() == View.VISIBLE && !popupUserComment.getText().toString().isEmpty()) {
@@ -308,7 +309,7 @@ public class DialogAddLine extends DialogFragment implements PassDataBetweenDial
                     if (!text.equals("")) {
                         dialog.updateSelectedSpinnerItemValue(text);
                     } else {
-                        dialog.updateSelectedSpinnerItemValue("בית");
+                        dialog.updateSelectedSpinnerItemValue("משכורת");
                     }
                     String comment_text = popupUserComment.getText().toString();
                     dialog.updateCommentText(comment_text);//move the String to category_comment_dialog.
@@ -422,10 +423,10 @@ public class DialogAddLine extends DialogFragment implements PassDataBetweenDial
         }
     }
 
-    //Method to use in the balanceFragment - to get the itemView for editing.
-    public void setItemViewForEditing(ItemView itemView) {
+    //Method to use in the balanceFragment - to get the itemModel for editing.
+    public void setItemViewForEditing(ItemModel itemModel) {
         isEditing = true;
-        this.itemView = itemView;
+        this.itemModel = itemModel;
 
     }
 

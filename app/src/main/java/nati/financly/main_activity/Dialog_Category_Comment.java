@@ -30,7 +30,6 @@ public class Dialog_Category_Comment extends AppCompatDialogFragment {
     PassDataBetweenDialogs passDataBetweenDialogsListener;
     ArrayList<SpinnerItem> categoriesList;
     String category;
-    int index = 0;
 
     String selectedSpinnerItem = "";
     String commentText = "";
@@ -73,31 +72,34 @@ public class Dialog_Category_Comment extends AppCompatDialogFragment {
         ////
 
         categoriesList = new ArrayList<>();
-        categoriesList.add(new SpinnerItem(getString(R.string.בית), R.drawable.home));
-        categoriesList.add(new SpinnerItem(getString(R.string.אוכל), R.drawable.food));
-        categoriesList.add(new SpinnerItem(getString(R.string.קניות), R.drawable.shopping_cart));
-        categoriesList.add(new SpinnerItem(getString(R.string.ביגוד), R.drawable.clothes));
-        categoriesList.add(new SpinnerItem(getString(R.string.שכירות), R.drawable.rent));
-        categoriesList.add(new SpinnerItem(getString(R.string.משכנתא), R.drawable.mortgage));
-        categoriesList.add(new SpinnerItem(getString(R.string.חשבונות), R.drawable.bills));
-        categoriesList.add(new SpinnerItem(getString(R.string.משכורת), R.drawable.payment));
-        categoriesList.add(new SpinnerItem(getString(R.string.תשלום), R.drawable.payment));
-        categoriesList.add(new SpinnerItem(getString(R.string.הלוואות), R.drawable.loan));
-        categoriesList.add(new SpinnerItem(getString(R.string.חיסכון), R.drawable.savings));
-        categoriesList.add(new SpinnerItem(getString(R.string.טואלטיקה), R.drawable.toliet_and_clean));
-        categoriesList.add(new SpinnerItem(getString(R.string.רכב), R.drawable.car));
-        categoriesList.add(new SpinnerItem(getString(R.string.Public_transport), R.drawable.taxi));
-        categoriesList.add(new SpinnerItem(getString(R.string.ביטוחים), R.drawable.insurance));
-        categoriesList.add(new SpinnerItem(getString(R.string.תקשורת), R.drawable.phone));
-        categoriesList.add(new SpinnerItem(getString(R.string.חדר_כושר), R.drawable.gym));
-        categoriesList.add(new SpinnerItem(getString(R.string.לימודים), R.drawable.study));
-        categoriesList.add(new SpinnerItem(getString(R.string.בתי_ספר), R.drawable.school));
-        categoriesList.add(new SpinnerItem(getString(R.string.גני_ילדים), R.drawable.kindergarden));
-        categoriesList.add(new SpinnerItem(getString(R.string.בילויים), R.drawable.hangout));
-        categoriesList.add(new SpinnerItem(getString(R.string.מסעדות), R.drawable.restaurent));
-        categoriesList.add(new SpinnerItem(getString(R.string.חיות), R.drawable.pet));
-        categoriesList.add(new SpinnerItem(getString(R.string.מתנות), R.drawable.gift));
-        categoriesList.add(new SpinnerItem(getString(R.string.אחר), R.drawable.other));
+        categoriesList.add(new SpinnerItem(true, getString(R.string.incomes),0));
+        categoriesList.add(new SpinnerItem(false, getString(R.string.משכורת), R.drawable.payment));
+        categoriesList.add(new SpinnerItem(false, getString(R.string.תשלום), R.drawable.payment));
+        categoriesList.add(new SpinnerItem(true, getString(R.string.expanses),0));
+        categoriesList.add(new SpinnerItem(false, getString(R.string.בית), R.drawable.home));
+        categoriesList.add(new SpinnerItem(false, getString(R.string.שכירות), R.drawable.rent));
+        categoriesList.add(new SpinnerItem(false, getString(R.string.משכנתא), R.drawable.mortgage));
+        categoriesList.add(new SpinnerItem(false, getString(R.string.חשבונות), R.drawable.bills));
+        categoriesList.add(new SpinnerItem(false, getString(R.string.אוכל), R.drawable.food));
+        categoriesList.add(new SpinnerItem(false, getString(R.string.ביגוד), R.drawable.clothes));
+        categoriesList.add(new SpinnerItem(false, getString(R.string.קניות), R.drawable.shopping_cart));
+        categoriesList.add(new SpinnerItem(false, getString(R.string.רכב), R.drawable.car));
+        categoriesList.add(new SpinnerItem(false, getString(R.string.Public_transport), R.drawable.taxi));
+        categoriesList.add(new SpinnerItem(false, getString(R.string.ביטוחים), R.drawable.insurance));
+        categoriesList.add(new SpinnerItem(false, getString(R.string.תקשורת), R.drawable.phone));
+        categoriesList.add(new SpinnerItem(false, getString(R.string.הלוואות), R.drawable.loan));
+        categoriesList.add(new SpinnerItem(false, getString(R.string.חיסכון), R.drawable.savings));
+        categoriesList.add(new SpinnerItem(false, getString(R.string.טואלטיקה), R.drawable.toliet_and_clean));
+        categoriesList.add(new SpinnerItem(false, getString(R.string.חדר_כושר), R.drawable.gym));
+        categoriesList.add(new SpinnerItem(false, getString(R.string.לימודים), R.drawable.study));
+        categoriesList.add(new SpinnerItem(false, getString(R.string.בתי_ספר), R.drawable.school));
+        categoriesList.add(new SpinnerItem(false, getString(R.string.גני_ילדים), R.drawable.kindergarden));
+        categoriesList.add(new SpinnerItem(false, getString(R.string.בילויים), R.drawable.hangout));
+        categoriesList.add(new SpinnerItem(false, getString(R.string.מסעדות), R.drawable.restaurent));
+        categoriesList.add(new SpinnerItem(true, getString(R.string.other),0));
+        categoriesList.add(new SpinnerItem(false, getString(R.string.חיות), R.drawable.pet));
+        categoriesList.add(new SpinnerItem(false, getString(R.string.מתנות), R.drawable.gift));
+        categoriesList.add(new SpinnerItem(false, getString(R.string.אחר), R.drawable.other));
 
         adapter = new SpinnerAdapter(getContext(), categoriesList);
         spinner.setAdapter(adapter);
@@ -136,7 +138,6 @@ public class Dialog_Category_Comment extends AppCompatDialogFragment {
             public void onClick(View view) {
                 String commentText = comment.getText().toString().trim();
                 passDataBetweenDialogsListener.passCategoryAndComment(category, commentText);
-                Log.d("##",getParentFragment()+"..");
                 getDialog().dismiss();
             }
         });

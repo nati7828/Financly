@@ -28,11 +28,10 @@ public class BalanceFragmentAdapter extends RecyclerView.Adapter<BalanceFragment
     private OnItemClickListener listener;
 
     private Context context;
-    private ArrayList<ItemView> itemsList;
-
+    private ArrayList<ItemModel> itemsList;
 
     //Constructor
-    BalanceFragmentAdapter(Context context, ArrayList<ItemView> list) {
+    BalanceFragmentAdapter(Context context, ArrayList<ItemModel> list) {
         this.context = context;
         itemsList = list;
     }
@@ -49,9 +48,11 @@ public class BalanceFragmentAdapter extends RecyclerView.Adapter<BalanceFragment
         return new ViewHolder(view);
     }
 
+
+
     @Override
     public void onBindViewHolder(ViewHolder holder, int position) {
-        ItemView currentItem = itemsList.get(position);
+        ItemModel currentItem = itemsList.get(position);
         ImageView categoryIcon = holder.categoryIcon;
         TextView categoryName = holder.rvCategoryName;
         TextView userComment = holder.userComment;
@@ -122,14 +123,14 @@ public class BalanceFragmentAdapter extends RecyclerView.Adapter<BalanceFragment
         return itemsList.size();
     }
 
-    public void filteredList(ArrayList<ItemView> filteredList) {
+    public void filteredList(ArrayList<ItemModel> filteredList) {
         itemsList = filteredList;
         notifyItemRemoved(getItemCount());
         notifyItemRangeChanged(getItemCount(), itemsList.size());
         notifyDataSetChanged();
     }
 
-    public void originalList(ArrayList<ItemView> rvItems) {
+    public void originalList(ArrayList<ItemModel> rvItems) {
         itemsList = rvItems;
         notifyItemRemoved(getItemCount());
         notifyItemRangeChanged(getItemCount(), itemsList.size());

@@ -17,148 +17,148 @@ public class BalanceFitImagesToCategory extends AppCompatActivity {
 
 
 //        case "משכורת":
-//        itemView.setImage(R.drawable.payment);
+//        itemModel.setImage(R.drawable.payment);
 //        break;
 //        case "Payment":
-//        itemView.setImage(R.drawable.payment);
+//        itemModel.setImage(R.drawable.payment);
 //        break;
 //        case "בית":
-//        itemView.setImage(R.drawable.home);
+//        itemModel.setImage(R.drawable.home);
 //        break;
 //        case "House":
-//        itemView.setImage(R.drawable.home);
+//        itemModel.setImage(R.drawable.home);
 //        break;
 //        case "אוכל":
-//        itemView.setImage(R.drawable.food);
+//        itemModel.setImage(R.drawable.food);
 //        break;
 //        case "Food":
-//        itemView.setImage(R.drawable.food);
+//        itemModel.setImage(R.drawable.food);
 //        break;
 //        case "קניות":
-//        itemView.setImage(R.drawable.shopping_cart);
+//        itemModel.setImage(R.drawable.shopping_cart);
 //        break;
 //        case "Shopping":
-//        itemView.setImage(R.drawable.shopping_cart);
+//        itemModel.setImage(R.drawable.shopping_cart);
 //        break;
 //        case "ביגוד והנעלה":
-//        itemView.setImage(R.drawable.clothes);
+//        itemModel.setImage(R.drawable.clothes);
 //        break;
 //        case "Clothes and shoes":
-//        itemView.setImage(R.drawable.clothes);
+//        itemModel.setImage(R.drawable.clothes);
 //        break;
 //        case "שכירות":
-//        itemView.setImage(R.drawable.rent);
+//        itemModel.setImage(R.drawable.rent);
 //        break;
 //        case "Rent":
-//        itemView.setImage(R.drawable.rent);
+//        itemModel.setImage(R.drawable.rent);
 //        break;
 //        case "משכנתא":
-//        itemView.setImage(R.drawable.mortgage);
+//        itemModel.setImage(R.drawable.mortgage);
 //        break;
 //        case "Mortgage":
-//        itemView.setImage(R.drawable.mortgage);
+//        itemModel.setImage(R.drawable.mortgage);
 //        break;
 //        case "חשבונות":
-//        itemView.setImage(R.drawable.bills);
+//        itemModel.setImage(R.drawable.bills);
 //        break;
 //        case "Bills":
-//        itemView.setImage(R.drawable.bills);
+//        itemModel.setImage(R.drawable.bills);
 //        break;
 //        case "הלוואות":
-//        itemView.setImage(R.drawable.loan);
+//        itemModel.setImage(R.drawable.loan);
 //        break;
 //        case "Loans":
-//        itemView.setImage(R.drawable.loan);
+//        itemModel.setImage(R.drawable.loan);
 //        break;
 //        case "טואלטיקה":
-//        itemView.setImage(R.drawable.toliet_and_clean);
+//        itemModel.setImage(R.drawable.toliet_and_clean);
 //        break;
 //        case "Toilet and clean":
-//        itemView.setImage(R.drawable.toliet_and_clean);
+//        itemModel.setImage(R.drawable.toliet_and_clean);
 //        break;
 //        case "רכב":
-//        itemView.setImage(R.drawable.car);
+//        itemModel.setImage(R.drawable.car);
 //        break;
 //        case "Car":
-//        itemView.setImage(R.drawable.car);
+//        itemModel.setImage(R.drawable.car);
 //        break;
 //        case "תחבורה ציבורית":
-//        itemView.setImage(R.drawable.taxi);
+//        itemModel.setImage(R.drawable.taxi);
 //        break;
 //        case "Public transport":
-//        itemView.setImage(R.drawable.taxi);
+//        itemModel.setImage(R.drawable.taxi);
 //        break;
 //        case "ביטוחים":
-//        itemView.setImage(R.drawable.insurance);
+//        itemModel.setImage(R.drawable.insurance);
 //        break;
 //        case "Insurance":
-//        itemView.setImage(R.drawable.insurance);
+//        itemModel.setImage(R.drawable.insurance);
 //        break;
 //        case "תקשורת":
-//        itemView.setImage(R.drawable.phone);
+//        itemModel.setImage(R.drawable.phone);
 //        break;
 //        case "Communications":
-//        itemView.setImage(R.drawable.phone);
+//        itemModel.setImage(R.drawable.phone);
 //        break;
 //        case "חדר כושר":
-//        itemView.setImage(R.drawable.gym);
+//        itemModel.setImage(R.drawable.gym);
 //        break;
 //        case "Gym":
-//        itemView.setImage(R.drawable.gym);
+//        itemModel.setImage(R.drawable.gym);
 //        break;
 //        case "חיסכון":
-//        itemView.setImage(R.drawable.savings);
+//        itemModel.setImage(R.drawable.savings);
 //        break;
 //        case "Savings":
-//        itemView.setImage(R.drawable.savings);
+//        itemModel.setImage(R.drawable.savings);
 //        break;
 //        case "לימודים":
-//        itemView.setImage(R.drawable.study);
+//        itemModel.setImage(R.drawable.study);
 //        break;
 //        case "Studies":
-//        itemView.setImage(R.drawable.study);
+//        itemModel.setImage(R.drawable.study);
 //        break;
 //        case "בית ספר":
-//        itemView.setImage(R.drawable.school);
+//        itemModel.setImage(R.drawable.school);
 //        break;
 //        case "School":
-//        itemView.setImage(R.drawable.school);
+//        itemModel.setImage(R.drawable.school);
 //        break;
 //        case "גן ילדים":
-//        itemView.setImage(R.drawable.kindergarden);
+//        itemModel.setImage(R.drawable.kindergarden);
 //        break;
 //        case "Kindergarten":
-//        itemView.setImage(R.drawable.kindergarden);
+//        itemModel.setImage(R.drawable.kindergarden);
 //        break;
 //        case "בילויים":
-//        itemView.setImage(R.drawable.hangout);
+//        itemModel.setImage(R.drawable.hangout);
 //        break;
 //        case "Spending time":
-//        itemView.setImage(R.drawable.hangout);
+//        itemModel.setImage(R.drawable.hangout);
 //        break;
 //        case "מסעדות":
-//        itemView.setImage(R.drawable.restaurent);
+//        itemModel.setImage(R.drawable.restaurent);
 //        break;
 //        case "Restaurants":
-//        itemView.setImage(R.drawable.restaurent);
+//        itemModel.setImage(R.drawable.restaurent);
 //        break;
 //        case "חיות":
-//        itemView.setImage(R.drawable.pet);
+//        itemModel.setImage(R.drawable.pet);
 //        break;
 //        case "Pets":
-//        itemView.setImage(R.drawable.pet);
+//        itemModel.setImage(R.drawable.pet);
 //        break;
 //        case "מתנות":
-//        itemView.setImage(R.drawable.gift);
+//        itemModel.setImage(R.drawable.gift);
 //        break;
 //        case "Gifts":
-//        itemView.setImage(R.drawable.gift);
+//        itemModel.setImage(R.drawable.gift);
 //        break;
 //        case "אחר":
-//        itemView.setImage(R.drawable.other);
+//        itemModel.setImage(R.drawable.other);
 //        break;
 //        case "Other":
-//        itemView.setImage(R.drawable.other);
+//        itemModel.setImage(R.drawable.other);
 //        break;
 
     }

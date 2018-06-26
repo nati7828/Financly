@@ -1,6 +1,7 @@
 package nati.financly.main_activity;
 
 import android.content.Context;
+import android.graphics.Color;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.view.LayoutInflater;
@@ -16,24 +17,27 @@ import nati.financly.R;
 
 public class SpinnerAdapter extends ArrayAdapter<SpinnerItem> {
 
-    public SpinnerAdapter(Context context, ArrayList<SpinnerItem>categories){
-        super(context,0,categories);
+    ArrayList<SpinnerItem> categories;
+
+    public SpinnerAdapter(Context context, ArrayList<SpinnerItem> categories) {
+        super(context, 0, categories);
+        this.categories = categories;
     }
 
     @NonNull
     @Override
     public View getView(int position, @Nullable View convertView, @NonNull ViewGroup parent) {
-        return initView(position,convertView,parent);
+        return initView(position, convertView, parent);
     }
 
     @Override
     public View getDropDownView(int position, @Nullable View convertView, @NonNull ViewGroup parent) {
-        return initView(position,convertView,parent);
+        return initView(position, convertView, parent);
     }
 
-    private View initView(int position, View view, ViewGroup parent){
-        if(view == null){
-            view = LayoutInflater.from(getContext()).inflate(R.layout.spinner_category_item,parent,false);
+    private View initView(int position, View view, ViewGroup parent) {
+        if (view == null) {
+            view = LayoutInflater.from(getContext()).inflate(R.layout.spinner_category_item, parent, false);
         }
 
         ImageView icon = view.findViewById(R.id.spinner_row_image);
@@ -41,10 +45,39 @@ public class SpinnerAdapter extends ArrayAdapter<SpinnerItem> {
 
         SpinnerItem spinnerItem = getItem(position);
 
-        if(spinnerItem != null){
+        if (spinnerItem != null) {
             icon.setImageResource(spinnerItem.getImage());
             category.setText(spinnerItem.getCategory());
+
+            if (spinnerItem.isHeader()) {
+                icon.setVisibility(View.GONE);
+                category.setTextColor(getContext().getResources().getColor(R.color.colorBlue));
+                category.setTextSize(15);
+
+
+            } else {
+                icon.setVisibility(View.VISIBLE);
+                category.setTextColor(Color.WHITE);
+                category.setTextColor(getContext().getResources().getColor(R.color.colorWhite));
+                category.setTextSize(16);
+            }
         }
+
+
         return view;
     }
+
+    @Override
+    public boolean areAllItemsEnabled() {
+        //In the list, not all of the item are enabled(for headers).
+        return false;
+    }
+
+    @Override
+    public boolean isEnabled(int position) {
+        //If item is not header, it can be clicked.
+        return !categories.get(position).isHeader();
+    }
+
+
 }

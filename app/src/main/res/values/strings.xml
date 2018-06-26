@@ -109,6 +109,9 @@
     <string name="My_details">My details</string>
     <string name="change_your_name">If you wish, You can change your name</string>
     <string name="enter_the_desired_name">Enter the desired name</string>
+    <string name="incomes">Incomes</string>
+    <string name="expanses">Expanses</string>
+    <string name="other">Other</string>
 
 
 </resources>

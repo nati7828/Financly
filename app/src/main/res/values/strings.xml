@@ -90,7 +90,7 @@
     <string name="about">About</string>
     <string name="my_details">My details</string>
     <string name="email_verification">Email verification is required,make sure your internet connections are OK and try again</string>
-    <string name="enter_email">Enter your email in order to finish authentication</string>
+    <string name="enter_email">Enter the link in your email in order to finish authentication</string>
     <string name="password_not_equal">The password is not equal</string>
     <string name="name_with_colon">Name :</string>
     <string name="name_hint">user name</string>
@@ -105,6 +105,10 @@
     <string name="malformed_email">Please enter a valid email address</string>
     <string name="email_already_exists">Email is already exists</string>
     <string name="resend_email">Resend verification email</string>
+    <string name="confirmation_email_was_sent">Validation email was sent to your email account</string>
+    <string name="My_details">My details</string>
+    <string name="change_your_name">If you wish, You can change your name</string>
+    <string name="enter_the_desired_name">Enter the desired name</string>
 
 
 </resources>

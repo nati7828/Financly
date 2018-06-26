@@ -30,7 +30,6 @@ public class UserDetailsFragment extends Fragment implements View.OnClickListene
 
     TextView nameTV;
     TextView emailTV;
-    String name_text;
 
     public UserDetailsFragment() {
         //Empty constructor
@@ -149,8 +148,7 @@ public class UserDetailsFragment extends Fragment implements View.OnClickListene
             case R.id.user_details_button:
                     DialogUserDetails dialog = new DialogUserDetails();
                     String userName = nameTV.getText().toString();
-                    String userEmail = emailTV.getText().toString();
-                    dialog.getNameAndEmailFromFragment(userName, userEmail);
+                    dialog.getNameFromFragment(userName);
                     dialog.show(getFragmentManager(), "dialogUserDetails");
         }
     }

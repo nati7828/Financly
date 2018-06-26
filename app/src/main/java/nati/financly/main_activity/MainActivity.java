@@ -35,6 +35,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
     private Toolbar toolbar;
     TextView welcomeText;
     String timeWelcome = "";
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -68,16 +69,15 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
                 Calendar c = Calendar.getInstance();
                 int timeOfDay = c.get(Calendar.HOUR_OF_DAY);
 
-
-                if(timeOfDay >= 6 && timeOfDay < 12){
+                if (timeOfDay >= 6 && timeOfDay < 12) {
                     timeWelcome = getString(R.string.good_morning);
-                }else if(timeOfDay >= 12 && timeOfDay < 16){
+                } else if (timeOfDay >= 12 && timeOfDay < 16) {
                     timeWelcome = getString(R.string.good_noon);
-                }else if(timeOfDay >= 16 && timeOfDay < 18){
+                } else if (timeOfDay >= 16 && timeOfDay < 18) {
                     timeWelcome = getString(R.string.good_afternoon);
-                }else if(timeOfDay >= 18 && timeOfDay < 21){
+                } else if (timeOfDay >= 18 && timeOfDay < 21) {
                     timeWelcome = getString(R.string.good_evening);
-                }else if(timeOfDay >= 21 && timeOfDay < 24 || timeOfDay >= 0 && timeOfDay < 6 ){
+                } else if (timeOfDay >= 21 && timeOfDay < 24 || timeOfDay >= 0 && timeOfDay < 6) {
                     timeWelcome = getString(R.string.good_night);
                 }
                 String welcome = timeWelcome + ", " + name;
@@ -104,12 +104,12 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
             navigationView.setCheckedItem(R.id.nav_balance);//Show that we are on the balance page - highlight the message item.
         }
 
-
         listenToUserName();
-
     }
+    //End of onCreate//
 
-    private void listenToUserName(){
+    //broadcast receiver to get the name of the user if he changes it.
+    private void listenToUserName() {
         LocalBroadcastManager manager = LocalBroadcastManager.getInstance(this);
 
         BroadcastReceiver listener = new BroadcastReceiver() {
@@ -122,7 +122,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         };
         IntentFilter filter = new IntentFilter("user_name");
 
-        manager.registerReceiver(listener,filter);
+        manager.registerReceiver(listener, filter);
     }
 
 
@@ -133,7 +133,9 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         if (drawerLayout.isDrawerOpen(GravityCompat.START)) {
             drawerLayout.closeDrawer(GravityCompat.START);
         } else { // else - if it is close - get out of the app
-            super.onBackPressed();
+           // super.onBackPressed();
+            DialogLogout dialog = new DialogLogout();
+            dialog.show(getSupportFragmentManager(), "dialog");
         }
     }
 

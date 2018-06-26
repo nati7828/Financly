@@ -9,7 +9,7 @@
         android:id="@+id/user_details_dialog_title"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="הפרטים שלי"
+        android:text="@string/My_details"
         android:textSize="22sp"
         android:textStyle="bold"
         android:textColor="@color/colorBlue"
@@ -20,12 +20,10 @@
         android:id="@+id/user_details_dialog_message"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="באפשרותך לשנות את השם ואת האימייל שלך"
+        android:text="@string/change_your_name"
         android:textSize="18sp"
         android:textColor="@color/colorHint2"
         android:layout_below="@id/user_details_dialog_title"/>
-
-
 
     <EditText
         android:layout_marginTop="25dp"
@@ -34,23 +32,9 @@
         android:layout_height="wrap_content"
         android:textColor="@color/colorWhite"
         android:textColorHint="@color/colorHint"
-        android:hint="השם של המשתמש"
+        android:hint="@string/enter_the_desired_name"
         android:id="@+id/user_details_dialog_nameET"
         android:layout_below="@+id/user_details_dialog_message"
-        android:layout_alignParentStart="true"
-        />
-
-    <EditText
-        android:layout_marginTop="15dp"
-        android:inputType="textEmailAddress"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:textColor="@color/colorWhite"
-        android:textColorHint="@color/colorHint"
-        android:hint="האימייל של המשתמש"
-        android:textAlignment="viewStart"
-        android:id="@+id/user_details_dialog_emailET"
-        android:layout_below="@+id/user_details_dialog_nameET"
         android:layout_alignParentStart="true"
         />
 
@@ -58,8 +42,8 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_alignParentEnd="true"
-        android:layout_below="@id/user_details_dialog_emailET"
-        android:layout_marginTop="35dp"
+        android:layout_below="@id/user_details_dialog_nameET"
+        android:layout_marginTop="20dp"
         android:layout_marginEnd="60dp"
         android:text="@string/cancel"
         android:textColor="@drawable/category_comment_text_color_selector"
@@ -71,9 +55,9 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_alignParentEnd="true"
-        android:layout_marginTop="35dp"
+        android:layout_marginTop="20dp"
         android:layout_marginEnd="5dp"
-        android:layout_below="@id/user_details_dialog_emailET"
+        android:layout_below="@id/user_details_dialog_nameET"
         android:text="@string/OK"
         android:textColor="@drawable/category_comment_text_color_selector"
         android:textSize="18sp"

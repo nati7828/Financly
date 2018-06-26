@@ -28,12 +28,10 @@ import com.google.firebase.database.FirebaseDatabase;
 
 import java.util.Locale;
 
-import nati.financly.main_activity.ItemView;
-
 public class RegisterActivity extends AppCompatActivity {
-    FirebaseDatabase database = FirebaseDatabase.getInstance();
-    DatabaseReference DBUser = database.getReference("Users");
-    FirebaseUser firebaseUser;
+    private FirebaseDatabase database = FirebaseDatabase.getInstance();
+    private DatabaseReference DBUser = database.getReference("Users");
+    private FirebaseUser firebaseUser;
     private FirebaseAuth firebaseAuth;
 
     private EditText user_name;
@@ -41,10 +39,6 @@ public class RegisterActivity extends AppCompatActivity {
     private EditText user_validatePass;
     private EditText user_email;
     private ProgressBar progressBar;
-    private Button signUp;
-
-    ItemView itemView;
-    User user;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -56,7 +50,7 @@ public class RegisterActivity extends AppCompatActivity {
         user_validatePass = findViewById(R.id.register_pass_validate_et);
         user_email = findViewById(R.id.register_email_et);
 
-        signUp = findViewById(R.id.signin_register_btn);
+        Button signUp = findViewById(R.id.signin_register_btn);
         Spannable darkerText = new SpannableString(signUp.getText().toString());
         if (Locale.getDefault().getDisplayLanguage().equals("English")) {
             darkerText.setSpan(new ForegroundColorSpan(getResources().getColor(R.color.colorHint)), 21, signUp.length(), Spannable.SPAN_INCLUSIVE_EXCLUSIVE);
@@ -67,8 +61,6 @@ public class RegisterActivity extends AppCompatActivity {
 
         progressBar = findViewById(R.id.register_progress_bar);
         firebaseAuth = FirebaseAuth.getInstance();
-        itemView = new ItemView();
-        user = new User();
     }
 
     @Override
@@ -79,6 +71,8 @@ public class RegisterActivity extends AppCompatActivity {
 
     //sign_Up(btn) function//
     public void SignUp(View view) {
+        progressBar.setVisibility(View.VISIBLE);
+
         Animation animation = new TranslateAnimation(Animation.ABSOLUTE, -50, Animation.ABSOLUTE, 0);
         animation.setDuration(100);
 
@@ -112,7 +106,7 @@ public class RegisterActivity extends AppCompatActivity {
                 @Override
                 public void onComplete(@NonNull Task<AuthResult> task) {
                     if (task.isSuccessful()) {
-                        progressBar.setVisibility(View.VISIBLE);
+                        User user = new User();
                         firebaseUser = firebaseAuth.getCurrentUser();//get current user.
 
                         user.setName(nameTxt);//input of the user.
@@ -128,12 +122,13 @@ public class RegisterActivity extends AppCompatActivity {
                             public void onComplete(@NonNull Task<Void> task) {
                                 if (task.isSuccessful()) {
                                     Toast.makeText(RegisterActivity.this, R.string.enter_email, Toast.LENGTH_LONG).show();
-                                    firebaseAuth.signOut();
+                                    firebaseAuth.signInWithEmailAndPassword(emailTxt, passTxt);//login the user
                                 } else {
                                     Toast.makeText(RegisterActivity.this, R.string.email_verification, Toast.LENGTH_SHORT).show();
                                 }
                             }
                         });
+                        firebaseAuth.signOut();
                         finish();
                     } else {
                         if (task.getException() != null) {
@@ -143,13 +138,13 @@ public class RegisterActivity extends AppCompatActivity {
                             //If password is smaller than six chars.
                             catch (FirebaseAuthWeakPasswordException weakPassword) {
                                 Log.d("###", "onComplete: weak_password");
-                                Toast.makeText(RegisterActivity.this, R.string.weak_password,Toast.LENGTH_SHORT).show();
+                                Toast.makeText(RegisterActivity.this, R.string.weak_password, Toast.LENGTH_SHORT).show();
                             }
                             //If user enters wrong email format.
                             catch (FirebaseAuthInvalidCredentialsException malformedEmail) {
                                 Log.d("###", "onComplete: malformed_email" + malformedEmail);
                                 Toast.makeText(RegisterActivity.this, R.string.malformed_email, Toast.LENGTH_LONG).show();
-                            }//If email is aready exists.
+                            }//If email is already exists.
                             catch (FirebaseAuthUserCollisionException existEmail) {
                                 Log.d("###", "onComplete: exist_email" + existEmail);
                                 Toast.makeText(RegisterActivity.this, R.string.email_already_exists, Toast.LENGTH_LONG).show();
@@ -160,6 +155,7 @@ public class RegisterActivity extends AppCompatActivity {
                                 Toast.makeText(RegisterActivity.this, task.getException().getMessage(), Toast.LENGTH_LONG).show();
                             }
                         }
+                        progressBar.setVisibility(View.INVISIBLE);
                     }
                 }
             });

@@ -119,9 +119,9 @@
                 android:layout_gravity="center"
                 android:indeterminateDrawable="@drawable/circle_loading"
                 android:max="100"
-                android:layout_marginTop="10dp"
-                android:progress="20"
-                android:visibility="gone"/>
+                android:layout_marginTop="5dp"
+                android:progress="10"
+                android:visibility="visible"/>
             <Button
                 android:id="@+id/login_resend_email"
                 android:layout_width="wrap_content"
@@ -137,7 +137,7 @@
                 android:textSize="15sp"
                 android:textStyle="bold"
                 android:onClick="ResendEmail"
-                android:visibility="visible"
+                android:visibility="invisible"
                 />
         </LinearLayout>
 

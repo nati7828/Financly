@@ -134,7 +134,7 @@
                 android:layout_height="wrap_content"
                 android:layout_centerInParent="true"
                 android:background="@drawable/add_button_color_selector"
-                android:text="לחץ כאן לשינוי השם או האימייל"
+                android:text="לחץ כאן לשינוי השם"
                 android:textSize="18sp"
                 android:textColor="@drawable/add_button_color_selector" />
         </RelativeLayout>

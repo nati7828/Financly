@@ -12,7 +12,6 @@ import android.support.v4.app.DialogFragment;
 import android.text.Editable;
 import android.text.TextWatcher;
 import android.text.format.DateFormat;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.animation.Animation;
@@ -54,9 +53,7 @@ public class DialogAddLine extends DialogFragment implements PassDataBetweenDial
     ItemView itemView;
 
     boolean isEditing = false;
-    String category, comment, date, money;
 
-    String stampDate = "";
     Calendar cal = Calendar.getInstance();
     int year = cal.get(Calendar.YEAR);
     int month = cal.get(Calendar.MONTH) + 1;
@@ -64,6 +61,7 @@ public class DialogAddLine extends DialogFragment implements PassDataBetweenDial
 
     int hour = cal.get(Calendar.HOUR_OF_DAY);
     int minute = cal.get(Calendar.MINUTE);
+    private boolean textsChanged = false;
 
     @NonNull
     @Override
@@ -86,6 +84,11 @@ public class DialogAddLine extends DialogFragment implements PassDataBetweenDial
             }
 
             if (isEditing) {
+                String date = itemView.getDate();
+                String category = itemView.getCategoryName();
+                String comment = itemView.getUserComment();
+                String money = itemView.getIncome_outcome();
+
                 popupCategoryName.setText(category);
                 if (!comment.isEmpty()) {
                     popupUserComment.setVisibility(View.VISIBLE);
@@ -123,10 +126,7 @@ public class DialogAddLine extends DialogFragment implements PassDataBetweenDial
             //Click the add new line button - add the content to the database//
             popupEnter.setOnClickListener(new View.OnClickListener() {
                 public void onClick(View view) {
-                    String dtStart = popupDate.getText().toString();
-
-
-                    formatDate(dtStart);
+                    String stampDate = formatDate(popupDate.getText().toString());
 
                     //If itemView has values, user is editing.
                     if (isEditing) {
@@ -140,18 +140,20 @@ public class DialogAddLine extends DialogFragment implements PassDataBetweenDial
                             itemView.setUserComment(popupUserComment.getText().toString());
                         }
                         itemView.setDate(stampDate);
-                        userRef.child(itemView.getKey()).setValue(itemView);
+                        if(textsChanged) { //If there were changes in the texts, update DB.
+                            userRef.child(itemView.getKey()).setValue(itemView);//edit node in DB.
+                        }
                     } else {
                         itemView = new ItemView(popupCategoryName.getText().toString(), stampDate, popupMoney.getText().toString(), popupUserComment.getText().toString());
                     }
                     if (!popupMoney.getText().toString().isEmpty() && !popupCategoryName.getText().toString().isEmpty()) {
                         if (!isEditing) {
-                            //if user is creating a new item -> create a new node in the firebase DB.
                             String key = userRef.push().getKey();
                             itemView.setKey(key);
-                            userRef.child(key).setValue(itemView);
+                            userRef.child(key).setValue(itemView); // create a new node in DB.
                         }
                         isEditing = false;
+                        itemView.setDate(popupDate.getText().toString());//changing item for the adapter.
                         adapter.notifyDataSetChanged();
                         dismiss();
                     } else {
@@ -170,16 +172,13 @@ public class DialogAddLine extends DialogFragment implements PassDataBetweenDial
             //End of popupEnter OnClick.
 
             if (isEditing) {
-                String itemViewDate = itemView.getDate();
-                popupDate.setText(itemViewDate);
+                //if is editing show the text from the selected item
+                popupDate.setText(itemView.getDate());
             } else {
-                updateDate(day, month-1, year);
+                //if adding new item - set the text with the current time.
+                updateDate(day, month - 1, year);
                 updateTime(hour, minute);
             }
-
-            //In order to show the user the edit text with "," in big numbers - like 10,000 instead of 10000,
-            //I made a listener and after every user interaction, it will format the text to the desired one(with commas).
-            popupMoney.addTextChangedListener(this);
 
             //When press the date textView, calender dialog pops up, so the user can choose the desired date//
             popupDate.setOnClickListener(new View.OnClickListener() {
@@ -204,13 +203,17 @@ public class DialogAddLine extends DialogFragment implements PassDataBetweenDial
                             day = Integer.parseInt(date.substring(0, 2));
                             month = Integer.parseInt(date.substring(3, 5));
                         }
+                    }else{
+                        //if adding item
+                        hour = cal.get(Calendar.HOUR_OF_DAY);
+                        minute = cal.get(Calendar.MINUTE);
                     }
 
                     ////Date dialog////
                     dateDialog = new DatePickerDialog(getActivity(),
                             R.style.date_dialog,
                             dateListener,
-                            year, month-1, day);
+                            year, month - 1, day);
 
                     if (dateDialog.getWindow() != null) {
                         dateDialog.getWindow().setBackgroundDrawable(new ColorDrawable(getResources().getColor(R.color.colorDarkGray)));
@@ -311,15 +314,20 @@ public class DialogAddLine extends DialogFragment implements PassDataBetweenDial
                     dialog.updateCommentText(comment_text);//move the String to category_comment_dialog.
                 }
             });
+
+
+            //In order to show the user the edit text with "," in big numbers - like 10,000 instead of 10000,
+            //I made a listener and after every user interaction, it will format the text to the desired one(with commas).
+            popupMoney.addTextChangedListener(this);
+            popupDate.addTextChangedListener(this);
+            popupCategoryName.addTextChangedListener(this);
         }
         return builder.create();
 
     }
 
-    private void formatDate(String dtStart) {
+    private String formatDate(String dtStart) {
         SimpleDateFormat format;
-        // format = new SimpleDateFormat("dd/MM/yyyy, HH:mm", Locale.getDefault());
-
         if (!DateFormat.is24HourFormat(getActivity())) {//if 12 hours format show am/pm
             format = new SimpleDateFormat("MM/dd/yyyy, KK:mm aa", Locale.getDefault());
         } else {
@@ -335,12 +343,12 @@ public class DialogAddLine extends DialogFragment implements PassDataBetweenDial
         } catch (ParseException e) {
             e.printStackTrace();
         }
-        this.stampDate = stampDate;
+        return stampDate;
     }
 
 
     private void updateDate(int day, int month, int year) {
-        month+=1;
+        month += 1;
         if (!DateFormat.is24HourFormat(getActivity())) {
             //If Format is 12 hours
             if (day < 10 && month < 10) {
@@ -367,25 +375,36 @@ public class DialogAddLine extends DialogFragment implements PassDataBetweenDial
 
     private void updateTime(int hour, int minute) {
         if (!DateFormat.is24HourFormat(getActivity())) {
-            // If dateFormat is 12 hours
+            //If dateFormat is 12 hours
             if (hour >= 12) {
                 hour -= 12;
                 date_time += " PM";
             } else {
                 date_time += " AM";
             }
-        }
 
-        //Showing the user the time in hh:mm format, instead of h:m - ex: if the time is 03:09 - show it that way instead of 3:9.
-        //Because the date_string last chars are " AM/ PM" I cut the string and add the formatted date before these last chars.
-        if (hour < 10 && minute < 10) {
-            date_time = date_time.substring(0, date_time.length() - 3) + ", " + "0" + hour + ":" + "0" + minute + date_time.substring(date_time.length() - 3, date_time.length());
-        } else if (hour < 10) {
-            date_time = date_time.substring(0, date_time.length() - 3) + ", " + "0" + hour + ":" + minute + date_time.substring(date_time.length() - 3, date_time.length());
-        } else if (minute < 10) {
-            date_time = date_time.substring(0, date_time.length() - 3) + ", " + hour + ":" + "0" + minute + date_time.substring(date_time.length() - 3, date_time.length());
-        } else {
-            date_time = date_time.substring(0, date_time.length() - 3) + ", " + hour + ":" + minute + date_time.substring(date_time.length() - 3, date_time.length());
+            //Showing the user the time in hh:mm format, instead of h:m - ex: if the time is 03:09 - show it that way instead of 3:9.
+            //Because the date_string last chars are " AM/ PM" I cut the string and add the formatted date before these last chars.
+            if (hour < 10 && minute < 10) {
+                date_time = date_time.substring(0, date_time.length() - 3) + ", " + "0" + hour + ":" + "0" + minute + date_time.substring(date_time.length() - 3, date_time.length());
+            } else if (hour < 10) {
+                date_time = date_time.substring(0, date_time.length() - 3) + ", " + "0" + hour + ":" + minute + date_time.substring(date_time.length() - 3, date_time.length());
+            } else if (minute < 10) {
+                date_time = date_time.substring(0, date_time.length() - 3) + ", " + hour + ":" + "0" + minute + date_time.substring(date_time.length() - 3, date_time.length());
+            } else {
+                date_time = date_time.substring(0, date_time.length() - 3) + ", " + hour + ":" + minute + date_time.substring(date_time.length() - 3, date_time.length());
+            }
+        }else{
+            //If dateFormat is 24 hours
+            if (hour < 10 && minute < 10) {
+                date_time = date_time + ", " + "0" + hour + ":" + "0" + minute;
+            } else if (hour < 10) {
+                date_time = date_time + ", " + "0" + hour + ":" + minute;
+            } else if (minute < 10) {
+                date_time = date_time + ", " + hour + ":" + "0" + minute;
+            } else{
+                date_time = date_time + ", " + hour + ":" + minute;
+            }
         }
 
         popupDate.setText(date_time);
@@ -405,18 +424,9 @@ public class DialogAddLine extends DialogFragment implements PassDataBetweenDial
 
     //Method to use in the balanceFragment - to get the itemView for editing.
     public void setItemViewForEditing(ItemView itemView) {
-        String category = itemView.getCategoryName();
-        String comment = itemView.getUserComment();
-        String date = itemView.getDate();
-        String money = itemView.getIncome_outcome();
-
         isEditing = true;
-
         this.itemView = itemView;
-        this.category = category;
-        this.comment = comment;
-        this.date = date;
-        this.money = money;
+
     }
 
     //get the adapter and the user reference from balance fragment to use them in this dialog.
@@ -437,6 +447,7 @@ public class DialogAddLine extends DialogFragment implements PassDataBetweenDial
 
     @Override
     public void afterTextChanged(Editable editable) {
+        textsChanged = true;
         popupMoney.removeTextChangedListener(this);
         try {
             String originalString = editable.toString();
@@ -453,6 +464,8 @@ public class DialogAddLine extends DialogFragment implements PassDataBetweenDial
             nfe.printStackTrace();
         }
         popupMoney.addTextChangedListener(this);
+
+
     }
     //End of textWatcher listener//
 

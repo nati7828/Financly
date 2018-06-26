@@ -53,7 +53,7 @@
                         android:layout_height="match_parent">
 
                         <ImageButton
-                            android:layout_alignParentStart="true"
+                            android:textAlignment="viewEnd"
                             android:layout_centerVertical="true"
                             android:id="@+id/balance_main_search_btn"
                             android:layout_width="48dp"

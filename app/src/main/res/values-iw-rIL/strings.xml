@@ -66,7 +66,7 @@
     <string name="drawer_welcome">שלום</string>
     <string name="good_morning">בוקר טוב</string>
     <string name="good_noon">צהריים טובים</string>
-    <string name="good_afternoon">אחה"צ טובים</string>
+    <string name="good_afternoon">אחר הצהריים טובים</string>
     <string name="good_evening">ערב טוב</string>
     <string name="good_night">לילה טוב</string>
 
@@ -87,7 +87,7 @@
     <string name="about">אודות</string>
     <string name="my_details">הפרטים שלי</string>
     <string name="email_verification">נדרש מייל אימות,אנא נסה שנית</string>
-    <string name="enter_email">היכנס לאימייל שלך על מנת לבצע אימות</string>
+    <string name="enter_email">היכנס לקישור באימייל שלך על מנת לבצע אימות</string>
     <string name="password_not_equal">הסיסמא לא זהה</string>
     <string name="name_with_colon">שם :</string>
     <string name="name_hint">שם המשתמש</string>
@@ -102,5 +102,9 @@
     <string name="malformed_email">אנא הזן כתובת אימייל חוקית</string>
     <string name="email_already_exists">כתובת האימייל הזאת כבר נמצאת בשימוש על ידי חשבון אחר</string>
     <string name="resend_email">שלח מייל אימות מחדש</string>
+    <string name="confirmation_email_was_sent">מייל אימות נשלח לכתובת האימייל שלך</string>
+    <string name="My_details">הפרטים שלי</string>
+    <string name="change_your_name">באפשרותך לשנות את שמך</string>
+    <string name="enter_the_desired_name">הכנס את השם הרצוי</string>
 
 </resources>

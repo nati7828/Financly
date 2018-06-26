@@ -30,6 +30,7 @@ public class BalanceFragmentAdapter extends RecyclerView.Adapter<BalanceFragment
     private Context context;
     private ArrayList<ItemView> itemsList;
 
+
     //Constructor
     BalanceFragmentAdapter(Context context, ArrayList<ItemView> list) {
         this.context = context;

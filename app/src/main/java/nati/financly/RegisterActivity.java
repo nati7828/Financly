@@ -6,7 +6,6 @@ import android.support.v7.app.AppCompatActivity;
 import android.text.Spannable;
 import android.text.SpannableString;
 import android.text.style.ForegroundColorSpan;
-import android.util.Log;
 import android.view.View;
 import android.view.animation.Animation;
 import android.view.animation.TranslateAnimation;
@@ -137,21 +136,21 @@ public class RegisterActivity extends AppCompatActivity {
                             }
                             //If password is smaller than six chars.
                             catch (FirebaseAuthWeakPasswordException weakPassword) {
-                                Log.d("###", "onComplete: weak_password");
+                                //Log.d("###", "onComplete: weak_password");
                                 Toast.makeText(RegisterActivity.this, R.string.weak_password, Toast.LENGTH_SHORT).show();
                             }
                             //If user enters wrong email format.
                             catch (FirebaseAuthInvalidCredentialsException malformedEmail) {
-                                Log.d("###", "onComplete: malformed_email" + malformedEmail);
+                                //Log.d("###", "onComplete: malformed_email" + malformedEmail);
                                 Toast.makeText(RegisterActivity.this, R.string.malformed_email, Toast.LENGTH_LONG).show();
                             }//If email is already exists.
                             catch (FirebaseAuthUserCollisionException existEmail) {
-                                Log.d("###", "onComplete: exist_email" + existEmail);
+                                //Log.d("###", "onComplete: exist_email" + existEmail);
                                 Toast.makeText(RegisterActivity.this, R.string.email_already_exists, Toast.LENGTH_LONG).show();
                             }
                             //Other exceptions
                             catch (Exception e) {
-                                Log.d("###", "onComplete: " + e.getMessage());
+                                //Log.d("###", "onComplete: " + e.getMessage());
                                 Toast.makeText(RegisterActivity.this, task.getException().getMessage(), Toast.LENGTH_LONG).show();
                             }
                         }

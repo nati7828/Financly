@@ -152,79 +152,9 @@ public class LoginActivity extends AppCompatActivity {
             progressBar.setVisibility(View.VISIBLE);
             view.setClickable(false);
 
-            //firebaseAuth.removeAuthStateListener(authStateListener);
-
-//            firebaseAuth.signInWithEmailAndPassword(email, pass).addOnCompleteListener(new OnCompleteListener<AuthResult>() {
-//                @Override
-//                public void onComplete(@NonNull final Task<AuthResult> task) {
-//                    authStateListenerForUi = new FirebaseAuth.AuthStateListener() {
-//                        @Override
-//                        public void onAuthStateChanged(@NonNull FirebaseAuth firebaseAuth) {
-//                            user = firebaseAuth.getCurrentUser();
-//                            if (user != null) {
-//                                isEmailVerified = user.isEmailVerified();
-//                                if (!isEmailVerified) {
-//                                    verifyEmailAgainBtn.setVisibility(View.VISIBLE);
-//                                    progressBar.setVisibility(View.GONE);
-//                                    loginBtn.setClickable(true);
-//                                    Toast.makeText(getApplicationContext(), R.string.email_not_verified, Toast.LENGTH_SHORT).show();
-//                                } else {//If email is verified
-//                                    if(verifyEmailAgainBtn.getVisibility() == View.VISIBLE) {
-//                                        verifyEmailAgainBtn.setVisibility(View.GONE);
-//                                    }
-//                                    if (task.isSuccessful()) {
-//                                        //save the email in the phone so the user will use it next time.
-//                                        SharedPreferences preferences = getSharedPreferences("MyPrefs", Context.MODE_PRIVATE);
-//                                        SharedPreferences.Editor editor = preferences.edit();
-//                                        String sharedEmail = preferences.getString("email", "");
-//                                        if (!email.equals(sharedEmail)) {
-//                                            editor.putString("email", et_email.getText().toString());
-//                                            editor.apply();
-//                                        }
-//
-//                                        Intent intent = new Intent(LoginActivity.this, MainActivity.class);
-//                                        startActivity(intent);
-//
-//                                    } else {
-//                                        try {
-//                                            if (task.getException() != null) {
-//                                                throw task.getException();
-//                                            }
-//                                        }
-//                                        //If user enters wrong email.
-//                                        catch (FirebaseAuthInvalidUserException invalidEmail) {
-//                                            et_email.startAnimation(animation);
-//                                            Toast.makeText(LoginActivity.this, R.string.email_is_wrong, Toast.LENGTH_SHORT).show();
-//                                        }
-//                                        //If user enters wrong password.
-//                                        catch (FirebaseAuthInvalidCredentialsException wrongPassword) {
-//                                            et_password.startAnimation(animation);
-//                                            Toast.makeText(LoginActivity.this, R.string.password_is_wrong, Toast.LENGTH_SHORT).show();
-//                                        } catch (Exception e) {
-//                                            Log.d("*onCompleate*", "onComplete: " + e.getMessage());
-//                                            Toast.makeText(getApplicationContext(),e.getMessage(),Toast.LENGTH_SHORT).show();
-//                                        }
-//
-//                                        loginBtnCount = 0;
-//                                        loginBtn.setClickable(true);
-//                                        progressBar.setVisibility(View.GONE);
-//                                    }
-//
-//                                }
-//                            }
-//                        }
-//                    };
-//                    firebaseAuth.removeAuthStateListener(authStateListener);
-//                    firebaseAuth.addAuthStateListener(authStateListenerForUi);
-//                }
-//            });
-
-
             firebaseAuth.signInWithEmailAndPassword(email, pass).addOnCompleteListener(new OnCompleteListener<AuthResult>() {
                 @Override
                 public void onComplete(@NonNull final Task<AuthResult> task) {
-//                        else {
-
                     verifyEmailAgainBtn.setVisibility(View.GONE);
 
                     if (task.isSuccessful()) {
@@ -279,8 +209,6 @@ public class LoginActivity extends AppCompatActivity {
                         loginBtn.setClickable(true);
                         progressBar.setVisibility(View.GONE);
                     }
-
-//                        }
                 }
             });
         }

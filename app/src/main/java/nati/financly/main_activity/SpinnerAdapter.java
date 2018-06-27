@@ -2,6 +2,7 @@ package nati.financly.main_activity;
 
 import android.content.Context;
 import android.graphics.Color;
+import android.graphics.Typeface;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.view.LayoutInflater;
@@ -17,7 +18,7 @@ import nati.financly.R;
 
 public class SpinnerAdapter extends ArrayAdapter<SpinnerItem> {
 
-    ArrayList<SpinnerItem> categories;
+    private ArrayList<SpinnerItem> categories;
 
     public SpinnerAdapter(Context context, ArrayList<SpinnerItem> categories) {
         super(context, 0, categories);
@@ -52,24 +53,23 @@ public class SpinnerAdapter extends ArrayAdapter<SpinnerItem> {
             if (spinnerItem.isHeader()) {
                 icon.setVisibility(View.GONE);
                 category.setTextColor(getContext().getResources().getColor(R.color.colorBlue));
-                category.setTextSize(15);
-
-
+                category.setTextSize(18);
+                category.setTypeface(null, Typeface.BOLD);
             } else {
                 icon.setVisibility(View.VISIBLE);
                 category.setTextColor(Color.WHITE);
                 category.setTextColor(getContext().getResources().getColor(R.color.colorWhite));
                 category.setTextSize(16);
+                category.setTypeface(null, Typeface.NORMAL);
             }
         }
-
 
         return view;
     }
 
     @Override
     public boolean areAllItemsEnabled() {
-        //In the list, not all of the item are enabled(for headers).
+        //In the list, not all of the item are enabled(using this for headers).
         return false;
     }
 

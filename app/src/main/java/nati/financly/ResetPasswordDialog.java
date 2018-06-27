@@ -7,7 +7,6 @@ import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatDialogFragment;
-import android.util.Log;
 import android.widget.Toast;
 
 import com.google.android.gms.tasks.OnCompleteListener;
@@ -48,7 +47,7 @@ public class ResetPasswordDialog extends AppCompatDialogFragment {
                                                 throw task.getException();
                                             } catch (Exception e) {
                                                 Toast.makeText(context, R.string.email_was_not_sent_successfully, Toast.LENGTH_LONG).show();
-                                                Log.d("$$$", "exception : " + e);
+                                                //Log.d("$$$", "exception : " + e);
                                             }
                                         }
                                     }

@@ -96,9 +96,9 @@ public class Dialog_Category_Comment extends AppCompatDialogFragment {
         categoriesList.add(new SpinnerItem(false, getString(R.string.גני_ילדים), R.drawable.kindergarden));
         categoriesList.add(new SpinnerItem(false, getString(R.string.בילויים), R.drawable.hangout));
         categoriesList.add(new SpinnerItem(false, getString(R.string.מסעדות), R.drawable.restaurent));
-        categoriesList.add(new SpinnerItem(true, getString(R.string.other),0));
         categoriesList.add(new SpinnerItem(false, getString(R.string.חיות), R.drawable.pet));
         categoriesList.add(new SpinnerItem(false, getString(R.string.מתנות), R.drawable.gift));
+        categoriesList.add(new SpinnerItem(true, getString(R.string.other),0));
         categoriesList.add(new SpinnerItem(false, getString(R.string.אחר), R.drawable.other));
 
         adapter = new SpinnerAdapter(getContext(), categoriesList);

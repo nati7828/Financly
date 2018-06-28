@@ -33,7 +33,7 @@
             android:drawablePadding="8dp"
             android:drawableStart="@drawable/coins"
             android:hint="@string/enter_amount"
-            android:inputType="numberSigned|numberDecimal|textFilter"
+            android:inputType="numberSigned|numberDecimal"
             android:textAlignment="viewStart"
             android:textDirection="ltr"
             android:paddingEnd="8dp"

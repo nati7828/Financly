@@ -82,22 +82,23 @@ public class DialogAddLine extends DialogFragment implements PassDataBetweenDial
 
             RadioGroup radio_group = view.findViewById(R.id.radio_group);
             final AppCompatRadioButton expanseRadioBtn = view.findViewById(R.id.radio_expanse);
+            final AppCompatRadioButton incomeRadioBtn = view.findViewById(R.id.radio_income);
 
             radio_group.setOnCheckedChangeListener(new RadioGroup.OnCheckedChangeListener() {
                 @Override
                 public void onCheckedChanged(RadioGroup radioGroup, int i) {
-                    if (i == R.id.radio_expanse){
+                    if (i == R.id.radio_expanse) {
                         //if expanse radio button is checked - show expanse hint.
-                        if(Locale.getDefault().getDisplayLanguage().equals(Locale.ENGLISH.getDisplayName())) {
+                        if (Locale.getDefault().getDisplayLanguage().equals(Locale.ENGLISH.getDisplayName())) {
                             popupMoney.setHint("Enter Expanse");
-                        }else{
+                        } else {
                             popupMoney.setHint("הכנס הוצאה");
                         }
                     }//else if income radio button is checked - show income hint.
-                    else{
-                        if(Locale.getDefault().getDisplayLanguage().equals(Locale.ENGLISH.getDisplayName())) {
+                    else {
+                        if (Locale.getDefault().getDisplayLanguage().equals(Locale.ENGLISH.getDisplayName())) {
                             popupMoney.setHint("Enter Income");
-                        }else{
+                        } else {
                             popupMoney.setHint("הכנס הכנסה");
                         }
                     }
@@ -125,13 +126,21 @@ public class DialogAddLine extends DialogFragment implements PassDataBetweenDial
 
                 popupDate.setText(date);
 
-                String moneyInt;
-                if (money.contains(",")) {
-                    moneyInt = money.replace(",", "");
+                if (!money.contains("-")) {
+                    incomeRadioBtn.setChecked(true);
                 } else {
-                    moneyInt = money;
+                    expanseRadioBtn.setChecked(true);
+                    money = money.replace("-", "");
                 }
-                int textIntVal = Integer.parseInt(moneyInt);
+
+
+                String moneyStr;
+                if (money.contains(",")) {
+                    moneyStr = money.replace(",", "");
+                } else {
+                    moneyStr = money;
+                }
+                int textIntVal = Integer.parseInt(moneyStr);
                 DecimalFormat formatter = (DecimalFormat) NumberFormat.getInstance(Locale.getDefault());
                 formatter.applyPattern("###,###,###");
                 String formattedString = formatter.format(textIntVal);
@@ -155,7 +164,7 @@ public class DialogAddLine extends DialogFragment implements PassDataBetweenDial
                     String stampDate = formatDate(popupDate.getText().toString());
 
                     String money = popupMoney.getText().toString();
-                    if (expanseRadioBtn.isChecked()){
+                    if (expanseRadioBtn.isChecked()) {
                         money = "-" + money;
                     }
 
@@ -232,7 +241,7 @@ public class DialogAddLine extends DialogFragment implements PassDataBetweenDial
                             day = Integer.parseInt(date.substring(0, 2));
                             month = Integer.parseInt(date.substring(3, 5));
                         }
-                    }else{
+                    } else {
                         //if adding item
                         hour = cal.get(Calendar.HOUR_OF_DAY);
                         minute = cal.get(Calendar.MINUTE);
@@ -424,7 +433,7 @@ public class DialogAddLine extends DialogFragment implements PassDataBetweenDial
             } else {
                 date_time = date_time.substring(0, date_time.length() - 3) + ", " + hour + ":" + minute + date_time.substring(date_time.length() - 3, date_time.length());
             }
-        }else{
+        } else {
             //If dateFormat is 24 hours
             if (hour < 10 && minute < 10) {
                 date_time = date_time + ", " + "0" + hour + ":" + "0" + minute;
@@ -432,7 +441,7 @@ public class DialogAddLine extends DialogFragment implements PassDataBetweenDial
                 date_time = date_time + ", " + "0" + hour + ":" + minute;
             } else if (minute < 10) {
                 date_time = date_time + ", " + hour + ":" + "0" + minute;
-            } else{
+            } else {
                 date_time = date_time + ", " + hour + ":" + minute;
             }
         }
@@ -482,6 +491,9 @@ public class DialogAddLine extends DialogFragment implements PassDataBetweenDial
             String originalString = editable.toString();
             if (originalString.contains(",")) {
                 originalString = originalString.replaceAll(",", "");
+            }
+            if (originalString.contains("-")) {
+                originalString = originalString.replace("-", "");
             }
             int textIntVal = Integer.parseInt(originalString);
             DecimalFormat formatter = (DecimalFormat) NumberFormat.getInstance(Locale.getDefault());

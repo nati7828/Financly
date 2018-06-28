@@ -9,6 +9,7 @@ import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.v4.app.DialogFragment;
+import android.support.v7.widget.AppCompatRadioButton;
 import android.text.Editable;
 import android.text.TextWatcher;
 import android.text.format.DateFormat;
@@ -19,6 +20,7 @@ import android.view.animation.TranslateAnimation;
 import android.widget.DatePicker;
 import android.widget.EditText;
 import android.widget.ImageView;
+import android.widget.RadioGroup;
 import android.widget.TextView;
 import android.widget.TimePicker;
 
@@ -40,15 +42,15 @@ public class DialogAddLine extends DialogFragment implements PassDataBetweenDial
     private DatePickerDialog.OnDateSetListener dateListener;
     private TimePickerDialog.OnTimeSetListener timeListener;
 
-    BalanceFragmentAdapter adapter;
-    DatabaseReference userRef;
-    String date_time;
-
     //widgets
     private EditText popupMoney;
     private TextView popupDate;
     private TextView popupCategoryName;
     private TextView popupUserComment;
+
+    BalanceFragmentAdapter adapter;
+    DatabaseReference userRef;
+    String date_time;
 
     ItemModel itemModel;
 
@@ -61,7 +63,6 @@ public class DialogAddLine extends DialogFragment implements PassDataBetweenDial
 
     int hour = cal.get(Calendar.HOUR_OF_DAY);
     int minute = cal.get(Calendar.MINUTE);
-    private boolean textsChanged = false;
 
     @NonNull
     @Override
@@ -78,6 +79,31 @@ public class DialogAddLine extends DialogFragment implements PassDataBetweenDial
             popupUserComment = view.findViewById(R.id.popup_user_comment);
             TextView popupEnter = view.findViewById(R.id.popupEnterNewLine);
             ImageView popupDismiss = view.findViewById(R.id.popupDismiss);
+
+            RadioGroup radio_group = view.findViewById(R.id.radio_group);
+            final AppCompatRadioButton expanseRadioBtn = view.findViewById(R.id.radio_expanse);
+
+            radio_group.setOnCheckedChangeListener(new RadioGroup.OnCheckedChangeListener() {
+                @Override
+                public void onCheckedChanged(RadioGroup radioGroup, int i) {
+                    if (i == R.id.radio_expanse){
+                        //if expanse radio button is checked - show expanse hint.
+                        if(Locale.getDefault().getDisplayLanguage().equals(Locale.ENGLISH.getDisplayName())) {
+                            popupMoney.setHint("Enter Expanse");
+                        }else{
+                            popupMoney.setHint("הכנס הוצאה");
+                        }
+                    }//else if income radio button is checked - show income hint.
+                    else{
+                        if(Locale.getDefault().getDisplayLanguage().equals(Locale.ENGLISH.getDisplayName())) {
+                            popupMoney.setHint("Enter Income");
+                        }else{
+                            popupMoney.setHint("הכנס הכנסה");
+                        }
+                    }
+                }
+            });
+
 
             if (popupUserComment.getText().toString().equals("")) {
                 popupUserComment.setVisibility(View.INVISIBLE);
@@ -107,7 +133,7 @@ public class DialogAddLine extends DialogFragment implements PassDataBetweenDial
                 }
                 int textIntVal = Integer.parseInt(moneyInt);
                 DecimalFormat formatter = (DecimalFormat) NumberFormat.getInstance(Locale.getDefault());
-                formatter.applyPattern("#,###,###,###");
+                formatter.applyPattern("###,###,###");
                 String formattedString = formatter.format(textIntVal);
                 popupMoney.setText(formattedString);
 
@@ -128,10 +154,15 @@ public class DialogAddLine extends DialogFragment implements PassDataBetweenDial
                 public void onClick(View view) {
                     String stampDate = formatDate(popupDate.getText().toString());
 
+                    String money = popupMoney.getText().toString();
+                    if (expanseRadioBtn.isChecked()){
+                        money = "-" + money;
+                    }
+
                     //If itemModel has values, user is editing.
                     if (isEditing) {
-                        if (!popupMoney.getText().toString().isEmpty()) {
-                            itemModel.setIncome_outcome(popupMoney.getText().toString());
+                        if (!money.isEmpty()) {
+                            itemModel.setIncome_outcome(money);
                         }
 
                         itemModel.setCategoryName(popupCategoryName.getText().toString());
@@ -140,13 +171,11 @@ public class DialogAddLine extends DialogFragment implements PassDataBetweenDial
                             itemModel.setUserComment(popupUserComment.getText().toString());
                         }
                         itemModel.setDate(stampDate);
-                        if(textsChanged) { //If there were changes in the texts, update DB.
-                            userRef.child(itemModel.getKey()).setValue(itemModel);//edit node in DB.
-                        }
+                        userRef.child(itemModel.getKey()).setValue(itemModel);//edit node in DB.
                     } else {
-                        itemModel = new ItemModel(popupCategoryName.getText().toString(), stampDate, popupMoney.getText().toString(), popupUserComment.getText().toString());
+                        itemModel = new ItemModel(popupCategoryName.getText().toString(), stampDate, money, popupUserComment.getText().toString());
                     }
-                    if (!popupMoney.getText().toString().isEmpty() && !popupCategoryName.getText().toString().isEmpty()) {
+                    if (!money.isEmpty() && !popupCategoryName.getText().toString().isEmpty()) {
                         if (!isEditing) {
                             String key = userRef.push().getKey();
                             itemModel.setKey(key);
@@ -159,7 +188,7 @@ public class DialogAddLine extends DialogFragment implements PassDataBetweenDial
                     } else {
                         final Animation animation = new TranslateAnimation(Animation.ABSOLUTE, -50, Animation.ABSOLUTE, 0);
                         animation.setDuration(80);
-                        if (popupMoney.getText().toString().isEmpty()) {
+                        if (money.isEmpty()) {
                             popupMoney.startAnimation(animation);
                         }
                         if (popupCategoryName.getText().toString().isEmpty()) {
@@ -216,7 +245,7 @@ public class DialogAddLine extends DialogFragment implements PassDataBetweenDial
                             year, month - 1, day);
 
                     if (dateDialog.getWindow() != null) {
-                        dateDialog.getWindow().setBackgroundDrawable(new ColorDrawable(getResources().getColor(R.color.colorDarkGray)));
+                        dateDialog.getWindow().setBackgroundDrawable(new ColorDrawable(getResources().getColor(R.color.colorVeryDarkGray)));
                     }
 
                     dateDialog.setButton(DialogInterface.BUTTON_NEGATIVE, getString(R.string.cancel), new DialogInterface.OnClickListener() {
@@ -238,9 +267,8 @@ public class DialogAddLine extends DialogFragment implements PassDataBetweenDial
 
 
                     if (timeDialog.getWindow() != null) {
-                        timeDialog.getWindow().setBackgroundDrawable(new ColorDrawable(getResources().getColor(R.color.colorDarkGray)));
+                        timeDialog.getWindow().setBackgroundDrawable(new ColorDrawable(getResources().getColor(R.color.colorVeryDarkGray)));
                     }
-
 
                     timeDialog.setButton(DialogInterface.BUTTON_NEGATIVE, getString(R.string.cancel), new DialogInterface.OnClickListener() {
                         @Override
@@ -287,7 +315,7 @@ public class DialogAddLine extends DialogFragment implements PassDataBetweenDial
                     if (!text.equals("")) {
                         dialog.updateSelectedSpinnerItemValue(text);
                     } else {
-                        dialog.updateSelectedSpinnerItemValue("משכורת");
+                        dialog.updateSelectedSpinnerItemValue(getString(R.string.בית));
                     }
                     //if comment is not empty,
                     if (popupUserComment.getVisibility() == View.VISIBLE && !popupUserComment.getText().toString().isEmpty()) {
@@ -309,7 +337,7 @@ public class DialogAddLine extends DialogFragment implements PassDataBetweenDial
                     if (!text.equals("")) {
                         dialog.updateSelectedSpinnerItemValue(text);
                     } else {
-                        dialog.updateSelectedSpinnerItemValue("משכורת");
+                        dialog.updateSelectedSpinnerItemValue(getString(R.string.בית));
                     }
                     String comment_text = popupUserComment.getText().toString();
                     dialog.updateCommentText(comment_text);//move the String to category_comment_dialog.
@@ -324,8 +352,9 @@ public class DialogAddLine extends DialogFragment implements PassDataBetweenDial
             popupCategoryName.addTextChangedListener(this);
         }
         return builder.create();
-
     }
+    //End of onCreateDialog//
+
 
     private String formatDate(String dtStart) {
         SimpleDateFormat format;
@@ -336,7 +365,7 @@ public class DialogAddLine extends DialogFragment implements PassDataBetweenDial
         }
 
         String stampDate = "";
-        //Convert the date to another pattern to send to the fire base database.
+        //Convert the date to another pattern to send to the DB.
         try {
             Date date = format.parse(dtStart);
             long stamp = date.getTime();
@@ -448,7 +477,6 @@ public class DialogAddLine extends DialogFragment implements PassDataBetweenDial
 
     @Override
     public void afterTextChanged(Editable editable) {
-        textsChanged = true;
         popupMoney.removeTextChangedListener(this);
         try {
             String originalString = editable.toString();
@@ -457,7 +485,7 @@ public class DialogAddLine extends DialogFragment implements PassDataBetweenDial
             }
             int textIntVal = Integer.parseInt(originalString);
             DecimalFormat formatter = (DecimalFormat) NumberFormat.getInstance(Locale.getDefault());
-            formatter.applyPattern("#,###,###,###");
+            formatter.applyPattern("###,###,###");
             String formattedString = formatter.format(textIntVal);
             popupMoney.setText(formattedString);
             popupMoney.setSelection(popupMoney.getText().length());

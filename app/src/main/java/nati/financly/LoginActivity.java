@@ -158,7 +158,6 @@ public class LoginActivity extends AppCompatActivity {
                     verifyEmailAgainBtn.setVisibility(View.GONE);
 
                     if (task.isSuccessful()) {
-
                         if (user != null) {
                             isEmailVerified = user.isEmailVerified();
                         }

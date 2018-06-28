@@ -75,10 +75,10 @@ public class RegisterActivity extends AppCompatActivity {
         Animation animation = new TranslateAnimation(Animation.ABSOLUTE, -50, Animation.ABSOLUTE, 0);
         animation.setDuration(100);
 
-        final String nameTxt = user_name.getText().toString();
-        final String passTxt = user_pass.getText().toString();
-        final String validatePassTxt = user_validatePass.getText().toString();
-        final String emailTxt = user_email.getText().toString();
+        final String nameTxt = user_name.getText().toString().trim();
+        final String passTxt = user_pass.getText().toString().trim();
+        final String validatePassTxt = user_validatePass.getText().toString().trim();
+        final String emailTxt = user_email.getText().toString().trim();
 
         if (nameTxt.isEmpty() || passTxt.isEmpty() || emailTxt.isEmpty() || validatePassTxt.isEmpty()) {
             if (nameTxt.isEmpty()) {
@@ -93,9 +93,6 @@ public class RegisterActivity extends AppCompatActivity {
             if (emailTxt.isEmpty()) {
                 user_email.startAnimation(animation);
             }
-        } else if (passTxt.length() < 6) {
-            user_pass.startAnimation(animation);
-            Toast.makeText(this, R.string.weak_password, Toast.LENGTH_SHORT).show();
         } else if (!validatePassTxt.equals(passTxt)) {
             user_validatePass.startAnimation(animation);
             Toast.makeText(this, R.string.password_not_equal, Toast.LENGTH_SHORT).show();
@@ -110,7 +107,7 @@ public class RegisterActivity extends AppCompatActivity {
 
                         user.setName(nameTxt);//input of the user.
                         user.setEmail(emailTxt);//another input of the user.
-                        user.setMoney("0");
+                        user.setMoney("0");//starting money of the user.
 
                         String userId = firebaseUser.getUid();//get the userId from firebase.
                         DBUser.child(userId).setValue(user); // set each user with his own details.
@@ -121,13 +118,13 @@ public class RegisterActivity extends AppCompatActivity {
                             public void onComplete(@NonNull Task<Void> task) {
                                 if (task.isSuccessful()) {
                                     Toast.makeText(RegisterActivity.this, R.string.enter_email, Toast.LENGTH_LONG).show();
-                                    firebaseAuth.signInWithEmailAndPassword(emailTxt, passTxt);//login the user
+                                    //firebaseAuth.signInWithEmailAndPassword(emailTxt, passTxt);//login the user
+                                    //firebaseAuth.signOut();
                                 } else {
                                     Toast.makeText(RegisterActivity.this, R.string.email_verification, Toast.LENGTH_SHORT).show();
                                 }
                             }
                         });
-                        firebaseAuth.signOut();
                         finish();
                     } else {
                         if (task.getException() != null) {
@@ -160,8 +157,9 @@ public class RegisterActivity extends AppCompatActivity {
             });
         }
     }
-
     //end of sign up function(via button)//
+
+
     //sign_in(btn) function//
     public void AlreadyHaveUser(View view) {
         finish();

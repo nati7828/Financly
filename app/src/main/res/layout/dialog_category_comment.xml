@@ -65,10 +65,10 @@
         android:layout_alignParentEnd="true"
         android:layout_below="@id/comment_dialog_counter_tv"
         android:layout_marginTop="40dp"
-        android:layout_marginEnd="60dp"
+        android:layout_marginEnd="65dp"
         android:text="@string/cancel"
         android:textColor="@drawable/category_comment_text_color_selector"
-        android:textSize="18sp"
+        android:textSize="20sp"
         android:id="@+id/comment_dialog_cancelBtn"
         />
 
@@ -81,7 +81,7 @@
         android:layout_below="@id/comment_dialog_counter_tv"
         android:text="@string/OK"
         android:textColor="@drawable/category_comment_text_color_selector"
-        android:textSize="18sp"
+        android:textSize="20sp"
         android:id="@+id/comment_dialog_okBtn"
         />
 

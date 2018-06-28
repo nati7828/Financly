@@ -72,9 +72,6 @@ public class Dialog_Category_Comment extends AppCompatDialogFragment {
         ////
 
         categoriesList = new ArrayList<>();
-        categoriesList.add(new SpinnerItem(true, getString(R.string.incomes),0));
-        categoriesList.add(new SpinnerItem(false, getString(R.string.משכורת), R.drawable.payment));
-        categoriesList.add(new SpinnerItem(false, getString(R.string.תשלום), R.drawable.payment));
         categoriesList.add(new SpinnerItem(true, getString(R.string.expanses),0));
         categoriesList.add(new SpinnerItem(false, getString(R.string.בית), R.drawable.home));
         categoriesList.add(new SpinnerItem(false, getString(R.string.שכירות), R.drawable.rent));
@@ -98,6 +95,9 @@ public class Dialog_Category_Comment extends AppCompatDialogFragment {
         categoriesList.add(new SpinnerItem(false, getString(R.string.מסעדות), R.drawable.restaurent));
         categoriesList.add(new SpinnerItem(false, getString(R.string.חיות), R.drawable.pet));
         categoriesList.add(new SpinnerItem(false, getString(R.string.מתנות), R.drawable.gift));
+        categoriesList.add(new SpinnerItem(true, getString(R.string.incomes),0));
+        categoriesList.add(new SpinnerItem(false, getString(R.string.משכורת), R.drawable.payment));
+        categoriesList.add(new SpinnerItem(false, getString(R.string.תשלום), R.drawable.payment));
         categoriesList.add(new SpinnerItem(true, getString(R.string.other),0));
         categoriesList.add(new SpinnerItem(false, getString(R.string.אחר), R.drawable.other));
 
@@ -147,7 +147,7 @@ public class Dialog_Category_Comment extends AppCompatDialogFragment {
     }
     //End of onCreateDialog//
 
-    //In case the user chose category, pressed ok, and later he came back to this dialog,
+    //method for editing the category/comment,
     //The function get the string(selected spinner item) from the last dialog and set the spinner item as that string.
     public void setSpinText(String categoryText) {
         SpinnerItem spinnerItem;

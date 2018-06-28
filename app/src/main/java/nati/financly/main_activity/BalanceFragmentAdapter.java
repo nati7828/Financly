@@ -104,7 +104,6 @@ public class BalanceFragmentAdapter extends RecyclerView.Adapter<BalanceFragment
         Spannable spannedMoney = new SpannableString(txtMoney);
         spannedMoney.setSpan(new RelativeSizeSpan(0.85f), 0, 1, Spannable.SPAN_INCLUSIVE_EXCLUSIVE);
         spannedMoney.setSpan(new StyleSpan(Typeface.NORMAL), 0, 1, Spannable.SPAN_INCLUSIVE_EXCLUSIVE);
-//        spannedMoney.setSpan(new ForegroundColorSpan(R.style.moneyShekelIconPositive), 0, 1, Spannable.SPAN_INCLUSIVE_EXCLUSIVE);
         if (!currentMoneyChange.isEmpty()) {
             if (currentMoneyChange.contains(",")){
                 currentMoneyChange = currentMoneyChange.replace(",","");

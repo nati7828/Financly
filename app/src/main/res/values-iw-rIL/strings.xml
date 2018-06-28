@@ -61,7 +61,7 @@
 
     <string name="add_line">הוסף</string>
     <string name="choose_category">בחר קטגוריה</string>
-    <string name="enter_amount">הכנס כמות</string>
+    <string name="enter_amount">הכנס הוצאה</string>
 
     <string name="drawer_welcome">שלום</string>
     <string name="good_morning">בוקר טוב</string>
@@ -109,5 +109,7 @@
     <string name="incomes">הכנסות</string>
     <string name="expanses">הוצאות</string>
     <string name="other">אחר</string>
+    <string name="Expanse">הוצאה</string>
+    <string name="Income">הכנסה</string>
 
 </resources>

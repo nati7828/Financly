@@ -63,7 +63,7 @@
 
     <string name="add_line">Add</string>
     <string name="choose_category">Select category</string>
-    <string name="enter_amount">Enter amount</string>
+    <string name="enter_amount">Enter Expanse</string>
 
     <string name="drawer_welcome">Hello</string>
     <string name="good_morning">Good morning</string>
@@ -111,6 +111,8 @@
     <string name="incomes">Incomes</string>
     <string name="expanses">Expanses</string>
     <string name="other">Other</string>
+    <string name="Expanse">Expanse</string>
+    <string name="Income">Income</string>
 
 
 </resources>
